@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{FC939FF8-A49D-421D-BF04-50D779F1D35C}</ProjectGuid>
+    <RootNamespace>immaterialengine</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <NuGetPackageImportStamp>a2da223d</NuGetPackageImportStamp>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)libs\ReleaseLibs\GLTools\include;$(SolutionDir)libs\ReleaseLibs\File\include;$(SolutionDir)libs\ReleaseLibs\Math\include;$(SolutionDir)libs\ReleaseLibs\PCSTree\include;$(SolutionDir)libs\ReleaseLibs\Time\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalUsingDirectories>
+      </AdditionalUsingDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(SolutionDir)libs\ReleaseLibs\Glut\lib\freeglutd.lib;$(SolutionDir)libs\ReleaseLibs\Glut\lib\freeglut_staticd.lib;$(SolutionDir)libs\ReleaseLibs\Glut\lib\freeglut.lib;$(SolutionDir)libs\ReleaseLibs\Glut\lib\freeglut_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>LIBCMT;LIBCMTD;</IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)libs\ReleaseLibs\GLTools\include;$(SolutionDir)libs\ReleaseLibs\File\include;$(SolutionDir)libs\ReleaseLibs\Math\include;$(SolutionDir)libs\ReleaseLibs\PCSTree\include;$(SolutionDir)libs\ReleaseLibs\Time\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalUsingDirectories>
+      </AdditionalUsingDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>$(SolutionDir)libs\ReleaseLibs\Glut\lib\freeglutd.lib;$(SolutionDir)libs\ReleaseLibs\Glut\lib\freeglut_staticd.lib;$(SolutionDir)libs\ReleaseLibs\Glut\lib\freeglut.lib;$(SolutionDir)libs\ReleaseLibs\Glut\lib\freeglut_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>LIBCMT;LIBCMTD;</IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\libs\ReleaseLibs\File\include\File.h" />
+    <ClInclude Include="..\libs\ReleaseLibs\GLTools\include\GLBatch.h" />
+    <ClInclude Include="..\libs\ReleaseLibs\GLTools\include\GLBatchBase.h" />
+    <ClInclude Include="..\libs\ReleaseLibs\GLTools\include\GLFrame.h" />
+    <ClInclude Include="..\libs\ReleaseLibs\GLTools\include\GLFrustum.h" />
+    <ClInclude Include="..\libs\ReleaseLibs\GLTools\include\GLGeometryTransform.h" />
+    <ClInclude Include="..\libs\ReleaseLibs\GLTools\include\GLMatrixStack.h" />
+    <ClInclude Include="..\libs\ReleaseLibs\GLTools\include\GLShaderManager.h" />
+    <ClInclude Include="..\libs\ReleaseLibs\GLTools\include\GLTools.h" />
+    <ClInclude Include="..\libs\ReleaseLibs\GLTools\include\GLTriangleBatch.h" />
+    <ClInclude Include="..\libs\ReleaseLibs\GLTools\include\GL\glew.h" />
+    <ClInclude Include="..\libs\ReleaseLibs\GLTools\include\GL\glxew.h" />
+    <ClInclude Include="..\libs\ReleaseLibs\GLTools\include\GL\wglew.h" />
+    <ClInclude Include="..\libs\ReleaseLibs\GLTools\include\math3d.h" />
+    <ClInclude Include="..\libs\ReleaseLibs\GLTools\include\StopWatch.h" />
+    <ClInclude Include="..\libs\ReleaseLibs\Math\include\Align16.h" />
+    <ClInclude Include="..\libs\ReleaseLibs\Math\include\Constants.h" />
+    <ClInclude Include="..\libs\ReleaseLibs\Math\include\Enum.h" />
+    <ClInclude Include="..\libs\ReleaseLibs\Math\include\MathApp.h" />
+    <ClInclude Include="..\libs\ReleaseLibs\Math\include\MathEngine.h" />
+    <ClInclude Include="..\libs\ReleaseLibs\Math\include\Matrix.h" />
+    <ClInclude Include="..\libs\ReleaseLibs\Math\include\Quat.h" />
+    <ClInclude Include="..\libs\ReleaseLibs\Math\include\QuatApp.h" />
+    <ClInclude Include="..\libs\ReleaseLibs\Math\include\Util.h" />
+    <ClInclude Include="..\libs\ReleaseLibs\Math\include\Vect.h" />
+    <ClInclude Include="..\libs\ReleaseLibs\Math\include\VectApp.h" />
+    <ClInclude Include="..\libs\ReleaseLibs\PCSTree\include\PCSNode.h" />
+    <ClInclude Include="..\libs\ReleaseLibs\PCSTree\include\PCSTree.h" />
+    <ClInclude Include="..\libs\ReleaseLibs\Time\include\Time.h" />
+    <ClInclude Include="..\libs\ReleaseLibs\Time\include\Timer.h" />
+    <ClInclude Include="Anim.h" />
+    <ClInclude Include="AnimationManager.h" />
+    <ClInclude Include="AnimController.h" />
+    <ClInclude Include="AnimControllerMan.h" />
+    <ClInclude Include="AnimNode.h" />
+    <ClInclude Include="ArchiveManager.h" />
+    <ClInclude Include="BoundingSphere.h" />
+    <ClInclude Include="CameraManager.h" />
+    <ClInclude Include="CameraModel.h" />
+    <ClInclude Include="CameraNode.h" />
+    <ClInclude Include="CameraObject.h" />
+    <ClInclude Include="ChunkHeader.h" />
+    <ClInclude Include="DEBUGGING.h" />
+    <ClInclude Include="GenericObject.h" />
+    <ClInclude Include="GlobalState.h" />
+    <ClInclude Include="GraphicsManager.h" />
+    <ClInclude Include="GraphicsObject.h" />
+    <ClInclude Include="GraphicsObjectFileHdr.h" />
+    <ClInclude Include="md5.h" />
+    <ClInclude Include="Model.h" />
+    <ClInclude Include="ModelManager.h" />
+    <ClInclude Include="ModelNode.h" />
+    <ClInclude Include="NullObject.h" />
+    <ClInclude Include="OpenGL.h" />
+    <ClInclude Include="PackageHeader.h" />
+    <ClInclude Include="PyramidModel.h" />
+    <ClInclude Include="PyramidObject.h" />
+    <ClInclude Include="RenderScene.h" />
+    <ClInclude Include="RenderState.h" />
+    <ClInclude Include="ShaderTypes.h" />
+    <ClInclude Include="SphereModel.h" />
+    <ClInclude Include="SphereObject.h" />
+    <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="TextureNode.h" />
+    <ClInclude Include="TGAHeader.h" />
+    <ClInclude Include="UserInterface.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\libs\ReleaseLibs\File\lib\FileDebug.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </Library>
+    <Library Include="..\libs\ReleaseLibs\File\lib\FileRelease.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </Library>
+    <Library Include="..\libs\ReleaseLibs\GLTools\lib\gltoolsdebug.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </Library>
+    <Library Include="..\libs\ReleaseLibs\GLTools\lib\gltoolsrelease.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </Library>
+    <Library Include="..\libs\ReleaseLibs\Math\lib\MathEngineDebug.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </Library>
+    <Library Include="..\libs\ReleaseLibs\Math\lib\MathEngineRelease.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </Library>
+    <Library Include="..\libs\ReleaseLibs\PCSTree\lib\PCSTreeDebug.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </Library>
+    <Library Include="..\libs\ReleaseLibs\PCSTree\lib\PCSTreeRelease.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </Library>
+    <Library Include="..\libs\ReleaseLibs\Time\lib\TimeDebug.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </Library>
+    <Library Include="..\libs\ReleaseLibs\Time\lib\TimeRelease.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\libs\ReleaseLibs\File\lib\filedebug.pdb">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\libs\ReleaseLibs\File\lib\filerelease.pdb">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\libs\ReleaseLibs\GLTools\lib\gltoolsdebug.pdb">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </None>
+    <None Include="..\libs\ReleaseLibs\GLTools\lib\gltoolsrelease.pdb">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </None>
+    <None Include="..\libs\ReleaseLibs\Math\lib\mathenginedebug.pdb">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\libs\ReleaseLibs\Math\lib\mathenginerelease.pdb">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\libs\ReleaseLibs\PCSTree\lib\pcstreedebug.pdb">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\libs\ReleaseLibs\PCSTree\lib\pcstreerelease.pdb">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\libs\ReleaseLibs\Time\lib\timedebug.pdb">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="..\libs\ReleaseLibs\Time\lib\timerelease.pdb">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Anim2Bone.cpp" />
+    <ClCompile Include="AnimationManager.cpp" />
+    <ClCompile Include="AnimController.cpp" />
+    <ClCompile Include="AnimControllerMan.cpp" />
+    <ClCompile Include="AnimNode.cpp" />
+    <ClCompile Include="ArchiveManager.cpp" />
+    <ClCompile Include="CameraManager.cpp" />
+    <ClCompile Include="CameraModel.cpp" />
+    <ClCompile Include="CameraNode.cpp" />
+    <ClCompile Include="CameraObject.cpp" />
+    <ClCompile Include="FindVolume.cpp" />
+    <ClCompile Include="GenericObject.cpp" />
+    <ClCompile Include="GlobalState.cpp" />
+    <ClCompile Include="GraphicsManager.cpp" />
+    <ClCompile Include="GraphicsObject.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="md5.cpp" />
+    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="ModelManager.cpp" />
+    <ClCompile Include="ModelNode.cpp" />
+    <ClCompile Include="NullObject.cpp" />
+    <ClCompile Include="PyramidModel.cpp" />
+    <ClCompile Include="PyramidObject.cpp" />
+    <ClCompile Include="RenderScene.cpp" />
+    <ClCompile Include="RenderState.cpp" />
+    <ClCompile Include="SphereModel.cpp" />
+    <ClCompile Include="SphereObject.cpp" />
+    <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="TextureNode.cpp" />
+    <ClCompile Include="TGAHeader.cpp" />
+    <ClCompile Include="UserInterface.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

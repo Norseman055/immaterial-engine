@@ -1,0 +1,484 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="_Math">
+      <UniqueIdentifier>{dea64fd7-03c7-424c-a07b-548ab99bb9b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Math\include">
+      <UniqueIdentifier>{b7c217b0-07f2-4fba-97f9-a88556ee1ef8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Math\lib">
+      <UniqueIdentifier>{cd4342cb-c168-4de4-b78b-478ad8462df6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_File">
+      <UniqueIdentifier>{07c0ec90-c72a-4655-9c8b-605edd69c226}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_File\lib">
+      <UniqueIdentifier>{53ea652d-b886-4f1b-80dd-149f20937620}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_File\include">
+      <UniqueIdentifier>{415144c8-8cd6-4d15-9c7c-95b504c922e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_PCSTree">
+      <UniqueIdentifier>{deef7f06-d660-41f3-82c8-4d2649b78d51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_PCSTree\include">
+      <UniqueIdentifier>{ca520208-1ea1-4af0-89da-3ddd2e943e1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_PCSTree\lib">
+      <UniqueIdentifier>{7ce751d5-9662-47df-92d7-7e31ac012530}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{e8b8b109-3c7f-44fb-9957-f3f62cca7265}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Models">
+      <UniqueIdentifier>{7d23076f-b17c-46c6-96f7-bc358017b544}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Models\Model Headers">
+      <UniqueIdentifier>{cfb306c3-1a37-4496-ba0b-0c4b3c166081}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Models\Model Source Files">
+      <UniqueIdentifier>{b78c8c20-3223-422b-918d-3213a4251693}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Graphics Headers">
+      <UniqueIdentifier>{5d23aba5-5732-452e-af09-1566921c5bba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Graphics Source Files">
+      <UniqueIdentifier>{7c9ec723-cc57-4e0d-8450-601016e8b0f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{334fe977-706c-4299-a974-f8ffe935b153}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camera\Camera Headers">
+      <UniqueIdentifier>{b048399c-4901-4b91-8fe4-0b0bae6fc0c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camera\Camera Source Files">
+      <UniqueIdentifier>{d5c87a00-26c7-4451-9692-3f9a4c54dfe0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Objects">
+      <UniqueIdentifier>{c0bf493a-fb5b-4628-ac1a-ab2ce8232d8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Objects\Object Headers">
+      <UniqueIdentifier>{0a5b8c67-a9f0-44d6-b3f8-325e4a731e20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Objects\Object Source Files">
+      <UniqueIdentifier>{88cc14b7-d566-4445-9d64-f335d25a3b09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Textures">
+      <UniqueIdentifier>{978bac7e-dd4d-450a-9dac-23186584eaa2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Textures\Texture Headers">
+      <UniqueIdentifier>{3dee1cd0-886d-4d55-b341-03e0d3cc2437}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Textures\Texture Source Files">
+      <UniqueIdentifier>{cf7dbaee-401d-4b35-b349-17fbffd94d7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archiver">
+      <UniqueIdentifier>{de0bfc79-96aa-4293-8e03-ac80c673c135}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archiver\Archiver Headers">
+      <UniqueIdentifier>{faaea261-79f4-4bc5-a84c-6ab9a47821bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archiver\Archiver Source Files">
+      <UniqueIdentifier>{dffc8093-d06e-454d-bd2b-3bd81f5134d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Time">
+      <UniqueIdentifier>{418517f6-57be-485c-9b48-2e0096ad12e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Time\include">
+      <UniqueIdentifier>{0cc01c48-2802-4693-83ab-a78ee24d2c98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Time\lib">
+      <UniqueIdentifier>{6eb72c7f-a308-46fa-bf5e-a83077c95bb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Animation">
+      <UniqueIdentifier>{deccc3af-1aa1-463d-9ea0-2502e5f0403a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Animation\Animation Headers">
+      <UniqueIdentifier>{8083a9ba-cf8f-4364-b799-b35012e1b722}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Animation\Animation Source Files">
+      <UniqueIdentifier>{24f092fd-e649-4963-b221-58cb43624b95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_GLTools">
+      <UniqueIdentifier>{09396762-8bc4-4e4c-b672-e19ddd9c2b3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_GLTools\include">
+      <UniqueIdentifier>{11f80720-d90b-4739-83bd-2ee9f817961a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_GLTools\lib">
+      <UniqueIdentifier>{66be947d-b3d9-4f86-8ee1-52aa6e393945}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\libs\ReleaseLibs\File\include\File.h">
+      <Filter>_File\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ReleaseLibs\Math\include\Align16.h">
+      <Filter>_Math\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ReleaseLibs\Math\include\Constants.h">
+      <Filter>_Math\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ReleaseLibs\Math\include\Enum.h">
+      <Filter>_Math\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ReleaseLibs\Math\include\MathApp.h">
+      <Filter>_Math\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ReleaseLibs\Math\include\MathEngine.h">
+      <Filter>_Math\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ReleaseLibs\Math\include\Matrix.h">
+      <Filter>_Math\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ReleaseLibs\Math\include\Quat.h">
+      <Filter>_Math\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ReleaseLibs\Math\include\QuatApp.h">
+      <Filter>_Math\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ReleaseLibs\Math\include\Util.h">
+      <Filter>_Math\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ReleaseLibs\Math\include\Vect.h">
+      <Filter>_Math\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ReleaseLibs\Math\include\VectApp.h">
+      <Filter>_Math\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ReleaseLibs\PCSTree\include\PCSNode.h">
+      <Filter>_PCSTree\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ReleaseLibs\PCSTree\include\PCSTree.h">
+      <Filter>_PCSTree\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ReleaseLibs\Time\include\Time.h">
+      <Filter>_Time\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ReleaseLibs\Time\include\Timer.h">
+      <Filter>_Time\include</Filter>
+    </ClInclude>
+    <ClInclude Include="Anim.h">
+      <Filter>Animation\Animation Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationManager.h">
+      <Filter>Animation\Animation Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimController.h">
+      <Filter>Animation\Animation Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimControllerMan.h">
+      <Filter>Animation\Animation Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimNode.h">
+      <Filter>Animation\Animation Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ArchiveManager.h">
+      <Filter>Archiver\Archiver Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ChunkHeader.h">
+      <Filter>Archiver\Archiver Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="md5.h">
+      <Filter>Archiver\Archiver Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PackageHeader.h">
+      <Filter>Archiver\Archiver Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraManager.h">
+      <Filter>Camera\Camera Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraModel.h">
+      <Filter>Camera\Camera Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraNode.h">
+      <Filter>Camera\Camera Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraObject.h">
+      <Filter>Camera\Camera Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsManager.h">
+      <Filter>Graphics\Graphics Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsObjectFileHdr.h">
+      <Filter>Graphics\Graphics Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GenericObject.h">
+      <Filter>Graphics\Objects\Object Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsObject.h">
+      <Filter>Graphics\Objects\Object Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="NullObject.h">
+      <Filter>Graphics\Objects\Object Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PyramidObject.h">
+      <Filter>Graphics\Objects\Object Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereObject.h">
+      <Filter>Graphics\Objects\Object Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="DEBUGGING.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGL.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UserInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BoundingSphere.h">
+      <Filter>Models\Model Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Models\Model Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelManager.h">
+      <Filter>Models\Model Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelNode.h">
+      <Filter>Models\Model Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PyramidModel.h">
+      <Filter>Models\Model Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereModel.h">
+      <Filter>Models\Model Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureManager.h">
+      <Filter>Textures\Texture Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureNode.h">
+      <Filter>Textures\Texture Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="TGAHeader.h">
+      <Filter>Textures\Texture Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ReleaseLibs\GLTools\include\GLBatch.h">
+      <Filter>_GLTools\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ReleaseLibs\GLTools\include\GLBatchBase.h">
+      <Filter>_GLTools\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ReleaseLibs\GLTools\include\GLFrame.h">
+      <Filter>_GLTools\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ReleaseLibs\GLTools\include\GLFrustum.h">
+      <Filter>_GLTools\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ReleaseLibs\GLTools\include\GLGeometryTransform.h">
+      <Filter>_GLTools\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ReleaseLibs\GLTools\include\GLMatrixStack.h">
+      <Filter>_GLTools\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ReleaseLibs\GLTools\include\GLShaderManager.h">
+      <Filter>_GLTools\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ReleaseLibs\GLTools\include\GLTools.h">
+      <Filter>_GLTools\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ReleaseLibs\GLTools\include\GLTriangleBatch.h">
+      <Filter>_GLTools\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ReleaseLibs\GLTools\include\math3d.h">
+      <Filter>_GLTools\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ReleaseLibs\GLTools\include\StopWatch.h">
+      <Filter>_GLTools\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ReleaseLibs\GLTools\include\GL\glew.h">
+      <Filter>_GLTools\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ReleaseLibs\GLTools\include\GL\glxew.h">
+      <Filter>_GLTools\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ReleaseLibs\GLTools\include\GL\wglew.h">
+      <Filter>_GLTools\include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\libs\ReleaseLibs\File\lib\FileDebug.lib">
+      <Filter>_File\lib</Filter>
+    </Library>
+    <Library Include="..\libs\ReleaseLibs\File\lib\FileRelease.lib">
+      <Filter>_File\lib</Filter>
+    </Library>
+    <Library Include="..\libs\ReleaseLibs\Math\lib\MathEngineDebug.lib">
+      <Filter>_Math\lib</Filter>
+    </Library>
+    <Library Include="..\libs\ReleaseLibs\Math\lib\MathEngineRelease.lib">
+      <Filter>_Math\lib</Filter>
+    </Library>
+    <Library Include="..\libs\ReleaseLibs\PCSTree\lib\PCSTreeDebug.lib">
+      <Filter>_PCSTree\lib</Filter>
+    </Library>
+    <Library Include="..\libs\ReleaseLibs\PCSTree\lib\PCSTreeRelease.lib">
+      <Filter>_PCSTree\lib</Filter>
+    </Library>
+    <Library Include="..\libs\ReleaseLibs\Time\lib\TimeDebug.lib">
+      <Filter>_Time\lib</Filter>
+    </Library>
+    <Library Include="..\libs\ReleaseLibs\Time\lib\TimeRelease.lib">
+      <Filter>_Time\lib</Filter>
+    </Library>
+    <Library Include="..\libs\ReleaseLibs\GLTools\lib\gltoolsdebug.lib">
+      <Filter>_GLTools\lib</Filter>
+    </Library>
+    <Library Include="..\libs\ReleaseLibs\GLTools\lib\gltoolsrelease.lib">
+      <Filter>_GLTools\lib</Filter>
+    </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\libs\ReleaseLibs\File\lib\filedebug.pdb">
+      <Filter>_File\lib</Filter>
+    </None>
+    <None Include="..\libs\ReleaseLibs\File\lib\filerelease.pdb">
+      <Filter>_File\lib</Filter>
+    </None>
+    <None Include="..\libs\ReleaseLibs\Math\lib\mathenginedebug.pdb">
+      <Filter>_Math\lib</Filter>
+    </None>
+    <None Include="..\libs\ReleaseLibs\Math\lib\mathenginerelease.pdb">
+      <Filter>_Math\lib</Filter>
+    </None>
+    <None Include="..\libs\ReleaseLibs\PCSTree\lib\pcstreedebug.pdb">
+      <Filter>_PCSTree\lib</Filter>
+    </None>
+    <None Include="..\libs\ReleaseLibs\PCSTree\lib\pcstreerelease.pdb">
+      <Filter>_PCSTree\lib</Filter>
+    </None>
+    <None Include="..\libs\ReleaseLibs\Time\lib\timedebug.pdb">
+      <Filter>_Time\lib</Filter>
+    </None>
+    <None Include="..\libs\ReleaseLibs\Time\lib\timerelease.pdb">
+      <Filter>_Time\lib</Filter>
+    </None>
+    <None Include="..\libs\ReleaseLibs\GLTools\lib\gltoolsdebug.pdb">
+      <Filter>_GLTools\lib</Filter>
+    </None>
+    <None Include="..\libs\ReleaseLibs\GLTools\lib\gltoolsrelease.pdb">
+      <Filter>_GLTools\lib</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Anim2Bone.cpp">
+      <Filter>Animation\Animation Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationManager.cpp">
+      <Filter>Animation\Animation Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimController.cpp">
+      <Filter>Animation\Animation Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimControllerMan.cpp">
+      <Filter>Animation\Animation Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimNode.cpp">
+      <Filter>Animation\Animation Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ArchiveManager.cpp">
+      <Filter>Archiver\Archiver Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="md5.cpp">
+      <Filter>Archiver\Archiver Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraManager.cpp">
+      <Filter>Camera\Camera Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraModel.cpp">
+      <Filter>Camera\Camera Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraNode.cpp">
+      <Filter>Camera\Camera Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraObject.cpp">
+      <Filter>Camera\Camera Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsManager.cpp">
+      <Filter>Graphics\Graphics Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GenericObject.cpp">
+      <Filter>Graphics\Objects\Object Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsObject.cpp">
+      <Filter>Graphics\Objects\Object Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NullObject.cpp">
+      <Filter>Graphics\Objects\Object Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PyramidObject.cpp">
+      <Filter>Graphics\Objects\Object Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereObject.cpp">
+      <Filter>Graphics\Objects\Object Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Models\Model Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelManager.cpp">
+      <Filter>Models\Model Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelNode.cpp">
+      <Filter>Models\Model Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PyramidModel.cpp">
+      <Filter>Models\Model Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereModel.cpp">
+      <Filter>Models\Model Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FindVolume.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GlobalState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UserInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureManager.cpp">
+      <Filter>Textures\Texture Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureNode.cpp">
+      <Filter>Textures\Texture Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TGAHeader.cpp">
+      <Filter>Textures\Texture Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
