@@ -134,10 +134,13 @@ void TextureMan::DeleteTextures()
 
 	// delete textures from GPU
 	TextureNode *walker = (TextureNode *)pTextMan->active;
+	TextureNode *tmp = walker;
 	while ( walker != 0 )
 	{
-		glDeleteTextures( 1, &walker->textureID );
 		walker = (TextureNode *)walker->next;
+		glDeleteTextures( 1, &tmp->textureID );
+		delete tmp;
+		tmp = walker;
 	}
 }
 
@@ -197,8 +200,6 @@ bool TextureMan::privLoadTGATexture(const char *szFileName, GLenum minFilter, GL
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glTexImage2D(GL_TEXTURE_2D, 0, nComponents, nWidth, nHeight, 0,
 				 eFormat, GL_UNSIGNED_BYTE, pBits);
-	
-    free(pBits);
     
     if(minFilter == GL_LINEAR_MIPMAP_LINEAR || 
        minFilter == GL_LINEAR_MIPMAP_NEAREST ||
@@ -232,8 +233,6 @@ bool TextureMan::privLoadMyTGATexture( const unsigned char * const tgaData, GLen
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glTexImage2D(GL_TEXTURE_2D, 0, nComponents, nWidth, nHeight, 0,
 				 eFormat, GL_UNSIGNED_BYTE, pBits);
-	
-    free(pBits);
     
     if(minFilter == GL_LINEAR_MIPMAP_LINEAR || 
        minFilter == GL_LINEAR_MIPMAP_NEAREST ||

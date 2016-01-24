@@ -59,20 +59,7 @@ void frameworkStartup(void)
 	CameraMan::LoadCameras();
 	LoadContent();
 
-	// create generic object
-	//GenObject *gen = new GenObject;
-	//gen->setModel( ModelMan::Find("astroboy_binary") );
-	//gen->setStartPos(Vect(-50.0f, 0.0f, 0.0f));
-	//gen->setTextureName( "astroboy" );
-	//gen->setStockShaderMode( Shader_Wireframe );
-	//GraphicsObjMan::addObject(gen);
-	
-	//SetTeddyHierarchy();
 	SetHumanoidHierarchy();
-
-	//AnimController *bearWalk = new AnimController( AnimationMan::GetAnimation("walk"), (PyramidObject *)GraphicsObjMan::GetFirstObj());
-	//bearWalk->setPlayback(Clamp);
-	//AnimControllerMan::AddController(bearWalk);
 
 	AnimController *humanShot = new AnimController( AnimationMan::GetAnimation("punch"), (PyramidObject *)GraphicsObjMan::GetFirstObj() );
 	humanShot->setPlayback(Loop);
@@ -103,14 +90,6 @@ void LoadContent( void )
 	TextureMan::AddTexture( "Stone.tga", STONES );
 	TextureMan::AddTexture( "RedBrick.tga", RED_BRICK );
 	TextureMan::AddTexture( "Duckweed.tga", DUCKWEED );
-	
-	//TextureMan::LoadTexture( "astroboy.tga", "astroboy" );
-	//TextureMan::LoadTexture( "buggy_diff.tga", "buggy_diff" );
-	//TextureMan::LoadTexture( "buggy_nrm.tga", "buggy_nrm" );
-	//TextureMan::LoadTexture( "buggy_spec.tga", "buggy_spec" );
-	//TextureMan::LoadTexture( "space_frigate.tga", "space_frigate" );
-	//TextureMan::LoadTexture( "warbear.tga", "warbear" );
-	//TextureMan::LoadTexture( "teddyTex.tga", "teddyTex" );
 };
 
 void GameLoop( void )

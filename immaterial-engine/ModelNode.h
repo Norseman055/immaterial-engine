@@ -15,12 +15,6 @@ public:
 		this->prev = 0;
 	}
 
-	~ModelNodeLink()
-	{
-		delete next;
-		delete prev;
-	}
-
 	ModelNodeLink *next;
 	ModelNodeLink *prev;
 };
@@ -29,8 +23,6 @@ class ModelNode : public ModelNodeLink
 {
 public:
 	ModelNode();
-	~ModelNode();
-
 	void set( const char * const inModelName,
 				GLuint inHash,
 				Model * inMod);

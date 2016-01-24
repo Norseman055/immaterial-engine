@@ -22,7 +22,7 @@ void AnimControllerMan::DeleteControllers()
 	AnimController* tmp = walker;
 	while (walker != 0)	{
 		walker = walker->next;
-		tmp->~AnimController();
+		delete tmp;
 		tmp = walker;
 	}
 }

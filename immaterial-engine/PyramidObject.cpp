@@ -13,7 +13,7 @@
 #include "Anim.h"
 #include "AnimController.h"
 
-extern GLShaderManager	shaderManager;
+extern GLShaderManager shaderManager;
 extern PyramidModel *myPyramid;
 extern Frame_Bucket *pHead;
 
@@ -197,7 +197,7 @@ void PyramidObject::setRenderState( void )
 		{
 			// Use the stock shader
 			shaderManager.UseStockShader(GLT_SHADER_TEXTURE_POINT_LIGHT_DIFF, 
-										&ModelView,
+										&this->ModelView,
 										&cam->getProjMatrix(), 
 										&this->lightPos, 
 										&this->lightColor, 
@@ -227,7 +227,7 @@ void PyramidObject::setRenderState( void )
 		{
 			// use stock shaders
 			shaderManager.UseStockShader(GLT_SHADER_POINT_LIGHT_DIFF, 
-										&ModelView,
+										&this->ModelView,
 										&cam->getProjMatrix(), 
 										&this->lightPos, 
 										&this->lightColor);

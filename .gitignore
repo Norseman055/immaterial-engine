@@ -3,3 +3,5 @@
 *.bsc
 *.idb
 *.opensdf
+*.xml
+*.lastcodeanalysissucceeded

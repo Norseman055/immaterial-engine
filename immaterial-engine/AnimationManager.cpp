@@ -1,28 +1,26 @@
 
 #include "AnimationManager.h"
-#include <assert.h>
-#include <Windows.h>
+#include "DEBUGGING.h"
 
 void AnimationMan::LoadAnimationBuffer(const unsigned char * const animBuff, const AnimFileHdr &aHdr )
 {
-	AnimationMan* aMan = privGetInstance();
+	auto aMan = privGetInstance();
 
-	AnimNode *node = new AnimNode(aHdr.animName, aHdr.numBones);
-	node->numKeyframes = aHdr.numKeyframes;
+	auto node = new AnimNode(aHdr.animName, aHdr.numKeyframes, aHdr.numBones);
 
 	// set pointers to first keyframe data and bone data
-	KeyTimeHdr *KTHdr = (KeyTimeHdr *)animBuff;
-	Bone *ptr = KTHdr->bArray;
+	auto KTHdr = (KeyTimeHdr *)animBuff;
+	auto ptr = KTHdr->bArray;
 
 	// now have an animNode with the proper data, now i need to create the frame buckets for the animation
-	Frame_Bucket *tmp = 0;
+	Frame_Bucket *tmp = nullptr;
 	for (int i = 0; i < aHdr.numKeyframes; i++)	{
 		// make new frame bucket, add data
 		tmp = new Frame_Bucket;
 		tmp->KeyTime = KTHdr->KeyTime * Time(TIME_NTSC_30_FRAME);
 
 		// copy bones
-		tmp->pBone = (Bone *)malloc(sizeof(Bone) * aHdr.numBones);
+		tmp->pBone = new Bone[aHdr.numBones];
 		for (int j = 0; j < aHdr.numBones; j++)	{
 			tmp->pBone[j] = ptr[j];
 		}
@@ -45,8 +43,6 @@ void AnimationMan::privAddToFront( AnimNode * node, AnimNode *&head)
 	if (head == 0)
 	{
 		head = node;
-		node->next = 0;
-		node->prev = 0;
 	}
 	else	// non-empty list, add to front
 	{
@@ -58,9 +54,9 @@ void AnimationMan::privAddToFront( AnimNode * node, AnimNode *&head)
 
 AnimNode* AnimationMan::GetAnimation( const char * const inName )
 {
-	AnimationMan *aMan = privGetInstance();
-	AnimNode *walker = aMan->animList;
-	while (walker->next != 0)	{
+	auto aMan = privGetInstance();
+	auto walker = aMan->animList;
+	while (walker->next != nullptr)	{
 		if (strcmp(walker->getName(), inName) == 0)	{
 			break;
 		}
@@ -77,19 +73,18 @@ AnimationMan* AnimationMan::privGetInstance()
 };
 
 AnimationMan::AnimationMan()
-{
-	this->animList = 0;
-};
+	: animList(nullptr)
+{ }
 
 void AnimationMan::DeleteAnimations()
 {
-	AnimationMan *aMan = privGetInstance();
-	AnimNode *walker = aMan->animList;
-	AnimNode *tmp = walker;
+	auto aMan = privGetInstance();
+	auto walker = aMan->animList;
+	auto tmp = walker;
 
 	while(walker != 0)	{
 		walker = walker->next;
-		tmp->~AnimNode();
+		delete tmp;
 		tmp = walker;
 	}
 }

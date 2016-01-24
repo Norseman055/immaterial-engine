@@ -3,8 +3,7 @@
 #define ANIM_H
 
 #include "Timer.h"
-#include "Vect.h"
-#include "Quat.h"
+#include "MathEngine.h"
 
 // forward declare
 class GraphicsObject;
@@ -27,17 +26,14 @@ struct Bone : public Align16
 
 struct Frame_Bucket
 {
+	Time			KeyTime;
 	Frame_Bucket	*nextBucket;
 	Frame_Bucket	*prevBucket;
-	Time			KeyTime;
 	Bone			*pBone;
 
 	Frame_Bucket()
-	{
-		nextBucket = 0;
-		prevBucket = 0;
-		pBone = new Bone;
-	}
+		: nextBucket(nullptr), prevBucket(nullptr), pBone(nullptr)
+	{ }
 };
 
 struct AnimFileHdr
@@ -53,9 +49,9 @@ struct AnimFileHdr
 
 struct KeyTimeHdr
 {
+	Bone bArray[NUM_BONES];
 	int KeyTime;
 	int msTime;
-	Bone bArray[NUM_BONES];
 
 	KeyTimeHdr()
 		: KeyTime(0), msTime(0)

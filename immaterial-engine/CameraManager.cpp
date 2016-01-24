@@ -7,10 +7,8 @@
 #include "GraphicsManager.h"
 
 CameraMan::CameraMan()
-{
-	this->active = 0;
-	this->camState = ORBIT;
-}
+	: active(0), camState(ORBIT)
+{ }
 
 // singleton
 CameraMan * CameraMan::privGetInstance()

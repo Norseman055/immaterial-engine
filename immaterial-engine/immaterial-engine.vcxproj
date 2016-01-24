@@ -41,40 +41,47 @@
   <PropertyGroup>
     <NuGetPackageImportStamp>a2da223d</NuGetPackageImportStamp>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)libs\ReleaseLibs\GLTools\include;$(SolutionDir)libs\ReleaseLibs\File\include;$(SolutionDir)libs\ReleaseLibs\Math\include;$(SolutionDir)libs\ReleaseLibs\PCSTree\include;$(SolutionDir)libs\ReleaseLibs\Time\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
+      <EnablePREfast>false</EnablePREfast>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>$(SolutionDir)libs\ReleaseLibs\Glut\lib\freeglutd.lib;$(SolutionDir)libs\ReleaseLibs\Glut\lib\freeglut_staticd.lib;$(SolutionDir)libs\ReleaseLibs\Glut\lib\freeglut.lib;$(SolutionDir)libs\ReleaseLibs\Glut\lib\freeglut_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>LIBCMT;LIBCMTD;</IgnoreSpecificDefaultLibraries>
+      <SubSystem>Windows</SubSystem>
+      <AdditionalOptions>/ENTRY:mainCRTStartup %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)libs\ReleaseLibs\GLTools\include;$(SolutionDir)libs\ReleaseLibs\File\include;$(SolutionDir)libs\ReleaseLibs\Math\include;$(SolutionDir)libs\ReleaseLibs\PCSTree\include;$(SolutionDir)libs\ReleaseLibs\Time\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
+      <EnablePREfast>false</EnablePREfast>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>$(SolutionDir)libs\ReleaseLibs\Glut\lib\freeglutd.lib;$(SolutionDir)libs\ReleaseLibs\Glut\lib\freeglut_staticd.lib;$(SolutionDir)libs\ReleaseLibs\Glut\lib\freeglut.lib;$(SolutionDir)libs\ReleaseLibs\Glut\lib\freeglut_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>LIBCMT;LIBCMTD;</IgnoreSpecificDefaultLibraries>
+      <SubSystem>Windows</SubSystem>
+      <AdditionalOptions>/ENTRY:mainCRTStartup %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

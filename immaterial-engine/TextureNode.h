@@ -19,12 +19,6 @@ enum TextureName
 	BUGGY_SPEC,
 	ASTROBOY,
 	NOT_INITIALIZED
-	// other texture names
-	// "warbear"
-	// "space_frigate"
-	// "buggy_diff"
-	// "astroboy"
-	// typhoon textures/model not yet working
 };
 
 class TextureNodeLink

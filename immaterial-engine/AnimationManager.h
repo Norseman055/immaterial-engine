@@ -2,8 +2,6 @@
 #ifndef ANIMATION_MANAGER_H
 #define ANIMATION_MANAGER_H
 
-#include "MathEngine.h"
-#include "Anim.h"
 #include "AnimNode.h"
 
 class AnimationMan
@@ -18,6 +16,7 @@ private:
 	static AnimationMan *privGetInstance();
 	void privAddToFront(AnimNode *inNode, AnimNode *& head);
 	
+private:
 	// data
 	AnimNode *animList;
 };

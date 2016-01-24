@@ -1,12 +1,8 @@
 #ifndef DEBUGGING_H
 #define DEBUGGING_H
 
-// memory leak searching with crt lib
-#define _CRTDBG_MAP_ALLOC
-#include <stdlib.h>
-#include <crtdbg.h>
-
 #include <assert.h>
+#include <Windows.h>
 #include <stdio.h>
 
 static char buff[256];  // Needs a buffer - big enough

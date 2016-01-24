@@ -12,6 +12,8 @@
 #include "md5.h"
 #include "BoundingSphere.h"
 
+#include "Align16.h"
+
 void RitterSphere(Sphere &s, Vect *pt, int numPts);
 
 ModelMan::ModelMan()
@@ -26,7 +28,7 @@ void ModelMan::DeleteModels()
 	ModelNodeLink *tmp = walker;
 	while (walker != 0)	{
 		walker = walker->next;
-		tmp->~ModelNodeLink();
+		delete tmp;
 		tmp = walker;
 	}
 };
@@ -55,7 +57,7 @@ void ModelMan::LoadModel( const char * const inFileName )
 	assert (ferror == FILE_SUCCESS);
 
 		// create vertex buffer
-	MyVertex_stride *pVerts = (MyVertex_stride *)malloc( modelHdr.numVerts * sizeof(MyVertex_stride) );
+	MyVertex_stride *pVerts = new MyVertex_stride[modelHdr.numVerts];
 
 		// load verts
 	ferror = File::seek( fh, FILE_SEEK_BEGIN, modelHdr.vertBufferOffset );
@@ -65,7 +67,7 @@ void ModelMan::LoadModel( const char * const inFileName )
 	assert (ferror == FILE_SUCCESS );
 
 	// calc ritter sphere, save into the model later
-	Vertex *bound = (Vertex *)malloc(modelHdr.numVerts * sizeof(Vertex));
+	Vertex *bound = new Vertex[modelHdr.numVerts];
 	for (int i = 0; i < modelHdr.numVerts; i++)
 	{
 		bound[i].x = pVerts[i].x;
@@ -74,7 +76,7 @@ void ModelMan::LoadModel( const char * const inFileName )
 	}
 
 		// create triList buffer
-	MyTriList *tlist = (MyTriList *)malloc( modelHdr.numTriList * sizeof(MyTriList) );
+	MyTriList *tlist = new MyTriList[modelHdr.numTriList];
 
 		// load triList
 	ferror = File::seek( fh, FILE_SEEK_BEGIN, modelHdr.triListBufferOffset );
@@ -102,7 +104,7 @@ void ModelMan::LoadModel( const char * const inFileName )
 	//}
 
 	// Load model into GPU, store VAO handle ------------------------------------------
-	Model *myModel = new Model();
+	Model *myModel = new Model;
 	RitterSphere(myModel->boundingVol, (Vect *)&bound[0].x, modelHdr.numVerts);
 	myModel->numTri = modelHdr.numTriList;
 
@@ -180,9 +182,9 @@ void ModelMan::LoadModel( const char * const inFileName )
 
 	// Model loaded into GPU, VAO stored in myModel->vao. Generate model name by dropping extension.
 		ModelMan *pMMan = ModelMan::privGetInstance();
-		ModelNode *pNode = new ModelNode();
+		ModelNode *pNode = new ModelNode;
 		
-		char * modName = (char *)malloc(strlen(inFileName)-4);
+		char * modName = new char[strlen(inFileName) - 3];
 		memcpy(modName, inFileName, strlen(inFileName)-4 );
 		modName[strlen(inFileName)-4] = '\0';
 
@@ -194,10 +196,10 @@ void ModelMan::LoadModel( const char * const inFileName )
 		pNode->set(modName, hashID, myModel);
 		pMMan->privAddToFront(pNode, pMMan->active);
 
-//		free(modName);
-		free(tlist);
-		free(bound);
-		free(pVerts);
+		delete[](modName);
+		delete[](tlist);
+		delete[](bound);
+		delete[](pVerts);
 }
 
 void ModelMan::LoadBufferedModel( const unsigned char * const modelBuff)
@@ -206,13 +208,13 @@ void ModelMan::LoadBufferedModel( const unsigned char * const modelBuff)
 	MyVertex_stride *vOffset = (MyVertex_stride *)((unsigned int)modelBuff + modelHdr->vertBufferOffset);
 
 	// copy verts
-	MyVertex_stride *pVerts = (MyVertex_stride *)malloc( modelHdr->numVerts * sizeof(MyVertex_stride) );
+	MyVertex_stride *pVerts = new MyVertex_stride[modelHdr->numVerts];
 	for(int i = 0; i < modelHdr->numVerts; i++)	{
 		pVerts[i] = vOffset[i];
 	}
 
 	// calc ritter sphere, save into the model later
-	Vertex *bound = (Vertex *)malloc(modelHdr->numVerts * sizeof(Vertex));
+	Vertex *bound = new Vertex[modelHdr->numVerts];
 	for (int i = 0; i < modelHdr->numVerts; i++)
 	{
 		bound[i].x = pVerts[i].x;
@@ -222,13 +224,13 @@ void ModelMan::LoadBufferedModel( const unsigned char * const modelBuff)
 
 	// copy trilist
 	MyTriList *tOffset = (MyTriList *)((unsigned int)modelBuff + modelHdr->triListBufferOffset);
-	MyTriList *tlist = (MyTriList *)malloc( modelHdr->numTriList * sizeof(MyTriList) );
+	MyTriList *tlist = new MyTriList[modelHdr->numTriList];
 	for(int i = 0; i < modelHdr->numTriList; i++)	{
 		tlist[i] = tOffset[i];
 	}
 
 		// Load model into GPU, store VAO handle ------------------------------------------
-	Model *myModel = new Model();
+	Model *myModel = new Model;
 	RitterSphere(myModel->boundingVol, (Vect *)&bound[0].x, modelHdr->numVerts);
 	myModel->numTri = modelHdr->numTriList;
 
@@ -306,9 +308,9 @@ void ModelMan::LoadBufferedModel( const unsigned char * const modelBuff)
 
 	// Model loaded into GPU, VAO stored in myModel->vao. Generate model name by dropping extension.
 		ModelMan *pMMan = ModelMan::privGetInstance();
-		ModelNode *pNode = new ModelNode();
-		
-		char * modName = (char *)malloc(strlen(modelHdr->objName)-4);
+		ModelNode *pNode = new ModelNode;
+
+		char * modName = new char[strlen(modelHdr->objName) - 3];
 		memcpy(modName, modelHdr->objName, strlen(modelHdr->objName)-4 );
 		modName[strlen(modelHdr->objName)-4] = '\0';
 
@@ -320,10 +322,10 @@ void ModelMan::LoadBufferedModel( const unsigned char * const modelBuff)
 		pNode->set(modName, hashID, myModel);
 		pMMan->privAddToFront(pNode, pMMan->active);
 
-//		free(modName);		
-		free(tlist);
-		free(bound);
-		free(pVerts);
+		delete[](modName);		
+		delete[](tlist);
+		delete[](bound);
+		delete[](pVerts);
 }
 
 Model* ModelMan::Find( const char * const inModelName )

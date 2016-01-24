@@ -16,6 +16,10 @@ extern GLShaderManager shaderManager;
 // Cleanup... such as deleting texture objects
 void ShutdownRC(void)
 {
+	AnimControllerMan::DeleteControllers();
+	AnimationMan::DeleteAnimations();
+	ModelMan::DeleteModels();
+	TextureMan::DeleteTextures();
 }
 
 // ------------------------------------------------------------------------
