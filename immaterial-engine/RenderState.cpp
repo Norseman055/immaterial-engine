@@ -13,11 +13,11 @@ extern GLShaderManager shaderManager;
 // ----------------------------------------------------------------------------
 // Cleanup... such as deleting texture objects
 void ShutdownRC(void) {
+	GraphicsObjMan::DeleteGraphicsObjects();
 	AnimControllerMan::DeleteControllers();
 	AnimationMan::DeleteAnimations();
-	GraphicsObjMan::DeleteGraphicsObjects();
-	ModelMan::DeleteModels();
 	TextureMan::DeleteTextures();
+	ModelMan::DeleteModels();
 	CameraMan::DeleteCameras();
 }
 
