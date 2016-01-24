@@ -1,9 +1,8 @@
+#pragma once
 
-#ifndef TGA_HEADER_H
-#define TGA_HEADER_H
+#include "OpenGL.h"
 
-struct TGAHEADER
-{
+struct TGAHEADER {
 	char	IDLength;
 	char	ColorMapType;
 	char	DataTypeCode;
@@ -23,7 +22,5 @@ struct TGAHEADER
 	{}
 };
 
-GLbyte* myReadTGABits(const void * lTexture, GLint & nWidth, GLint & nHeight, GLint & nComponents, GLenum & eFormat);
-unsigned char* getTGAFile(const char * const fileName);
-
-#endif
+GLbyte* myReadTGABits( const void* , GLint & , GLint & , GLint & , GLenum & );
+unsigned char* getTGAFile( const char* const );

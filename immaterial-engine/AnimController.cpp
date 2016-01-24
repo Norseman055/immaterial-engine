@@ -1,31 +1,21 @@
 
 #include "AnimController.h"
 #include "AnimControllerMan.h"
-#include "PCSNode.h"
 #include "GraphicsManager.h"
 
-AnimController::~AnimController()
+const void AnimController::findMaxTime( Time &tMax ) const
 {
-	delete next;
-	delete prev;
-	delete result;
-	delete animBucket;
-	delete skeletonRoot;
-}
-
-void AnimController::findMaxTime( Time &tMax )
-{
-	AnimNode *node = this->animBucket;
-	Frame_Bucket *pTmp = node->getData();
-	while(pTmp->nextBucket != 0)	{
+	auto node = this->animBucket;
+	auto pTmp = node->getData();
+	while(pTmp->nextBucket != nullptr) {
 		pTmp = pTmp->nextBucket;
 	}
 	tMax = pTmp->KeyTime;
 };
 
-void AnimController::switchTime( Time &tCurr )
+const void AnimController::switchTime( Time &tCurr ) const
 {
-	Time deltaTime = 0.2f * Time(TIME_NTSC_30_FRAME);
+	auto deltaTime = 0.2f * Time(TIME_NTSC_30_FRAME);
 
 	Time maxTime;
 	this->findMaxTime(maxTime);
@@ -75,15 +65,15 @@ void AnimController::switchTime( Time &tCurr )
 	}
 }
 
-void AnimController::processAnimation( Time &tCurr )
+const void AnimController::processAnimation( Time & tCurr ) const
 {
 	switchTime(tCurr);
 
-	AnimNode *node = this->animBucket;
-	Frame_Bucket* pTmp = node->getData();
+	auto node = this->animBucket;
+	auto pTmp = node->getData();
 	pTmp = pTmp->nextBucket;
 
-	Bone *bResult = this->result->pBone;
+	auto bResult = this->result->pBone;
 
 	while( tCurr >= pTmp->KeyTime && pTmp->nextBucket != 0 )
 	{
@@ -92,15 +82,15 @@ void AnimController::processAnimation( Time &tCurr )
 
 	// pTmp is the "B" key frame
 	// pTmp->prev is the "A" key frame
-	Frame_Bucket *pA = pTmp->prevBucket;
-	Frame_Bucket *pB = pTmp;
+	auto pA = pTmp->prevBucket;
+	auto pB = pTmp;
 
 	// find the "S" of the time
 	float tS = (tCurr - pA->KeyTime)  /(pB->KeyTime - pA->KeyTime);
 	
 	// interpolate to 
-	Bone *bA = pA->pBone;
-	Bone *bB = pB->pBone;
+	auto bA = pA->pBone;
+	auto bB = pB->pBone;
 
    // Interpolate to tS time, for all bones
 	for( int i = 0; i < node->numBones; i++ )
@@ -117,37 +107,37 @@ void AnimController::processAnimation( Time &tCurr )
 	}
 }
 
-void AnimController::setPlayback( PlayMode inMode )
+const void AnimController::setPlayback( const PlayMode inMode )
 {
 	this->pMode = inMode;
 }
 
-void AnimController::walk_anim_node()
+const void AnimController::walkAnimNode() const
 {
-	this->priv_walk_anim_node(this->skeletonRoot);
+	this->privWalkAnimNode(this->skeletonRoot);
 }
 
-void AnimController::priv_walk_anim_node( PyramidObject *node )
+const void AnimController::privWalkAnimNode( PyramidObject * const node ) const
 {
 	setBonePose( node );
 
-	PyramidObject *child = 0;
+	PyramidObject *child = nullptr;
 
-	if (node->getChild() != 0)	{
+	if (node->getChild() != nullptr)	{
 		child = (PyramidObject *)node->getChild();
 		while (child != 0)	{
-			priv_walk_anim_node( child );
+			privWalkAnimNode( child );
 			child = (PyramidObject *)child->getSibling();
 		}
 	}
 }
 
-void AnimController::setBonePose( PyramidObject *node )
+const void AnimController::setBonePose( PyramidObject * const node ) const
 {
-	PyramidObject *childNode = (PyramidObject *)node;
-	PyramidObject *parentNode = (PyramidObject *)node->getParent();
+	auto childNode = node;
+	auto parentNode = (PyramidObject *)node->getParent();
 
-	if( parentNode == GraphicsObjMan::getMainTree()->getRoot() )
+	if( parentNode == GraphicsObjMan::GetMainTree()->getRoot() )
 		return;
 
 	if (parentNode != 0 && childNode != 0)	{
@@ -155,57 +145,50 @@ void AnimController::setBonePose( PyramidObject *node )
 		Vect start(0.0f,0.0f,0.0f);
 
 		parentNode->transform();
-		Vect ptA = start * parentNode->getWorld();
+		auto ptA = start * parentNode->getWorld();
 
 		childNode->transform();
-		Vect ptB = start * childNode->getWorld();
+		auto ptB = start * childNode->getWorld();
 
 		// direction between the anchor points of the respective bones
-		Vect dir = -(ptB - ptA);
+		auto dir = -(ptB - ptA);
 
 		// length of the bone 0
-		float mag = dir.mag();
+		auto mag = dir.mag();
 
 		// Set the orientation and length for bone 0
 		Matrix S( SCALE, BONE_WIDTH, BONE_WIDTH, mag);
 		Quat Q( ROT_ORIENT, dir.getNorm(), Vect( 0.0f, 1.0f, 0.0f) );
 		Matrix T( TRANS, ptB );
 
-		Matrix BoneOrient = S * Q * T;
+		auto BoneOrient = S * Q * T;
 
 		childNode->setBoneOrientation( BoneOrient );
 	}
 }
 
-void AnimController::setIndex( const int _index )
+const void AnimController::setIndex( const int _index )
 {
 	this->index = _index;
 }
 
-PyramidObject* AnimController::getSkeleton()
+PyramidObject* AnimController::getSkeleton() const
 {
 	return this->skeletonRoot;
 }
 
 AnimController::AnimController( AnimNode *inBucket, PyramidObject *inRoot )
+	: index(-1), pMode(Loop), animBucket(inBucket), skeletonRoot(inRoot), next(nullptr), prev(nullptr), result(nullptr)
 {
-	this->next = 0;
-	this->prev = 0;
-	this->pMode = Loop;
-	this->index = -1;
-	this->animBucket = inBucket;
-	
-	this->skeletonRoot = inRoot;
 	setSkeletonController();
-
-	this->result = new Frame_Bucket;
 }
 
-void AnimController::setSkeletonController( )
+const void AnimController::setSkeletonController( ) const
 {
-	PyramidObject *walker = this->skeletonRoot;
+	auto walker = this->skeletonRoot;
 	walker->setControllerDepthFirst( this );
 }
 
 AnimController::AnimController()
+	: index(0), pMode(Pause), animBucket(nullptr), skeletonRoot(nullptr), next(nullptr), prev(nullptr), result(nullptr)
 { }

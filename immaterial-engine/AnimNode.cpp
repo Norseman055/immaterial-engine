@@ -2,8 +2,6 @@
 #include "AnimNode.h"
 #include "DEBUGGING.h"
 
-#include <Windows.h>
-
 AnimNode::AnimNode( const char * const inName, const int inFrames, const int inBones )
 	: numKeyframes(inFrames), numBones(inBones), next(nullptr), prev(nullptr), animData(nullptr)
 {

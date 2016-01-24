@@ -2,7 +2,7 @@
 #include "AnimationManager.h"
 #include "DEBUGGING.h"
 
-void AnimationMan::LoadAnimationBuffer(const unsigned char * const animBuff, const AnimFileHdr &aHdr )
+void AnimationMan::LoadAnimationBuffer(const unsigned char* const animBuff, const AnimFileHdr& aHdr )
 {
 	auto aMan = privGetInstance();
 
@@ -35,7 +35,7 @@ void AnimationMan::LoadAnimationBuffer(const unsigned char * const animBuff, con
 	aMan->privAddToFront(node, aMan->animList);
 };
 
-void AnimationMan::privAddToFront( AnimNode * node, AnimNode *&head)
+const void AnimationMan::privAddToFront( AnimNode* const node, AnimNode*& head) const
 {
 	assert (node != 0);
 
@@ -52,7 +52,7 @@ void AnimationMan::privAddToFront( AnimNode * node, AnimNode *&head)
 	}
 };
 
-AnimNode* AnimationMan::GetAnimation( const char * const inName )
+AnimNode* AnimationMan::GetAnimation( const char* const inName )
 {
 	auto aMan = privGetInstance();
 	auto walker = aMan->animList;

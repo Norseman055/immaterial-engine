@@ -1,12 +1,10 @@
-#ifndef TEXTURE_NODE_H
-#define TEXTURE_NODE_H
+#pragma once
 
 #include "OpenGL.h"
 
 #define TEXT_ASSET_NAME_SIZE 32
 
-enum TextureName
-{
+enum TextureName {
 	STONES,
 	RED_BRICK,
 	DUCKWEED,
@@ -21,30 +19,25 @@ enum TextureName
 	NOT_INITIALIZED
 };
 
-class TextureNodeLink
-{
-
+class TextureNodeLink {
 public:
 	TextureNodeLink()
-	{
-		this->next = 0;
-		this->prev = 0;
-	}
+		: next(nullptr), prev(nullptr)
+	{ }
 
 	TextureNodeLink *next;
 	TextureNodeLink *prev;
 };
 
-class TextureNode : public TextureNodeLink
-{
+class TextureNode : public TextureNodeLink {
 public:
 	TextureNode();
-	void set( const char * const inAssetName,
-				GLuint inHashName,
-				GLuint inTextureID,
-				GLenum inMinFilter,
-				GLenum inMagFilter,
-				GLenum inWrapMode);
+	const void set( const char * const inAssetName,
+					const GLuint inHashName,
+					const GLuint inTextureID,
+					const GLenum inMinFilter,
+					const GLenum inMagFilter,
+					const GLenum inWrapMode );
 
 private:
 	char assetName[TEXT_ASSET_NAME_SIZE];
@@ -56,5 +49,3 @@ public:
 	GLenum magFilter;
 	GLenum wrapMode;
 };
-
-#endif

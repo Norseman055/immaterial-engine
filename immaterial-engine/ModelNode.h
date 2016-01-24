@@ -1,19 +1,15 @@
-#ifndef MODEL_NODE_H
-#define MODEL_NODE_H
+#pragma once
 
 #include "OpenGL.h"
 #include "Model.h"
 
 #define MODEL_NAME_SIZE 32
 
-class ModelNodeLink
-{
+class ModelNodeLink {
 public:
 	ModelNodeLink()
-	{
-		this->next = 0;
-		this->prev = 0;
-	}
+		: next(nullptr), prev(nullptr)
+	{ }
 
 	ModelNodeLink *next;
 	ModelNodeLink *prev;
@@ -38,5 +34,3 @@ public:
 	Model *storedModel;
 
 };
-
-#endif

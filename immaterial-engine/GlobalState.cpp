@@ -1,12 +1,9 @@
 
-#include "OpenGL.h"
 #include "DEBUGGING.h"
 #include "GlobalState.h"
 #include "UserInterface.h"
 #include "RenderScene.h"
 #include "GraphicsManager.h"
-#include "TextureManager.h"
-#include "CameraModel.h"
 #include "CameraManager.h"
 #include "ModelManager.h"
 #include "GenericObject.h"
@@ -14,12 +11,9 @@
 
 // animation testing
 #include "PyramidModel.h"
-#include "PyramidObject.h"
-#include "Anim.h"
 #include "AnimControllerMan.h"
 
-void createGraphicsWindow()
-{
+void createGraphicsWindow() {
 	// Set the display mode
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH );
 
@@ -54,20 +48,18 @@ void createGraphicsWindow()
 
 }
 
-void frameworkStartup(void)
-{
+void frameworkStartup() {
 	CameraMan::LoadCameras();
 	LoadContent();
 
 	SetHumanoidHierarchy();
 
-	AnimController *humanShot = new AnimController( AnimationMan::GetAnimation("punch"), (PyramidObject *)GraphicsObjMan::GetFirstObj() );
+	auto humanShot = new AnimController( AnimationMan::GetAnimation("punch"), (PyramidObject *)GraphicsObjMan::GetFirstObj() );
 	humanShot->setPlayback(Loop);
 	AnimControllerMan::AddController(humanShot);
 };
 
-void LoadContent( void )
-{
+void LoadContent() {
 	// Load archives
 	ArchiveMan::LoadArchive("space_frigate.spu");
 	ArchiveMan::LoadArchive("warbear_binary.spu");
@@ -92,24 +84,17 @@ void LoadContent( void )
 	TextureMan::AddTexture( "Duckweed.tga", DUCKWEED );
 };
 
-void GameLoop( void )
-{
-	// This function is called once every frame.
-	// Use this function to control process order
-	// Input, AI, Physics, Animation, and Graphics
-
+void GameLoop() {
 	static Time tCurrent(TIME_ZERO);
 
 	AnimControllerMan::ProcessAnimation( tCurrent );
 	AnimControllerMan::SetAnimationPose( tCurrent );
-
 };
 
-void GameLoopEntry(int )
-{
+void GameLoopEntry(int) {
 	// create a timer, mark begin time.
 	static Timer timer;
-	Time elapsedTime = timer.toc();
+	auto elapsedTime = timer.toc();
 
 	// mark begin time.
 	timer.tic();

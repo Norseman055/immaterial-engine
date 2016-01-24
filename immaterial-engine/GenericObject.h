@@ -1,10 +1,6 @@
-#ifndef GENERIC_OBJECT_H
-#define GENERIC_OBJECT_H
+#pragma once
 
-#include "GraphicsObject.h"
-#include "TextureNode.h"
-#include "ShaderTypes.h"
-#include "SphereObject.h"
+class SphereObject;
 
 class GenObject : public GraphicsObject
 {
@@ -12,16 +8,16 @@ public:
 	GenObject();
 	
 	// Generic object functions
-	void setStartPos( const Vect & v);
-	Vect getStartPos();
-	void setLightColor( const Vect & v);
-	void setLightPos( const Vect & v);
-	void setTextureName( TextureName inName );
-	void setTextureName( const char * const inName );
-	void setStockShaderMode ( ShaderType inVal );
-	void setOriginalSphere( Sphere &origSphere );
-	void setSphereObject ();
-	void setModel( Model * inModel );
+	Vect getStartPos() const;
+	const void setStartPos( const Vect& );
+	const void setLightColor( const Vect& );
+	const void setLightPos( const Vect& );
+	const void setTextureName( const TextureName );
+	const void setTextureName( const char* const );
+	const void setStockShaderMode( const ShaderType );
+	const void setOriginalSphere( const Sphere& );
+	const void setSphereObject();
+	const void setModel( Model* const );
 
 	// must define, base class has abstract methods
 	void transform( void );
@@ -30,11 +26,8 @@ public:
 	void checkCulling(void);
 
 private:
-
 	GLuint  modelVAO;
 	int		modelTri;
 
 	SphereObject *sphereObj;
 };
-
-#endif

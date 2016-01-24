@@ -1,14 +1,11 @@
 
 #include <string.h>
 
-#include "OpenGL.h"
 #include "DEBUGGING.h"
-
-#include "Model.h"
 #include "ModelNode.h"
 
 ModelNode::ModelNode()
-	: hashName(0), storedModel(0)
+	: hashName(0), storedModel(nullptr)
 {
 	// default constructor set name to zeroes
 	memset( this->modelName, 0, MODEL_NAME_SIZE );

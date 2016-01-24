@@ -1,5 +1,4 @@
-#ifndef MD5_H
-#define MD5_H
+#pragma once
 
 //  Order is from low-order byte to high-order byte of digest.
 //   Each byte is printed with high-order hexadecimal digit first.
@@ -13,5 +12,3 @@ struct MD5Output
 
 // take a raw buffer and find a hash number (16-bytes) see above)
 void MD5Buffer (unsigned char *buffer, int buffLen, MD5Output &out);
-
-#endif

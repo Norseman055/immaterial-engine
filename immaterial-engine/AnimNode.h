@@ -1,6 +1,4 @@
-
-#ifndef ANIM_NODE_H
-#define ANIM_NODE_H
+#pragma once
 
 #include "Anim.h"
 
@@ -30,5 +28,3 @@ private:
 	Frame_Bucket *animData;
 	char animName[32];
 };
-
-#endif

@@ -6,7 +6,12 @@
 void MostSeparatedPointsOnAABB(int &min, int &max, Vect *pt, int numPts)
 {
     // First find most extreme points along principal axes
-    int minx, maxx, miny, maxy, minz, maxz = 0;
+	auto minx = 0;
+	auto maxx = 0;
+	auto miny = 0;
+	auto maxy = 0;
+	auto minz = 0;
+	auto maxz = 0;
 
     for (int i = 1; i < numPts; i++) 
 	{

@@ -1,5 +1,4 @@
-#ifndef DEBUGGING_H
-#define DEBUGGING_H
+#pragma once
 
 #include <assert.h>
 #include <Windows.h>
@@ -13,5 +12,3 @@ static char buff[256];  // Needs a buffer - big enough
 
 #define GAME_WIDTH 800
 #define GAME_HEIGHT 600
-
-#endif

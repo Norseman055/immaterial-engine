@@ -1,15 +1,11 @@
 
-#include "DEBUGGING.h"
 #include "ArchiveManager.h"
-#include "ChunkHeader.h"
 #include "eat.h"
 #include "PackageHeader.h"
 #include "ModelManager.h"
 #include "TextureManager.h"
 #include "AnimationManager.h"
-#include "GraphicsObjectFileHdr.h"
 #include "File.h"
-#include <Windows.h>
 
 void ArchiveMan::LoadArchive( const char * fileName )
 {
@@ -32,14 +28,14 @@ void ArchiveMan::LoadArchive( const char * fileName )
 		switch(cHead.type)
 		{
 		case VERTS_TYPE:	{
-			unsigned char * buffer = new unsigned char[cHead.chunkSize];
+			auto buffer = new unsigned char[cHead.chunkSize];
 			
 			ferror = File::read(fh, buffer, cHead.chunkSize);
 			assert (ferror == FILE_SUCCESS);
 
 			ModelMan::LoadBufferedModel(buffer);
 
-			delete [] buffer;
+			delete[] buffer;
 			break;
 			}
 		case TEXTURE_TYPE:	{
@@ -47,14 +43,14 @@ void ArchiveMan::LoadArchive( const char * fileName )
 			ferror = File::read(fh, &info, sizeof(tffInfo));
 			assert (ferror == FILE_SUCCESS);
 
-			unsigned char * texBuffer = new unsigned char[cHead.chunkSize - sizeof(tffInfo)];
+			auto texBuffer = new unsigned char[cHead.chunkSize - sizeof(tffInfo)];
 
 			ferror = File::read(fh, texBuffer, cHead.chunkSize - sizeof(tffInfo));
 			assert (ferror == FILE_SUCCESS);
 
 			TextureMan::LoadBufferedTexture(texBuffer, info);
 
-			delete [] texBuffer;
+			delete[] texBuffer;
 			break;
 			}
 		case ANIM_TYPE:	{
@@ -62,14 +58,14 @@ void ArchiveMan::LoadArchive( const char * fileName )
 			ferror = File::read(fh, &aHdr, sizeof(AnimFileHdr));
 			assert (ferror == FILE_SUCCESS);
 
-			unsigned char * animBuff = new unsigned char[cHead.chunkSize - sizeof(AnimFileHdr)];
+			auto animBuff = new unsigned char[cHead.chunkSize - sizeof(AnimFileHdr)];
 
 			ferror = File::read(fh, animBuff, cHead.chunkSize - sizeof(AnimFileHdr));
 			assert(ferror == FILE_SUCCESS);
 
 			AnimationMan::LoadAnimationBuffer(animBuff, aHdr);
 
-			delete [] animBuff;
+			delete[] animBuff;
 			break;
 			}
 		default:	{

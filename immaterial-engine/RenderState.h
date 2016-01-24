@@ -1,7 +1,4 @@
-#ifndef RENDER_STATE_H
-#define RENDER_STATE_H
+#pragma once
 
 void ShutdownRC(void);
 void SetupRC(void);
-
-#endif

@@ -1,20 +1,15 @@
-
-#ifndef CAMERA_MODEL_H
-#define CAMERA_MODEL_H
+#pragma once
 
 #include "OpenGL.h"
 
 class CameraObject;
 
-class CameraModel
-{
+class CameraModel {
 public: 
 	CameraModel();
 
-	void createVAO( CameraObject *inCam );
-	void update();
+	const void createVAO( CameraObject* const );
+	const void update();
 
 	GLuint vao;
 };
-
-#endif

@@ -1,7 +1,5 @@
 
 #include <string.h>
-
-#include "OpenGL.h"
 #include "DEBUGGING.h"
 
 #include "TextureNode.h"
@@ -13,14 +11,14 @@ TextureNode::TextureNode()
 	memset( this->assetName, 0, TEXT_ASSET_NAME_SIZE );
 }
 
-void TextureNode::set( const char * const inAssetName,
-						GLuint inHashName,
-						GLuint inTextureID,
-						GLenum inMinFilter,
-						GLenum inMagFilter,
-						GLenum inWrapMode)
+const void TextureNode::set( const char * const inAssetName,
+					   const GLuint inHashName,
+					   const GLuint inTextureID,
+					   const GLenum inMinFilter,
+					   const GLenum inMagFilter,
+					   const GLenum inWrapMode )
 {
-	if (strlen(inAssetName) < TEXT_ASSET_NAME_SIZE - 1)	{
+	if (strlen(inAssetName) < TEXT_ASSET_NAME_SIZE)	{
 		memcpy( this->assetName, inAssetName, strlen(inAssetName) );
 		this->assetName[strlen(inAssetName)] = '\0';
 	}

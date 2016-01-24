@@ -1,39 +1,33 @@
-
-#ifndef CAMERA_MANAGER_H
-#define CAMERA_MANAGER_H
+#pragma once
 
 #include "CameraNode.h"
 #include "CameraObject.h"
 
-enum CameraState
-{
+enum CameraState {
 	ORBIT,
 	ROTATE
 };
 
-class CameraMan
-{
+class CameraMan {
 public:
-	static void addCamera( CameraObject *inCamera );
-	static void removeCamera( );
-	static CameraObject * Find( const CameraName inName );
-	static CameraObject * NextCamera();
-	static void SetCurrCamera( CameraObject * inCam );
-	static CameraObject * GetCurrCamera();
-	static void switchState();
-	static CameraState getState();
 	static void LoadCameras();
+	static void AddCamera( CameraObject* const );
+	static void RemoveCamera( );
+	static void SetCurrCamera( CameraObject* const );
+	static void SwitchState();
+	static CameraObject* Find( const CameraName );
+	static CameraObject* GetCurrCamera();
+	static CameraObject* NextCamera();
+	static CameraState GetState();
 
 private:
-	static CameraMan * privGetInstance();
+	static CameraMan* privGetInstance();
 	CameraMan();
-	void privAddToFront( CameraNodeLink *node, CameraNodeLink *&head );
-	void privRemoveFromList( CameraNodeLink *node, CameraNodeLink *&head );
+	const void privAddToFront( CameraNodeLink* const, CameraNodeLink*& ) const;
+	const void privRemoveFromList( CameraNodeLink* const, CameraNodeLink*& ) const;
 
 private:
 	CameraNodeLink *active;
 	CameraObject *currCamera;
 	CameraState camState;
 };
-
-#endif

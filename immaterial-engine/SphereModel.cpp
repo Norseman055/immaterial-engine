@@ -1,6 +1,5 @@
 
 // MY HEADERS
-#include "OpenGL.h"
 #include "DEBUGGING.h"
 
 #include "SphereModel.h"
@@ -14,15 +13,12 @@ extern GLShaderManager shaderManager;
 // DEFINES
 #define USE_SPHERE_FILE 1 // 1 - uses the data file "sphere.cdm", 0 - creates and uses the file "sphere.cdm".
 
-SphereModel::SphereModel()
-{
+SphereModel::SphereModel() {
 	out("SphereModel(): ---------------\n");
 }
 
-void SphereModel::createVAO(void)
-{
-	struct MyVertex_stride
-	{
+void SphereModel::createVAO() {
+	struct MyVertex_stride {
 		float x;
 		float y;
 		float z;
@@ -33,8 +29,7 @@ void SphereModel::createVAO(void)
 		float nz;
 	};
 	
-	struct MyTriList
-	{
+	struct MyTriList {
 		unsigned short v1;
 		unsigned short v2;
 		unsigned short v3;
@@ -55,7 +50,7 @@ void SphereModel::createVAO(void)
 	assert (ferror == FILE_SUCCESS);
 
 	// create vertex buffer
-	MyVertex_stride *pVerts = (MyVertex_stride *)malloc(cubeHdr.numVerts * sizeof(MyVertex_stride) );
+	auto pVerts = (MyVertex_stride *)malloc(cubeHdr.numVerts * sizeof(MyVertex_stride) );
 
 	// load verts
 	ferror = File::seek( fh, FILE_SEEK_BEGIN, cubeHdr.vertBufferOffset );
@@ -64,7 +59,7 @@ void SphereModel::createVAO(void)
 	ferror = File::read( fh, pVerts, cubeHdr.numVerts * sizeof(MyVertex_stride) );
 
 	// create trilist buffer
-	MyTriList *tlist = (MyTriList *)malloc( cubeHdr.numTriList * sizeof(MyTriList) );
+	auto tlist = (MyTriList *)malloc( cubeHdr.numTriList * sizeof(MyTriList) );
 
 	// load triList
 	ferror = File::seek( fh, FILE_SEEK_BEGIN, cubeHdr.triListBufferOffset );
@@ -2060,7 +2055,7 @@ void SphereModel::createVAO(void)
 
 		/* Specify that our coordinate data is going into attribute index 0, and contains 3 floats per vertex */
 		// ( GLuint index,  GLint size,  GLenum type,  GLboolean normalized,  GLsizei stride,  const GLvoid * pointer);
-		void *offsetVert = (void *)((unsigned int)&pVerts[0].x - (unsigned int)pVerts);
+		auto offsetVert = (void *)((unsigned int)&pVerts[0].x - (unsigned int)pVerts);
 		glVertexAttribPointer(GLT_ATTRIBUTE_VERTEX, 3, GL_FLOAT,  GL_FALSE, sizeof(MyVertex_stride), offsetVert);
           
 	// Texture data: ---------------------------------------------------------
@@ -2074,7 +2069,7 @@ void SphereModel::createVAO(void)
 
 		/* Specify that our coordinate data is going into attribute index 3, and contains 2 floats per vertex */
 		// ( GLuint index,  GLint size,  GLenum type,  GLboolean normalized,  GLsizei stride,  const GLvoid * pointer);
-		void *offsetTex = (void *)((unsigned int)&pVerts[0].s - (unsigned int)pVerts);
+		auto offsetTex = (void *)((unsigned int)&pVerts[0].s - (unsigned int)pVerts);
 		glVertexAttribPointer(GLT_ATTRIBUTE_TEXTURE0, 2, GL_FLOAT,  GL_FALSE, sizeof(MyVertex_stride), offsetTex);
 
 	// Normal data: ---------------------------------------------------------
@@ -2088,7 +2083,7 @@ void SphereModel::createVAO(void)
 
 		/* Specify that our coordinate data is going into attribute index 3, and contains 2 floats per vertex */
 		// ( GLuint index,  GLint size,  GLenum type,  GLboolean normalized,  GLsizei stride,  const GLvoid * pointer);
-		void *offsetNorm = (void *)((unsigned int)&pVerts[0].nx - (unsigned int)pVerts);
+		auto offsetNorm = (void *)((unsigned int)&pVerts[0].nx - (unsigned int)pVerts);
 		glVertexAttribPointer(GLT_ATTRIBUTE_NORMAL, 3, GL_FLOAT,  GL_FALSE, sizeof(MyVertex_stride), offsetNorm);
 
 	// Load the index data: ---------------------------------------------------------

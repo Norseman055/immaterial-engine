@@ -3,7 +3,6 @@
 #include "DEBUGGING.h"
 #include "Model.h"
 
-Model::Model()
-{
+Model::Model() {
 	out("Model(): -----------------\n");
 }

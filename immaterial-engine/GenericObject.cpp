@@ -1,12 +1,9 @@
-#include "OpenGL.h"
-#include "DEBUGGING.h"
 
+#include "DEBUGGING.h"
+#include "SphereObject.h"
 #include "Model.h"
-#include "MathEngine.h"
 #include "GenericObject.h"
-#include "TextureManager.h"
 #include "CameraManager.h"
-#include "CameraObject.h"
 #include "GraphicsManager.h"
 #include "md5.h"
 
@@ -14,70 +11,53 @@ extern GLShaderManager shaderManager;
 
 // constructor
 GenObject :: GenObject()
+	: GraphicsObject()
 {
-	this->angle_z = 0; //(float)(rand()%100)/100.0f * MATH_PI;
-	this->angle_y = 0; //(float)(rand()%100)/100.0f * MATH_PI;
-  
-	this->lightColor.set( 1.0f, 1.0f, 1.0f, 1.0f);
-	this->lightPos.set(1.0f, 1.0f, 0.0f);
-	this->Texture = NOT_INITIALIZED;
-
-	this->origSphere.cntr = Vect(0.0f, 0.0f, 0.0f);
-	this->origSphere.rad = 1.0f;
-
 	this->Shading = Shader_Texture_NoLights;
 
+	this->modelTri = 0;
 	this->sphereObj = new SphereObject;
 };
 
-void GenObject::setStartPos( const Vect & v)
-{
+const void GenObject::setStartPos( const Vect& v) {
 	this->startPos = v;
 };
 
-Vect GenObject::getStartPos()
-{
+Vect GenObject::getStartPos() const {
 	return this->startPos;
 }
 
-void GenObject::setLightColor( const Vect & v)
-{
+const void GenObject::setLightColor( const Vect& v ) {
 	this->lightColor = v;
 };
 
-void GenObject::setLightPos( const Vect & v)
-{
+const void GenObject::setLightPos( const Vect& v ) {
 	this->lightPos = v;
 };
 
-void GenObject::setOriginalSphere( Sphere &inObj )
-{
+const void GenObject::setOriginalSphere( const Sphere& inObj ) {
 	this->origSphere = inObj;
 	setSphereObject();
 }
 
-void GenObject::setSphereObject()
-{
+const void GenObject::setSphereObject() {
 	sphereObj->setPos(this->startPos);
 	sphereObj->setLightColor( Vect(0.0f, 1.0f, 0.0f, 1.0f) );
 	sphereObj->setRad(this->origSphere.rad);
-	GraphicsObjMan::addDebugObject(sphereObj);
+	GraphicsObjMan::AddDebugObject(sphereObj);
 }
 
-void GenObject::setModel( Model * inModel )
-{
+const void GenObject::setModel( Model* const inModel ) {
 	this->modelVAO = inModel->vao;
 	this->modelTri = inModel->numTri;
 	this->setOriginalSphere(inModel->boundingVol);
 }
 
-void GenObject::setTextureName( TextureName inName )
-{
+const void GenObject::setTextureName( const TextureName inName ) {
 	this->Texture = inName;
 }
 
-void GenObject::setTextureName( const char * const inName )
-{
+const void GenObject::setTextureName( const char* const inName ) {
 	MD5Output out;
 	MD5Buffer ((unsigned char *)inName, strlen(inName), out);
 	GLuint hashID = out.dWord_0 ^ out.dWord_1 ^ out.dWord_2 ^ out.dWord_3;
@@ -85,13 +65,11 @@ void GenObject::setTextureName( const char * const inName )
 	this->Texture = hashID;
 };
 
-void GenObject::setStockShaderMode( ShaderType inVal )
-{
+const void GenObject::setStockShaderMode( const ShaderType inVal ) {
 	this->Shading  = inVal;
 };
 
-void GenObject::checkCulling(void)
-{
+void GenObject::checkCulling() {
 	CameraObject *tmp = CameraMan::Find(CAMERA_CULLING);
 	if (tmp != NULL)
 	{
@@ -102,17 +80,12 @@ void GenObject::checkCulling(void)
 	}
 }
 
-void GenObject::transform( void )
-{
-   // update the angles
-	//angle_y += 0.04f;
-	//angle_z += 0.006f;
-	
+void GenObject::transform() {	
 	// create temp matrices
 	Matrix RotY(ROT_Y, angle_y);
 	Matrix Scale(SCALE, 1.0f, 1.0f, 1.0f);
 	Matrix RotZ(ROT_Z, angle_z);
-	Matrix Trans( TRANS, this->startPos[x], this->startPos[y],this->startPos[z]);
+	Matrix Trans(TRANS, this->startPos[x], this->startPos[y],this->startPos[z]);
 	
 	// Create the local to world matrix (ie Model)
 	this->World = Scale * RotY * RotZ * Trans;
@@ -124,24 +97,20 @@ void GenObject::transform( void )
 	// Create the ModelView ( LocalToWorld * View)
 	// Some pipelines have the project concatenated, others don't
 	// Best to keep the separated, you can always join them with a quick multiply
-	CameraObject *cam = CameraMan::GetCurrCamera();
-	this->ModelView = this->World * cam->getViewMatrix();
+	this->ModelView = this->World * CameraMan::GetCurrCamera()->getViewMatrix();
 };
 
-
-void GenObject::setRenderState( void )
-{	
+void GenObject::setRenderState() {	
 	// Bind the texture
-	GLuint textureID = TextureMan::Find( this->Texture );
+	auto textureID = TextureMan::Find( this->Texture );
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
-	CameraObject *cam = CameraMan::GetCurrCamera();
+	auto cam = CameraMan::GetCurrCamera();
+	auto mvp = this->ModelView * cam->getProjMatrix();
 
 	// set the shader
-	switch ( this->Shading )
-	{
-	case Shader_Texture_PointLights:
-		{
+	switch ( this->Shading ) {
+		case Shader_Texture_PointLights: 
 			// Use the stock shader
 			shaderManager.UseStockShader(GLT_SHADER_TEXTURE_POINT_LIGHT_DIFF, 
 										&ModelView,
@@ -153,13 +122,9 @@ void GenObject::setRenderState( void )
 			// set render states
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			glEnable(GL_CULL_FACE);
-		}
-		break;
-
-	case Shader_Texture_NoLights:
-		{
+			break;
+		case Shader_Texture_NoLights:
 			// modelViewProj matrix, stock shader.
-			Matrix mvp = this->ModelView * cam->getProjMatrix();
 			shaderManager.UseStockShader( GLT_SHADER_TEXTURE_REPLACE,
 											&mvp,
 											0 );
@@ -167,11 +132,8 @@ void GenObject::setRenderState( void )
 			// set render states
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			glEnable(GL_CULL_FACE);
-		}
-		break;
-
-	case Shader_NoTexture_PointLights:
-		{
+			break;
+		case Shader_NoTexture_PointLights:
 			// use stock shaders
 			shaderManager.UseStockShader(GLT_SHADER_POINT_LIGHT_DIFF, 
 										&ModelView,
@@ -182,25 +144,17 @@ void GenObject::setRenderState( void )
 			// set the render states
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			glEnable(GL_CULL_FACE);
-		}
-		break;
-
-	case Shader_NoTexture_NoLights:
-		{
+			break;
+		case Shader_NoTexture_NoLights:
 			// use stock shaders
-			Matrix mvp = this->ModelView * cam->getProjMatrix();
 			shaderManager.UseStockShader( GLT_SHADER_FLAT,
 											&mvp,
 											&this->lightColor );
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			glEnable(GL_CULL_FACE);
-		}
-		break;
-
-	case Shader_Wireframe:
-		{
+			break;
+		case Shader_Wireframe:
 			// modelViewProj matrix, stock shader.
-			Matrix mvp = this->ModelView * cam->getProjMatrix();
 			shaderManager.UseStockShader( GLT_SHADER_FLAT,
 											&mvp,
 											&this->lightColor );
@@ -208,14 +162,11 @@ void GenObject::setRenderState( void )
 			// set render states
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 			glEnable(GL_CULL_FACE);
-		}
-		break;
+			break;
 	}
-
 };
 
-void GenObject::draw( void )
-{   
+void GenObject::draw() {   
 	glBindVertexArray(this->modelVAO);
 	glDrawElements(GL_TRIANGLES, this->modelTri * 3, GL_UNSIGNED_SHORT, 0);
 };

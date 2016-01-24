@@ -1,13 +1,10 @@
 
 #include "AnimControllerMan.h"
-#include "AnimController.h"
-#include "Time.h"
 #include "GraphicsManager.h"
 #include <assert.h>
 
-void AnimControllerMan::AddController( AnimController * inControl )
-{
-	AnimControllerMan* acMan = privGetInstance();
+void AnimControllerMan::AddController( AnimController* const inControl ) {
+	auto acMan = privGetInstance();
 	
 	inControl->setIndex(acMan->currIndex);
 	acMan->currIndex++;
@@ -17,10 +14,10 @@ void AnimControllerMan::AddController( AnimController * inControl )
 
 void AnimControllerMan::DeleteControllers()
 {
-	AnimControllerMan* acMan = privGetInstance();
-	AnimController* walker = acMan->controlList;
-	AnimController* tmp = walker;
-	while (walker != 0)	{
+	auto acMan = privGetInstance();
+	auto walker = acMan->controlList;
+	auto tmp = walker;
+	while (walker != nullptr)	{
 		walker = walker->next;
 		delete tmp;
 		tmp = walker;
@@ -29,10 +26,10 @@ void AnimControllerMan::DeleteControllers()
 
 void AnimControllerMan::ProcessAnimation( Time &tCurr )
 {
-	AnimControllerMan* acMan = privGetInstance();
+	auto acMan = privGetInstance();
 
-	AnimController *walker = acMan->controlList;
-	while (walker != 0)	{
+	auto walker = acMan->controlList;
+	while (walker != nullptr)	{
 		walker->processAnimation(tCurr);
 		walker = walker->next;
 	}
@@ -40,29 +37,25 @@ void AnimControllerMan::ProcessAnimation( Time &tCurr )
 
 void AnimControllerMan::SetAnimationPose( Time &tCurr )
 {
-	AnimControllerMan* acMan = privGetInstance();
+	auto acMan = privGetInstance();
 	ProcessAnimation( tCurr );
 
-	AnimController *walker = acMan->controlList;
-	while (walker != 0) {
-		walker->walk_anim_node();
+	auto walker = acMan->controlList;
+	while (walker != nullptr) {
+		walker->walkAnimNode();
 		walker = walker->next;
 	}
 }
 
-void AnimControllerMan::privAddToFront(AnimController *node, AnimController *&head)
+const void AnimControllerMan::privAddToFront(AnimController *node, AnimController *& head)
 {
-	assert (node != 0);
+	assert (node != nullptr);
 
-	// empty list
-	if (head == 0)
-	{
+	if ( head == nullptr ) {
+		// empty list
 		head = node;
-		node->next = 0;
-		node->prev = 0;
-	}
-	else	// non-empty list, add to front
-	{
+	} else {
+		// non-empty list, add to front
 		node->next = head;
 		head->prev = node;
 		head = node;
@@ -76,7 +69,5 @@ AnimControllerMan* AnimControllerMan::privGetInstance()
 }
 
 AnimControllerMan::AnimControllerMan()
-{
-	this->controlList = 0;
-	this->currIndex = 0;
-}
+	: currIndex(0), controlList(nullptr)
+{ }

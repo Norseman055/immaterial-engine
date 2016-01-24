@@ -1,6 +1,4 @@
-
-#ifndef ANIM_H
-#define ANIM_H
+#pragma once
 
 #include "Timer.h"
 #include "MathEngine.h"
@@ -63,5 +61,3 @@ void SetAnimationHierarchy();
 
 void SetTeddyHierarchy();
 void SetHumanoidHierarchy();
-
-#endif

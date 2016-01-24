@@ -1,45 +1,36 @@
 
-#include "OpenGL.h"
 #include "DEBUGGING.h"
-
-#include "MathEngine.h"
 #include "UserInterface.h"
-#include "ShaderTypes.h"
 #include "CameraManager.h"
-#include "CameraObject.h"
 #include "GraphicsManager.h"
 
 // -------------------------------------------------------------------------
 // Window has changed size, or has just been created. In either case, we need
 // to use the window dimensions to set the viewport and the projection matrix.
-void ChangeSize(int w, int h)
-{
+void ChangeSize(int w, int h) {
 	UNUSED(w);
 	UNUSED(h);
 
 	out("ChangeSize()\n");
 }
 
-void KeyboardKeys( unsigned char key, int x, int y )
-{
+void KeyboardKeys( unsigned char key, int x, int y ) {
 	UNUSED(x);
 	UNUSED(y);
 
 	// space bar
-	if ( key == 0x20 )
-	{
+	if ( key == 0x20 ) {
 		// swap camera to next camera in group
 		CameraMan::SetCurrCamera(CameraMan::NextCamera());
 	}
 
 	// ************************ DEBUGGING FUNCTIONS ******************************
-	if (key == 0x43 || key == 0x63)
-	{
+	if (key == 0x43 || key == 0x63) {
 		GraphicsObjMan::DebugSwitch();
 	}
 
 	// ************************ MOVEMENT FUNCTIONS *******************************
-	CameraObject *myCamera = CameraMan::GetCurrCamera();
+	auto myCamera = CameraMan::GetCurrCamera();
 	Vect Pos, Right, Dir, Up, LookAt;
 	myCamera->getPos( Pos );
 	myCamera->getRight( Right );
@@ -49,112 +40,94 @@ void KeyboardKeys( unsigned char key, int x, int y )
 	float scale = 5.0f;
 	
 	// "W" key (move forward)
-	if (key == 0x57 || key == 0x77)
-	{
-		Vect newPos = Pos - (scale * Dir);
-		Vect newLook = LookAt - (scale * Dir);
+	if (key == 0x57 || key == 0x77) {
+		auto newPos = Pos - (scale * Dir);
+		auto newLook = LookAt - (scale * Dir);
 		myCamera->setOrientAndPosition(Up, newLook, newPos);
 	}
 
 	// "A" key (strafe left)
-	if (key == 0x41 || key == 0x61)
-	{
-		Vect newPos = Pos - (scale * Right);
-		Vect newLook = LookAt - (scale * Right);
+	if (key == 0x41 || key == 0x61) {
+		auto newPos = Pos - (scale * Right);
+		auto newLook = LookAt - (scale * Right);
 		myCamera->setOrientAndPosition(Up, newLook, newPos);
 	}
 	
 	// "S" key (move backwards)
-	if (key == 0x53 || key == 0x73)
-	{
-		Vect newPos = Pos + (scale * Dir);
-		Vect newLook = LookAt + (scale * Dir);
+	if (key == 0x53 || key == 0x73) {
+		auto newPos = Pos + (scale * Dir);
+		auto newLook = LookAt + (scale * Dir);
 		myCamera->setOrientAndPosition(Up, newLook, newPos);
 	}
 
 	// "D" key (strafe right)
-	if (key == 0x44 || key == 0x64)
-	{
-		Vect newPos = Pos + (scale * Right);
-		Vect newLook = LookAt + (scale * Right);
+	if (key == 0x44 || key == 0x64) {
+		auto newPos = Pos + (scale * Right);
+		auto newLook = LookAt + (scale * Right);
 		myCamera->setOrientAndPosition(Up, newLook, newPos);
 	}
 
 	// "I" key (raise camera up)
-	if (key == 0x49 || key == 0x69)
-	{
-		Vect newPos = Pos + Up;
-		Vect newLook = LookAt + Up;
+	if (key == 0x49 || key == 0x69) {
+		auto newPos = Pos + Up;
+		auto newLook = LookAt + Up;
 		myCamera->setOrientAndPosition(Up, newLook, newPos);
 	}
 
 	// "K" key (lower camera down)
-	if (key == 0x4B || key == 0x6B)
-	{
-		Vect newPos = Pos - Up;
-		Vect newLook = LookAt - Up;
+	if (key == 0x4B || key == 0x6B) {
+		auto newPos = Pos - Up;
+		auto newLook = LookAt - Up;
 		myCamera->setOrientAndPosition(Up, newLook, newPos);
 	}
 
 	// ************************ CAMERA FUNCTIONS *********************************
 
 	// "F" key (add camera)
-	if ( key == 0x46 || key == 0x66 )
-	{
+	if ( key == 0x46 || key == 0x66 ) {
 		// adds another camera to the camera manager, sets it as the current camera
-		CameraObject *cam = new CameraObject ();
+		auto cam = new CameraObject ();
 
 		cam->setViewport( 0, 0, GAME_WIDTH, GAME_HEIGHT );
 		cam->setPerspective( 35.0f, float(GAME_WIDTH)/float(GAME_HEIGHT), 1.0f, 250.0f );
 		cam->setOrientAndPosition( Vect(0.0f, 1.0f, 0.0f), Vect(0.0f, 0.0f, 0.0f), Vect(0.0f, 0.0f, 100.0f) );
 
-		CameraMan::addCamera( cam );
+		CameraMan::AddCamera( cam );
 		CameraMan::SetCurrCamera( cam );
 	}
 
 	// "R" key (remove camera)
-	if (key == 0x52 || key == 0x72 )
-	{
-		CameraMan::removeCamera();
+	if (key == 0x52 || key == 0x72 ) {
+		CameraMan::RemoveCamera();
 	}
 
 	// "T" key (toggle camera movement mode)
-	if (key == 0x54 || key == 0x74 )
-	{
-		CameraMan::switchState();
+	if (key == 0x54 || key == 0x74 ) {
+		CameraMan::SwitchState();
 	}
 
 	// "G" key (focus camera to a Game object)
-	if (key == 0x47 || key == 0x67)
-	{
+	if (key == 0x47 || key == 0x67) {
 		// camera takes its current lookat, finds an object in the game object manager with the same startPos as the lookat.
-		CameraObject *cam = CameraMan::GetCurrCamera();
+		auto cam = CameraMan::GetCurrCamera();
 		Vect lookAt, upDir, camPos;
 		cam->getLookAt(lookAt);
 		cam->getUp(upDir);
 		cam->getPos(camPos);
 
-		GraphicsObject *p = 0;
-		p = GraphicsObjMan::FindByLocation(lookAt);
+		auto p = GraphicsObjMan::FindByLocation(lookAt);
 
-		// if its already getting the first object
-		if (p == GraphicsObjMan::GetFirstObj())
-		{
-			// it then goes to the next object in the graphicsManager and grabs its startPos, and multiplies it by the objects localToWorld matrix.
-			if (p->getSibling() != 0)
-			{
+		if (p == GraphicsObjMan::GetFirstObj()) {
+			// if its already getting the first object
+			if (p->getSibling() != 0) {
+				// it then goes to the next object in the graphicsManager and grabs its startPos, and multiplies it by the objects localToWorld matrix.
 				p = (GraphicsObject *)p->getSibling();
 			}
-		}
-		// if the camera is not looking at first object
-		else 
-		{
-			if (p != 0 && (GraphicsObject *)p->getSibling() != 0)
-			{
+		} else {
+			// if the camera is not looking at first object
+			if (p != 0 && (GraphicsObject *)p->getSibling() != 0) {
 				p = (GraphicsObject *)p->getSibling();
-			}
-			else
-			{
+			} else {
 				p = GraphicsObjMan::GetFirstObj();
 			}
 		}
@@ -165,71 +138,48 @@ void KeyboardKeys( unsigned char key, int x, int y )
 	}
 }
 
-void SpecialKeys(int key, int _x, int _y)
-{
+void SpecialKeys(int key, int _x, int _y) {
 	UNUSED(_x);
 	UNUSED(_y);
 
 	// ************************** CAMERA ROTATION FUNCTIONS ********************
-	CameraObject *myCamera = CameraMan::GetCurrCamera();
+	auto myCamera = CameraMan::GetCurrCamera();
 
-	float vert_angle = 0.0f;
-	float horz_angle = 0.0f;
-	float pan_angle = 0.0f;
-	float tilt_angle = 0.0f;
+	auto vert_angle = 0.0f;
+	auto horz_angle = 0.0f;
+	auto pan_angle = 0.0f;
+	auto tilt_angle = 0.0f;
 
-	if(key == GLUT_KEY_UP)
-	{
-		if(CameraMan::getState() == ORBIT)
-		{
+	if(key == GLUT_KEY_UP) {
+		if(CameraMan::GetState() == ORBIT) {
 			vert_angle = 0.1f;
-		}
-		else
-		{
+		} else {
 			tilt_angle = 0.01f;
 		}
 	}
-	if(key == GLUT_KEY_DOWN)
-	{
-		if (CameraMan::getState() == ORBIT)
-		{
+	if(key == GLUT_KEY_DOWN) {
+		if (CameraMan::GetState() == ORBIT) {
 			vert_angle = -0.1f;
-		}
-		else
-		{
+		} else {
 			tilt_angle = -0.01f;
 		}
 	}
-	
-	if(key == GLUT_KEY_LEFT)
-	{
-		if (CameraMan::getState() == ORBIT)
-		{
+	if(key == GLUT_KEY_LEFT) {
+		if (CameraMan::GetState() == ORBIT) {
 			horz_angle = 0.1f;
-		}
-		else
-		{
+		} else {
 			pan_angle = 0.01f;
 		}
-	}
-    
-	if(key == GLUT_KEY_RIGHT)
-	{
-		if (CameraMan::getState() == ORBIT)
-		{
+	}    
+	if(key == GLUT_KEY_RIGHT) {
+		if (CameraMan::GetState() == ORBIT) {
 			horz_angle = -0.1f;
-		}
-		else
-		{
+		} else {
 			pan_angle = -0.01f;
 		}
 	}
 
-	Vect Tar;
-	Vect Pos;
-	Vect Up;
-	Vect Dir;
-	Vect Right;
+	Vect Tar, Pos, Up, Dir, Right;
 
 	myCamera->getLookAt( Tar );
 	myCamera->getPos( Pos );
@@ -242,7 +192,7 @@ void SpecialKeys(int key, int _x, int _y)
 
 	// orbiting
 	// up is a vect, make it a point
-	Vect Up_pt = Pos + Up;
+	auto Up_pt = Pos + Up;
 
 	Quat q_vert_axis(ROT_AXIS_ANGLE, Right, vert_angle );
 	Quat q_horz_axis(ROT_AXIS_ANGLE, Up, horz_angle );
@@ -250,19 +200,18 @@ void SpecialKeys(int key, int _x, int _y)
 	// Keenan comments. yes.
 	// Head screw:  First translate to origin, ROT around axis, translate back
 	//    Look mom - mixed quaternions and matrices
-	Matrix M = T_neg * q_vert_axis * q_horz_axis * T;
+	auto M = T_neg * q_vert_axis * q_horz_axis * T;
 
 	// Move my key points around this new transforms
 	//     Pos and Up_pt
-	Vect Pos_new = Pos * M;
-	Vect Up_pt_new = Up_pt * M;
+	auto Pos_new = Pos * M;
+	auto Up_pt_new = Up_pt * M;
 
 	// convert up_pt to a vector again
-	Vect Up_new = Up_pt_new - Pos_new;
+	auto Up_new = Up_pt_new - Pos_new;
 	
 	// Upate the camera
 	myCamera->setOrientAndPosition( Up_new, Tar, Pos_new );
-
 
 	// panning/tilting
 	// get an updated up for this as well. (you never know)

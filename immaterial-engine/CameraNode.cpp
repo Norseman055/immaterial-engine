@@ -5,11 +5,9 @@
 #include "CameraNode.h"
 
 CameraNode::CameraNode()
-{
-	this->myCamera = 0;
-}
+	: myCamera(nullptr)
+{ }
 
-void CameraNode::set( CameraObject * inCamera )
-{
+const void CameraNode::set( CameraObject* const inCamera ) {
 	this->myCamera = inCamera;
 }

@@ -1,30 +1,22 @@
-
-#ifndef CAMERA_NODE_H
-#define CAMERA_NODE_H
+#pragma once
 
 class CameraObject;
 
-class CameraNodeLink
-{
+class CameraNodeLink {
 public:
-	CameraNodeLink()
-	{
-		this->next = 0;
-		this->prev = 0;
-	}
+	CameraNodeLink() 
+		: next(nullptr), prev(nullptr)
+	{ }
 
 	CameraNodeLink *next;
 	CameraNodeLink *prev;
 };
 
-class CameraNode : public CameraNodeLink
-{
+class CameraNode : public CameraNodeLink {
 public:
 	CameraNode();
-	void set( CameraObject *inCamera );
+	const void set( CameraObject* const );
 
 public: 
 	CameraObject *myCamera;
 };
-
-#endif

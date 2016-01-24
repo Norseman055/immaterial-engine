@@ -1,6 +1,5 @@
 
 // MY HEADERS
-#include "OpenGL.h"
 #include "DEBUGGING.h"
 #include "PyramidModel.h"
 #include "MathEngine.h"
@@ -13,16 +12,12 @@ extern GLShaderManager shaderManager;
 // DEFINES
 #define USE_PYRAMID_FILE 1	// 1 - uses the data file "pyramid.cdm", 0 - creates and uses the file "pyramid.cdm".
 
-
-PyramidModel::PyramidModel()
-{
+PyramidModel::PyramidModel() {
 	out("PyramidModel(): ---------------------\n");
 }
 
-void PyramidModel::createVAO(void)
-{
-	struct MyVertex_stride
-	{
+void PyramidModel::createVAO() {
+	struct MyVertex_stride {
 		float x;
 		float y;
 		float z;
@@ -33,9 +28,7 @@ void PyramidModel::createVAO(void)
 		float nz;
 	};
 
-
-	struct MyTriList
-	{
+	struct MyTriList {
 		unsigned short v1;
 		unsigned short v2;
 		unsigned short v3;
@@ -56,7 +49,7 @@ void PyramidModel::createVAO(void)
 	assert (ferror == FILE_SUCCESS);
 
 		// create vertex buffer
-	MyVertex_stride *pVerts = (MyVertex_stride *)malloc( pyramidHdr.numVerts * sizeof(MyVertex_stride) );
+	auto pVerts = (MyVertex_stride *)malloc( pyramidHdr.numVerts * sizeof(MyVertex_stride) );
 
 		// load verts
 	ferror = File::seek( fh, FILE_SEEK_BEGIN, pyramidHdr.vertBufferOffset );
@@ -66,7 +59,7 @@ void PyramidModel::createVAO(void)
 	assert (ferror == FILE_SUCCESS );
 
 		// create triList buffer
-	MyTriList *tlist = (MyTriList *)malloc( pyramidHdr.numTriList * sizeof(MyTriList) );
+	auto tlist = (MyTriList *)malloc( pyramidHdr.numTriList * sizeof(MyTriList) );
 
 		// load triList
 	ferror = File::seek( fh, FILE_SEEK_BEGIN, pyramidHdr.triListBufferOffset );
@@ -338,8 +331,7 @@ void PyramidModel::createVAO(void)
 
 // -------------------------------------------------------------------
 	// MODIFYING THE MODEL FOR TESTING PURPOSES WITH ANIMATION SYSTEM
-	for( int i = 0; i<18; i++)
-	{
+	for( int i = 0; i<18; i++) {
 		// first center around origin
 		Matrix Trans(TRANS, 0.0f, 1.0f, 0.0f);
 
@@ -350,7 +342,7 @@ void PyramidModel::createVAO(void)
 		Matrix Rot( ROT_X, 90.0f * MATH_PI_180);
 
 		// Creates unit length pyramid in the Z direction
-		Matrix M = Trans * Scale * Rot;
+		auto M = Trans * Scale * Rot;
      
 		// Now process all verts
 
@@ -408,7 +400,7 @@ void PyramidModel::createVAO(void)
 
 		/* Specify that our coordinate data is going into attribute index 0, and contains 3 floats per vertex */
 		// ( GLuint index,  GLint size,  GLenum type,  GLboolean normalized,  GLsizei stride,  const GLvoid * pointer);
-		void *offsetVert = (void *)((unsigned int)&pVerts[0].x - (unsigned int)pVerts);
+		auto offsetVert = (void *)((unsigned int)&pVerts[0].x - (unsigned int)pVerts);
 		glVertexAttribPointer(GLT_ATTRIBUTE_VERTEX, 3, GL_FLOAT,  GL_FALSE, sizeof(MyVertex_stride), offsetVert);
           
 	// Texture data: ---------------------------------------------------------
@@ -422,7 +414,7 @@ void PyramidModel::createVAO(void)
 
 		/* Specify that our coordinate data is going into attribute index 3, and contains 2 floats per vertex */
 		// ( GLuint index,  GLint size,  GLenum type,  GLboolean normalized,  GLsizei stride,  const GLvoid * pointer);
-		void *offsetTex = (void *)((unsigned int)&pVerts[0].s - (unsigned int)pVerts);
+		auto offsetTex = (void *)((unsigned int)&pVerts[0].s - (unsigned int)pVerts);
 		glVertexAttribPointer(GLT_ATTRIBUTE_TEXTURE0, 2, GL_FLOAT,  GL_FALSE, sizeof(MyVertex_stride), offsetTex);
 
 	// Normal data: ---------------------------------------------------------
@@ -436,7 +428,7 @@ void PyramidModel::createVAO(void)
 
 		/* Specify that our coordinate data is going into attribute index 3, and contains 2 floats per vertex */
 		// ( GLuint index,  GLint size,  GLenum type,  GLboolean normalized,  GLsizei stride,  const GLvoid * pointer);
-		void *offsetNorm = (void *)((unsigned int)&pVerts[0].nx - (unsigned int)pVerts);
+		auto offsetNorm = (void *)((unsigned int)&pVerts[0].nx - (unsigned int)pVerts);
 		glVertexAttribPointer(GLT_ATTRIBUTE_NORMAL, 3, GL_FLOAT,  GL_FALSE, sizeof(MyVertex_stride), offsetNorm);
 
 	// Load the index data: ---------------------------------------------------------

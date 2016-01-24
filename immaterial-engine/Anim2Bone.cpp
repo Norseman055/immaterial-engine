@@ -7,18 +7,14 @@
 #include "GlobalState.h"
 #include "UserInterface.h"
 #include "RenderScene.h"
-#include "MathEngine.h"
-#include "PyramidModel.h"
 #include "PyramidObject.h"
-#include "Anim.h"
-#include "AnimationManager.h"
 #include "AnimControllerMan.h"
 
 // temp hack
-PCSNode *pRootNode = 0;
+PCSNode *pRootNode = nullptr;
 
 void setBonePose( GraphicsObject *node );
-void walk_anim_node( GraphicsObject *node );
+void walkAnimNode( GraphicsObject *node );
 
 extern PyramidModel *myPyramid;
 
@@ -30,107 +26,67 @@ void SetTeddyHierarchy()
 	myPyramid->createVAO();
 	
 	// ________________________ TEDDY TEST _____________________________
-	auto *tree = GraphicsObjMan::getMainTree();
+	auto *tree = GraphicsObjMan::GetMainTree();
 	pRootNode = tree->getRoot();
 
-	auto *pBip01 = new PyramidObject;
-	pBip01->setIndex(0);
-	pBip01->setName("Bip01");
+	auto *pBip01 = new PyramidObject( "Bip01", 0 );
 	tree->insert( pBip01, pRootNode );
 
-	auto *pBip01_Pelvis = new PyramidObject;
-	pBip01_Pelvis->setIndex(1);
-	pBip01_Pelvis->setName("Bip01_Pelvis");
+	auto *pBip01_Pelvis = new PyramidObject( "Bip01_Pelvis", 1 );
 	tree->insert( pBip01_Pelvis, pBip01 );
 
-	auto *pBip01_Spine = new PyramidObject;
-	pBip01_Spine->setIndex(2);
-	pBip01_Spine->setName("Bip01_Spine");
+	auto *pBip01_Spine = new PyramidObject( "Bip01_Spine", 2 );
 	tree->insert( pBip01_Spine, pBip01_Pelvis );
 
-	auto *pBip01_L_Thigh = new PyramidObject;
-	pBip01_L_Thigh->setIndex(3);
-	pBip01_L_Thigh->setName("Bip01_L_Thigh");
+	auto *pBip01_L_Thigh = new PyramidObject( "Bip01_L_Thigh", 3 );
 	tree->insert( pBip01_L_Thigh, pBip01_Spine );
 
-	auto *pBip01_L_Calf = new PyramidObject;
-	pBip01_L_Calf->setIndex(4);
-	pBip01_L_Calf->setName("Bip01_L_Calf");
+	auto *pBip01_L_Calf = new PyramidObject( "Bip01_L_Calf", 4 );
 	tree->insert( pBip01_L_Calf, pBip01_L_Thigh );
 
-	auto *pBip01_L_Foot = new PyramidObject;
-	pBip01_L_Foot->setIndex(5);
-	pBip01_L_Foot->setName("Bip01_L_Foot");
+	auto *pBip01_L_Foot = new PyramidObject( "Bip01_L_Foot", 5 );
 	tree->insert( pBip01_L_Foot, pBip01_L_Calf );
 
-	auto *pBip01_R_Thigh = new PyramidObject;
-	pBip01_R_Thigh->setIndex(6);
-	pBip01_R_Thigh->setName("Bip01_R_Thigh");
+	auto *pBip01_R_Thigh = new PyramidObject( "Bip01_R_Thigh", 6 );
 	tree->insert( pBip01_R_Thigh, pBip01_Spine );
 
-	auto *pBip01_R_Calf = new PyramidObject;
-	pBip01_R_Calf->setIndex(7);
-	pBip01_R_Calf->setName("Bip01_R_Calf");
+	auto *pBip01_R_Calf = new PyramidObject( "Bip01_R_Calf", 7 );
 	tree->insert( pBip01_R_Calf, pBip01_R_Thigh );
 
-	auto *pBip01_R_Foot = new PyramidObject;
-	pBip01_R_Foot->setIndex(8);
-	pBip01_R_Foot->setName("Bip01_R_Foot");
+	auto *pBip01_R_Foot = new PyramidObject( "Bip01_R_Foot", 8 );
 	tree->insert( pBip01_R_Foot, pBip01_R_Calf );
 
-	auto *pBip01_Spine1 = new PyramidObject;
-	pBip01_Spine1->setIndex(9);
-	pBip01_Spine1->setName("Bip01_Spine1");
+	auto *pBip01_Spine1 = new PyramidObject( "Bip01_Spine1", 9 );
 	tree->insert( pBip01_Spine1, pBip01_Spine );
 
-	auto *pBip01_Neck = new PyramidObject;
-	pBip01_Neck->setIndex(10);
-	pBip01_Neck->setName("Bip01_Neck");
+	auto *pBip01_Neck = new PyramidObject( "Bip01_Neck", 10 );
 	tree->insert( pBip01_Neck, pBip01_Spine1 );
 
-	auto *pBip01_L_Clavicle = new PyramidObject;
-	pBip01_L_Clavicle->setIndex(11);
-	pBip01_L_Clavicle->setName("Bip01_L_Clavicle");
+	auto *pBip01_L_Clavicle = new PyramidObject( "Bip01_L_Clavicle", 11 );
 	tree->insert( pBip01_L_Clavicle, pBip01_Neck );
 
-	auto *pBip01_L_UpperArm = new PyramidObject;
-	pBip01_L_UpperArm->setIndex(12);
-	pBip01_L_UpperArm->setName("Bip01_L_UpperArm");
+	auto *pBip01_L_UpperArm = new PyramidObject( "Bip01_L_UpperArm", 12 );
 	tree->insert( pBip01_L_UpperArm, pBip01_L_Clavicle );
 
-	auto *pBip01_L_Forearm = new PyramidObject;
-	pBip01_L_Forearm->setIndex(13);
-	pBip01_L_Forearm->setName("Bip01_L_Forearm");
+	auto *pBip01_L_Forearm = new PyramidObject( "Bip01_L_Forearm", 13 );
 	tree->insert( pBip01_L_Forearm, pBip01_L_UpperArm );
 
-	auto *pBip01_L_Hand = new PyramidObject;
-	pBip01_L_Hand->setIndex(14);
-	pBip01_L_Hand->setName("Bip01_L_Hand");
+	auto *pBip01_L_Hand = new PyramidObject( "Bip01_L_Hand", 14 );
 	tree->insert( pBip01_L_Hand, pBip01_L_Forearm );
 
-	auto *pBip01_R_Clavicle = new PyramidObject;
-	pBip01_R_Clavicle->setIndex(15);
-	pBip01_R_Clavicle->setName("Bip01_R_Clavicle");
+	auto *pBip01_R_Clavicle = new PyramidObject( "Bip01_R_Clavicle", 15 );
 	tree->insert( pBip01_R_Clavicle, pBip01_Neck );
 
-	auto *pBip01_R_UpperArm = new PyramidObject;
-	pBip01_R_UpperArm->setIndex(16);
-	pBip01_R_UpperArm->setName("Bip01_R_UpperArm");
+	auto *pBip01_R_UpperArm = new PyramidObject( "Bip01_R_UpperArm", 16 );
 	tree->insert( pBip01_R_UpperArm, pBip01_R_Clavicle );
 
-	auto *pBip01_R_Forearm = new PyramidObject;
-	pBip01_R_Forearm->setIndex(17);
-	pBip01_R_Forearm->setName("Bip01_R_Forearm");
+	auto *pBip01_R_Forearm = new PyramidObject( "Bip01_R_Forearm", 17 );
 	tree->insert( pBip01_R_Forearm, pBip01_R_UpperArm );
 
-	auto *pBip01_R_Hand = new PyramidObject;
-	pBip01_R_Hand->setIndex(18);
-	pBip01_R_Hand->setName("Bip01_R_Hand");
+	auto *pBip01_R_Hand = new PyramidObject( "Bip01_R_Hand", 18 );
 	tree->insert( pBip01_R_Hand, pBip01_R_Forearm );
 
-	auto *pBip01_Head = new PyramidObject;
-	pBip01_Head->setIndex(19);
-	pBip01_Head->setName("Bip01_Head");
+	auto *pBip01_Head = new PyramidObject( "Bip01_Head", 19 );
 	tree->insert( pBip01_Head, pBip01_Neck );
 
 	pBip01->setLightColor( Vect(0.5f, 1.5f, 0.5f) );
@@ -145,406 +101,246 @@ void SetHumanoidHierarchy()
 	myPyramid->createVAO();
 
 	// __________________________HUMANOID TEST__________________
-	auto *tree = GraphicsObjMan::getMainTree();
+	auto *tree = GraphicsObjMan::GetMainTree();
 	pRootNode = tree->getRoot();
 
-	auto *pHips = new PyramidObject;
-	pHips->setIndex(0);
-	pHips->setName("Hips");
+	auto *pHips = new PyramidObject( "Hips", 0 );
 	tree->insert( pHips, pRootNode );
 
-	auto *pSpine_Dummy = new PyramidObject;
-	pSpine_Dummy->setIndex(1);
-	pSpine_Dummy->setName("Spine_Dummy");
+	auto *pSpine_Dummy = new PyramidObject( "Spine_Dummy", 1 );
 	tree->insert( pSpine_Dummy, pHips );
 
-	auto *pSpine = new PyramidObject;
-	pSpine->setIndex(2);
-	pSpine->setName("Spine");
+	auto *pSpine = new PyramidObject( "Spine", 2 );
 	tree->insert( pSpine, pSpine_Dummy );
 
-	auto *pSpine1 = new PyramidObject;
-	pSpine1->setIndex(3);
-	pSpine1->setName("Spine1");
+	auto *pSpine1 = new PyramidObject( "Spine1", 3 );
 	tree->insert( pSpine1, pSpine );
 
-	auto *pSpine2 = new PyramidObject;
-	pSpine2->setIndex(4);
-	pSpine2->setName("Spine2");
+	auto *pSpine2 = new PyramidObject( "Spine2", 4 );
 	tree->insert( pSpine2, pSpine1 );
 
-	auto *pNeck = new PyramidObject;
-	pNeck->setIndex(5);
-	pNeck->setName("Neck");
+	auto *pNeck = new PyramidObject( "Neck", 5 );
 	tree->insert( pNeck, pSpine2 );
 
-	auto *pHead = new PyramidObject;
-	pHead->setIndex(6);
-	pHead->setName("Head");
+	auto *pHead = new PyramidObject( "Head", 6 );
 	tree->insert( pHead, pNeck );
 
-	auto *pHead_End = new PyramidObject;
-	pHead_End->setIndex(7);
-	pHead_End->setName("Head_End");
+	auto *pHead_End = new PyramidObject( "Head_End", 7 );
 	tree->insert( pHead_End, pHead );
 
-	auto *pLeftShoulder_Dummy = new PyramidObject;
-	pLeftShoulder_Dummy->setIndex(8);
-	pLeftShoulder_Dummy->setName("LeftShoulder_Dummy");
+	auto *pLeftShoulder_Dummy = new PyramidObject( "LeftShoulder_Dummy", 8 );
 	tree->insert( pLeftShoulder_Dummy, pSpine2 );
 
-	auto *pLeftShoulder = new PyramidObject;
-	pLeftShoulder->setIndex(9);
-	pLeftShoulder->setName("LeftShoulder");
+	auto *pLeftShoulder = new PyramidObject( "LeftShoulder", 9 );
 	tree->insert( pLeftShoulder, pLeftShoulder_Dummy );
 
-	auto *pLeftArm_Dummy = new PyramidObject;
-	pLeftArm_Dummy->setIndex(10);
-	pLeftArm_Dummy->setName("LeftArm_Dummy");
+	auto *pLeftArm_Dummy = new PyramidObject( "LeftArm_Dummy", 10 );
 	tree->insert( pLeftArm_Dummy, pLeftShoulder );
 
-	auto *pLeftArm = new PyramidObject;
-	pLeftArm->setIndex(11);
-	pLeftArm->setName("LeftArm");
+	auto *pLeftArm = new PyramidObject( "LeftArm", 11 );
 	tree->insert( pLeftArm, pLeftArm_Dummy );
 
-	auto *pLeftArmRoll = new PyramidObject;
-	pLeftArmRoll->setIndex(12);
-	pLeftArmRoll->setName("LeftArmRoll");
+	auto *pLeftArmRoll = new PyramidObject( "LeftArmRoll", 12 );
 	tree->insert( pLeftArmRoll, pLeftArm );
 
-	auto *pLeftForeArm = new PyramidObject;
-	pLeftForeArm->setIndex(13);
-	pLeftForeArm->setName("LeftForeArm");
+	auto *pLeftForeArm = new PyramidObject( "LeftForeArm", 13 );
 	tree->insert( pLeftForeArm, pLeftArmRoll );
 
-	auto *pLeftForeArmRoll = new PyramidObject;
-	pLeftForeArmRoll->setIndex(14);
-	pLeftForeArmRoll->setName("LeftForeArmRoll");
+	auto *pLeftForeArmRoll = new PyramidObject( "LeftForeArmRoll", 14 );
 	tree->insert( pLeftForeArmRoll, pLeftForeArm );
 
-	auto *pLeftHand = new PyramidObject;
-	pLeftHand->setIndex(15);
-	pLeftHand->setName("LeftHand");
+	auto *pLeftHand = new PyramidObject( "LeftHand", 15 );
 	tree->insert( pLeftHand, pLeftForeArmRoll );
 
-	auto *pLeftThumb1 = new PyramidObject;
-	pLeftThumb1->setIndex(16);
-	pLeftThumb1->setName("LeftThumb1");
+	auto *pLeftThumb1 = new PyramidObject( "LeftThumb1", 16 );
 	tree->insert( pLeftThumb1, pLeftHand );
 
-	auto *pLeftThumb2 = new PyramidObject;
-	pLeftThumb2->setIndex(17);
-	pLeftThumb2->setName("LeftThumb2");
+	auto *pLeftThumb2 = new PyramidObject( "LeftThumb2", 17 );
 	tree->insert( pLeftThumb2, pLeftThumb1 );
 
-	auto *pLeftThumb3 = new PyramidObject;
-	pLeftThumb3->setIndex(18);
-	pLeftThumb3->setName("LeftThumb3");
+	auto *pLeftThumb3 = new PyramidObject( "LeftThumb3", 18 );
 	tree->insert( pLeftThumb3, pLeftThumb2 );
 
-	auto *pLeftThumb_End = new PyramidObject;
-	pLeftThumb_End->setIndex(19);
-	pLeftThumb_End->setName("LeftThumb_End");
+	auto *pLeftThumb_End = new PyramidObject( "LeftThumb_End", 19 );
 	tree->insert( pLeftThumb_End, pLeftThumb3 );
 
-	auto *pLeftIndex1 = new PyramidObject;
-	pLeftIndex1->setIndex(20);
-	pLeftIndex1->setName("LeftIndex1");
+	auto *pLeftIndex1 = new PyramidObject( "LeftIndex1", 20 );
 	tree->insert( pLeftIndex1, pLeftHand );
 
-	auto *pLeftIndex2 = new PyramidObject;
-	pLeftIndex2->setIndex(21);
-	pLeftIndex2->setName("LeftIndex2");
+	auto *pLeftIndex2 = new PyramidObject( "LeftIndex2", 21 );
 	tree->insert( pLeftIndex2, pLeftIndex1 );
 
-	auto *pLeftIndex3 = new PyramidObject;
-	pLeftIndex3->setIndex(22);
-	pLeftIndex3->setName("LeftIndex3");
+	auto *pLeftIndex3 = new PyramidObject( "LeftIndex3", 22 );
 	tree->insert( pLeftIndex3, pLeftIndex2 );
 
-	auto *pLeftIndex_End = new PyramidObject;
-	pLeftIndex_End->setIndex(23);
-	pLeftIndex_End->setName("LeftIndex_End");
+	auto *pLeftIndex_End = new PyramidObject( "LeftIndex_End", 23 );
 	tree->insert( pLeftIndex_End, pLeftIndex3 );
 
-	auto *pLeftMiddle1 = new PyramidObject;
-	pLeftMiddle1->setIndex(24);
-	pLeftMiddle1->setName("LeftMiddle1");
+	auto *pLeftMiddle1 = new PyramidObject( "LeftMiddle1", 24 );
 	tree->insert( pLeftMiddle1, pLeftHand );
 
-	auto *pLeftMiddle2 = new PyramidObject;
-	pLeftMiddle2->setIndex(25);
-	pLeftMiddle2->setName("LeftMiddle2");
+	auto *pLeftMiddle2 = new PyramidObject( "LeftMiddle2", 25 );
 	tree->insert( pLeftMiddle2, pLeftMiddle1 );
 
-	auto *pLeftMiddle3 = new PyramidObject;
-	pLeftMiddle3->setIndex(26);
-	pLeftMiddle3->setName("LeftMiddle3");
+	auto *pLeftMiddle3 = new PyramidObject( "LeftMiddle3", 26 );
 	tree->insert( pLeftMiddle3, pLeftMiddle2 );
 
-	auto *pLeftMiddle_End = new PyramidObject;
-	pLeftMiddle_End->setIndex(27);
-	pLeftMiddle_End->setName("LeftMiddle_End");
+	auto *pLeftMiddle_End = new PyramidObject( "LeftMiddle_End", 27 );
 	tree->insert( pLeftMiddle_End, pLeftMiddle3 );
 
-	auto *pLeftRing1 = new PyramidObject;
-	pLeftRing1->setIndex(28);
-	pLeftRing1->setName("LeftRing1");
+	auto *pLeftRing1 = new PyramidObject( "LeftRing1", 28 );
 	tree->insert( pLeftRing1, pLeftHand );
 
-	auto *pLeftRing2 = new PyramidObject;
-	pLeftRing2->setIndex(29);
-	pLeftRing2->setName("LeftRing2");
+	auto *pLeftRing2 = new PyramidObject( "LeftRing2", 29 );
 	tree->insert( pLeftRing2, pLeftRing1 );
 
-	auto *pLeftRing3 = new PyramidObject;
-	pLeftRing3->setIndex(30);
-	pLeftRing3->setName("LeftRing3");
+	auto *pLeftRing3 = new PyramidObject( "LeftRing3", 30 );
 	tree->insert( pLeftRing3, pLeftRing2 );
 
-	auto *pLeftRing_End = new PyramidObject;
-	pLeftRing_End->setIndex(31);
-	pLeftRing_End->setName("LeftRing_End");
+	auto *pLeftRing_End = new PyramidObject( "LeftRing_End", 31 );
 	tree->insert( pLeftRing_End, pLeftRing3 );
 
-	auto *pLeftPinky1 = new PyramidObject;
-	pLeftPinky1->setIndex(32);
-	pLeftPinky1->setName("LeftPinky1");
+	auto *pLeftPinky1 = new PyramidObject( "LeftPinky1", 32 );
 	tree->insert( pLeftPinky1, pLeftHand );
 
-	auto *pLeftPinky2 = new PyramidObject;
-	pLeftPinky2->setIndex(33);
-	pLeftPinky2->setName("LeftPinky2");
+	auto *pLeftPinky2 = new PyramidObject( "LeftPinky2", 33 );
 	tree->insert( pLeftPinky2, pLeftPinky1 );
 
-	auto *pLeftPinky3 = new PyramidObject;
-	pLeftPinky3->setIndex(34);
-	pLeftPinky3->setName("LeftPinky3");
+	auto *pLeftPinky3 = new PyramidObject( "LeftPinky3", 34 );
 	tree->insert( pLeftPinky3, pLeftPinky2 );
 
-	auto *pLeftPinky_End = new PyramidObject;
-	pLeftPinky_End->setIndex(35);
-	pLeftPinky_End->setName("LeftPinky_End");
+	auto *pLeftPinky_End = new PyramidObject( "LeftPinky_End", 35 );
 	tree->insert( pLeftPinky_End, pLeftPinky3 );
 
-	auto *pRightShoulder_Dummy = new PyramidObject;
-	pRightShoulder_Dummy->setIndex(36);
-	pRightShoulder_Dummy->setName("RightShoulder_Dummy");
+	auto *pRightShoulder_Dummy = new PyramidObject( "RightShoulder_Dummy", 36 );
 	tree->insert( pRightShoulder_Dummy, pSpine2 );
 
-	auto *pRightShoulder = new PyramidObject;
-	pRightShoulder->setIndex(37);
-	pRightShoulder->setName("RightShoulder");
+	auto *pRightShoulder = new PyramidObject( "RightShoulder", 37 );
 	tree->insert( pRightShoulder, pRightShoulder_Dummy );
 
-	auto *pRightArm_Dummy = new PyramidObject;
-	pRightArm_Dummy->setIndex(38);
-	pRightArm_Dummy->setName("RightArm_Dummy");
+	auto *pRightArm_Dummy = new PyramidObject( "RightArm_Dummy", 38 );
 	tree->insert( pRightArm_Dummy, pRightShoulder );
 
-	auto *pRightArm = new PyramidObject;
-	pRightArm->setIndex(39);
-	pRightArm->setName("RightArm");
+	auto *pRightArm = new PyramidObject( "RightArm", 39 );
 	tree->insert( pRightArm, pRightArm_Dummy );
 
-	auto *pRightArmRoll = new PyramidObject;
-	pRightArmRoll->setIndex(40);
-	pRightArmRoll->setName("RightArmRoll");
+	auto *pRightArmRoll = new PyramidObject( "RightArmRoll", 40 );
 	tree->insert( pRightArmRoll, pRightArm );
 
-	auto *pRightForeArm = new PyramidObject;
-	pRightForeArm->setIndex(41);
-	pRightForeArm->setName("RightForeArm");
+	auto *pRightForeArm = new PyramidObject( "RightForeArm", 41 );
 	tree->insert( pRightForeArm, pRightArmRoll );
 
-	auto *pRightForeArmRoll = new PyramidObject;
-	pRightForeArmRoll->setIndex(42);
-	pRightForeArmRoll->setName("RightForeArmRoll");
+	auto *pRightForeArmRoll = new PyramidObject( "RightForeArmRoll", 42 );
 	tree->insert( pRightForeArmRoll, pRightForeArm );
 
-	auto *pRightHand = new PyramidObject;
-	pRightHand->setIndex(43);
-	pRightHand->setName("RightHand");
+	auto *pRightHand = new PyramidObject( "RightHand", 43 );
 	tree->insert( pRightHand, pRightForeArmRoll );
 
-	auto *pRightThumb1 = new PyramidObject;
-	pRightThumb1->setIndex(44);
-	pRightThumb1->setName("RightThumb1");
+	auto *pRightThumb1 = new PyramidObject( "RightThumb1", 44 );
 	tree->insert( pRightThumb1, pRightHand );
 
-	auto *pRightThumb2 = new PyramidObject;
-	pRightThumb2->setIndex(45);
-	pRightThumb2->setName("RightThumb2");
+	auto *pRightThumb2 = new PyramidObject( "RightThumb2", 45 );
 	tree->insert( pRightThumb2, pRightThumb1 );
 
-	auto *pRightThumb3 = new PyramidObject;
-	pRightThumb3->setIndex(46);
-	pRightThumb3->setName("RightThumb3");
+	auto *pRightThumb3 = new PyramidObject( "RightThumb3", 46 );
 	tree->insert( pRightThumb3, pRightThumb2 );
 
-	auto *pRightThumb_End = new PyramidObject;
-	pRightThumb_End->setIndex(47);
-	pRightThumb_End->setName("RightThumb_End");
+	auto *pRightThumb_End = new PyramidObject( "RightThumb_End", 47 );
 	tree->insert( pRightThumb_End, pRightThumb3 );
 
-	auto *pRightIndex1 = new PyramidObject;
-	pRightIndex1->setIndex(48);
-	pRightIndex1->setName("RightIndex1");
+	auto *pRightIndex1 = new PyramidObject( "RightIndex1", 48 );
 	tree->insert( pRightIndex1, pRightHand );
 
-	auto *pRightIndex2 = new PyramidObject;
-	pRightIndex2->setIndex(49);
-	pRightIndex2->setName("RightIndex2");
+	auto *pRightIndex2 = new PyramidObject( "RightIndex2", 49 );
 	tree->insert( pRightIndex2, pRightIndex1 );
 
-	auto *pRightIndex3 = new PyramidObject;
-	pRightIndex3->setIndex(50);
-	pRightIndex3->setName("RightIndex3");
+	auto *pRightIndex3 = new PyramidObject( "RightIndex3", 50 );
 	tree->insert( pRightIndex3, pRightIndex2 );
 
-	auto *pRightIndex_End = new PyramidObject;
-	pRightIndex_End->setIndex(51);
-	pRightIndex_End->setName("RightIndex_End");
+	auto *pRightIndex_End = new PyramidObject( "RightIndex_End", 51 );
 	tree->insert( pRightIndex_End, pRightIndex3 );
 
-	auto *pRightMiddle1 = new PyramidObject;
-	pRightMiddle1->setIndex(52);
-	pRightMiddle1->setName("RightMiddle1");
+	auto *pRightMiddle1 = new PyramidObject( "RightMiddle1", 52 );
 	tree->insert( pRightMiddle1, pRightHand );
 
-	auto *pRightMiddle2 = new PyramidObject;
-	pRightMiddle2->setIndex(53);
-	pRightMiddle2->setName("RightMiddle2");
+	auto *pRightMiddle2 = new PyramidObject( "RightMiddle2", 53 );
 	tree->insert( pRightMiddle2, pRightMiddle1 );
 
-	auto *pRightMiddle3 = new PyramidObject;
-	pRightMiddle3->setIndex(54);
-	pRightMiddle3->setName("RightMiddle3");
+	auto *pRightMiddle3 = new PyramidObject( "RightMiddle3", 54 );
 	tree->insert( pRightMiddle3, pRightMiddle2 );
 
-	auto *pRightMiddle_End = new PyramidObject;
-	pRightMiddle_End->setIndex(55);
-	pRightMiddle_End->setName("RightMiddle_End");
+	auto *pRightMiddle_End = new PyramidObject( "RightMiddle_End", 55 );
 	tree->insert( pRightMiddle_End, pRightMiddle3 );
 
-	auto *pRightRing1 = new PyramidObject;
-	pRightRing1->setIndex(56);
-	pRightRing1->setName("RightRing1");
+	auto *pRightRing1 = new PyramidObject( "RightRing1", 56 );
 	tree->insert( pRightRing1, pRightHand );
 
-	auto *pRightRing2 = new PyramidObject;
-	pRightRing2->setIndex(57);
-	pRightRing2->setName("RightRing2");
+	auto *pRightRing2 = new PyramidObject( "RightRing2", 57 );
 	tree->insert( pRightRing2, pRightRing1 );
 
-	auto *pRightRing3 = new PyramidObject;
-	pRightRing3->setIndex(58);
-	pRightRing3->setName("RightRing3");
+	auto *pRightRing3 = new PyramidObject( "RightRing3", 58 );
 	tree->insert( pRightRing3, pRightRing2 );
 
-	auto *pRightRing_End = new PyramidObject;
-	pRightRing_End->setIndex(59);
-	pRightRing_End->setName("RightRing_End");
+	auto *pRightRing_End = new PyramidObject( "RightRing_End", 59 );
 	tree->insert( pRightRing_End, pRightRing3 );
 
-	auto *pRightPinky1 = new PyramidObject;
-	pRightPinky1->setIndex(60);
-	pRightPinky1->setName("RightPinky1");
+	auto *pRightPinky1 = new PyramidObject( "RightPinky1", 60 );
 	tree->insert( pRightPinky1, pRightHand );
 
-	auto *pRightPinky2 = new PyramidObject;
-	pRightPinky2->setIndex(61);
-	pRightPinky2->setName("RightPinky2");
+	auto *pRightPinky2 = new PyramidObject( "RightPinky2", 61 );
 	tree->insert( pRightPinky2, pRightPinky1 );
 
-	auto *pRightPinky3 = new PyramidObject;
-	pRightPinky3->setIndex(62);
-	pRightPinky3->setName("RightPinky3");
+	auto *pRightPinky3 = new PyramidObject( "RightPinky3", 62 );
 	tree->insert( pRightPinky3, pRightPinky2 );
 
-	auto *pRightPinky_End = new PyramidObject;
-	pRightPinky_End->setIndex(63);
-	pRightPinky_End->setName("RightPinky_End");
+	auto *pRightPinky_End = new PyramidObject( "RightPinky_End", 63 );
 	tree->insert( pRightPinky_End, pRightPinky3 );
 
-	auto *pLeftHips_Dummy = new PyramidObject;
-	pLeftHips_Dummy->setIndex(64);
-	pLeftHips_Dummy->setName("LeftHips_Dummy");
+	auto *pLeftHips_Dummy = new PyramidObject( "LeftHips_Dummy", 64 );
 	tree->insert( pLeftHips_Dummy, pHips );
 
-	auto *pLeftUpLeg = new PyramidObject;
-	pLeftUpLeg->setIndex(65);
-	pLeftUpLeg->setName("LeftUpLeg");
+	auto *pLeftUpLeg = new PyramidObject( "LeftUpLeg", 65 );
 	tree->insert( pLeftUpLeg, pLeftHips_Dummy );
 
-	auto *pLeftUpLegRoll = new PyramidObject;
-	pLeftUpLegRoll->setIndex(66);
-	pLeftUpLegRoll->setName("LeftUpLegRoll");
+	auto *pLeftUpLegRoll = new PyramidObject( "LeftUpLegRoll", 66 );
 	tree->insert( pLeftUpLegRoll, pLeftUpLeg );
 
-	auto *pLeftLeg = new PyramidObject;
-	pLeftLeg->setIndex(67);
-	pLeftLeg->setName("LeftLeg");
+	auto *pLeftLeg = new PyramidObject( "LeftLeg", 67 );
 	tree->insert( pLeftLeg, pLeftUpLegRoll );
 
-	auto *pLeftLegRoll = new PyramidObject;
-	pLeftLegRoll->setIndex(68);
-	pLeftLegRoll->setName("LeftLegRoll");
+	auto *pLeftLegRoll = new PyramidObject( "LeftLegRoll", 68 );
 	tree->insert( pLeftLegRoll, pLeftLeg );
 
-	auto *pLeftFoot = new PyramidObject;
-	pLeftFoot->setIndex(69);
-	pLeftFoot->setName("LeftFoot");
+	auto *pLeftFoot = new PyramidObject( "LeftFoot", 69 );
 	tree->insert( pLeftFoot, pLeftLegRoll );
 
-	auto *pLeftToes = new PyramidObject;
-	pLeftToes->setIndex(70);
-	pLeftToes->setName("LeftToes");
+	auto *pLeftToes = new PyramidObject( "LeftToes", 70 );
 	tree->insert( pLeftToes, pLeftFoot );
 
-	auto *pLeftToes_End = new PyramidObject;
-	pLeftToes_End->setIndex(71);
-	pLeftToes_End->setName("LeftToes_End");
+	auto *pLeftToes_End = new PyramidObject( "LeftToes_End", 71 );
 	tree->insert( pLeftToes_End, pLeftToes );
 
-	auto *pRightHips_Dummy = new PyramidObject;
-	pRightHips_Dummy->setIndex(72);
-	pRightHips_Dummy->setName("RightHips_Dummy");
+	auto *pRightHips_Dummy = new PyramidObject( "RightHips_Dummy", 72 );
 	tree->insert( pRightHips_Dummy, pHips );
 
-	auto *pRightUpLeg = new PyramidObject;
-	pRightUpLeg->setIndex(73);
-	pRightUpLeg->setName("RightUpLeg");
+	auto *pRightUpLeg = new PyramidObject( "RightUpLeg", 73 );
 	tree->insert( pRightUpLeg, pRightHips_Dummy );
 
-	auto *pRightUpLegRoll = new PyramidObject;
-	pRightUpLegRoll->setIndex(74);
-	pRightUpLegRoll->setName("RightUpLegRoll");
+	auto *pRightUpLegRoll = new PyramidObject( "RightUpLegRoll", 74 );
 	tree->insert( pRightUpLegRoll, pRightUpLeg );
 
-	auto *pRightLeg = new PyramidObject;
-	pRightLeg->setIndex(75);
-	pRightLeg->setName("RightLeg");
+	auto *pRightLeg = new PyramidObject( "RightLeg", 75 );
 	tree->insert( pRightLeg, pRightUpLegRoll );
 
-	auto *pRightLegRoll = new PyramidObject;
-	pRightLegRoll->setIndex(76);
-	pRightLegRoll->setName("RightLegRoll");
+	auto *pRightLegRoll = new PyramidObject( "RightLegRoll", 76 );
 	tree->insert( pRightLegRoll, pRightLeg );
 
-	auto *pRightFoot = new PyramidObject;
-	pRightFoot->setIndex(77);
-	pRightFoot->setName("RightFoot");
+	auto *pRightFoot = new PyramidObject( "RightFoot", 77 );
 	tree->insert( pRightFoot, pRightLegRoll );
 
-	auto *pRightToes = new PyramidObject;
-	pRightToes->setIndex(78);
-	pRightToes->setName("RightToes");
+	auto *pRightToes = new PyramidObject( "RightToes", 78 );
 	tree->insert( pRightToes, pRightFoot );
 
-	auto *pRightToes_End = new PyramidObject;
-	pRightToes_End->setIndex(79);
-	pRightToes_End->setName("RightToes_End");
+	auto *pRightToes_End = new PyramidObject( "RightToes_End", 79 );
 	tree->insert( pRightToes_End, pRightToes );
 }

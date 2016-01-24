@@ -1,95 +1,68 @@
-#include "OpenGL.h"
-#include "DEBUGGING.h"
 
+#include "DEBUGGING.h"
 #include "SphereModel.h"
-#include "MathEngine.h"
 #include "SphereObject.h"
-#include "TextureManager.h"
 #include "CameraManager.h"
-#include "CameraObject.h"
 #include "ModelManager.h"
 
 extern GLShaderManager shaderManager;
 
 // constructor
 SphereObject :: SphereObject()
+	: GraphicsObject()
 {  
-	this->angle_z = 0; 
-	this->angle_y = 0; 
-
-	this->lightColor.set( 1.0f, 1.0f, 1.0f, 1.0f);
-	this->lightPos.set(1.0f, 1.0f, 0.0f);
-	this->Texture = NOT_INITIALIZED;
-
-	this->sphere.rad = 1.0f;
-	this->sphere.cntr = Vect(0.0f, 0.0f, 0.0f, 0.0f);
-
 	this->Shading = Shader_Texture_NoLights;
-
 	this->cullingSphere = this;
 };
 
-void SphereObject::setPos( const Vect &v )
-{
-	this->sphere.cntr = v;
+const void SphereObject::setPos( const Vect& v ) {
+	this->sphere.cntr.set(v);
 }
 
-void SphereObject::setRad( const float radius )
-{
+const void SphereObject::setRad( const float radius ) {
 	this->sphere.rad = radius;
 }
 
-void SphereObject::setStartPos( const Vect & v)
-{
-	this->startPos = v;
+const void SphereObject::setStartPos( const Vect& v ) {
+	this->startPos.set(v);
 };
 
-Vect SphereObject::getStartPos()
-{
+Vect SphereObject::getStartPos() {
 	return this->startPos;
 };
 
-void SphereObject::setLightColor( const Vect & v)
-{
-	this->lightColor = v;
+const void SphereObject::setLightColor( const Vect& v ) {
+	this->lightColor.set(v);
 };
 
-void SphereObject::setLightPos( const Vect & v)
-{
-	this->lightPos = v;
+const void SphereObject::setLightPos( const Vect& v ) {
+	this->lightPos.set(v);
 };
 
-void SphereObject::setExtSphere( const Sphere &mySphere )
-{
+const void SphereObject::setExtSphere( const Sphere& mySphere ) {
 	this->extSphere = mySphere;
 }
 
-void SphereObject::setExtMatrix( const Matrix &world )
-{
-	this->extWorld = world;
+const void SphereObject::setExtMatrix( const Matrix& world ) {
+	this->extWorld.set(world);
 }
 
-void SphereObject::setTextureName( TextureName inName )
-{
+const void SphereObject::setTextureName( const TextureName inName ) {
 	this->Texture = inName;
 };
 
-void SphereObject::setStockShaderMode( ShaderType inVal )
-{
+const void SphereObject::setStockShaderMode( const ShaderType inVal ) {
 	this->Shading  = inVal;
 };
 
-Sphere SphereObject::getSphere()
-{
+Sphere SphereObject::getSphere() const {
 	return this->sphere;
 }
 
-void SphereObject::checkCulling(void)
-{
-}
+void SphereObject::checkCulling()
+{ }
 
-void SphereObject::transform( void )
-{
+void SphereObject::transform() {
 	// FIRST you need to match the Original Sphere on to the original Graphics Object
 	
 	// create temp matrices
@@ -100,42 +73,33 @@ void SphereObject::transform( void )
 		Matrix Scale( SCALE, this->extSphere.rad*scale, this->extSphere.rad*scale, this->extSphere.rad*scale);
 	
 	// Create the local to world matrix (ie Model)
-		Matrix  MapSphere =  Scale * Trans;
+		auto MapSphere =  Scale * Trans;
 
 	// Now apply the extern object so it moves and rotates the same
 	this->World = MapSphere * this->extWorld;
 
-	// Create the ModelView ( LocalToWorld * View)
-	// Some pipelines have the project concatenated, others don't
-	// Best to keep the separated, you can always join them with a quick multiply
-	CameraObject *cam = CameraMan::GetCurrCamera();
-	this->ModelView = this->World * cam->getViewMatrix();
-
+	this->ModelView = this->World * CameraMan::GetCurrCamera()->getViewMatrix();
 };
 
-
-void SphereObject::setRenderState( void )
-{	
+void SphereObject::setRenderState() {	
 	// Bind the texture
 	GLuint textureID = TextureMan::Find( this->Texture );
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
 	CameraObject *cam = CameraMan::GetCurrCamera();
+	Matrix mvp = this->ModelView * cam->getProjMatrix();
 
 	// set the shader
-		// modelViewProj matrix, stock shader.
-			Matrix mvp = this->ModelView * cam->getProjMatrix();
-			shaderManager.UseStockShader( GLT_SHADER_FLAT,
-											&mvp,
-											&this->lightColor );
+	shaderManager.UseStockShader( GLT_SHADER_FLAT,
+									&mvp,
+									&this->lightColor );
 
-			// set render states
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			glEnable(GL_CULL_FACE);
+	// set render states
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glEnable(GL_CULL_FACE);
 };
 
-void SphereObject::draw( void )
-{   
+void SphereObject::draw() {   
 	glBindVertexArray(ModelMan::Find("sphere")->vao);
 	glDrawElements(GL_TRIANGLES, 200 * 3, GL_UNSIGNED_SHORT, 0);
 };

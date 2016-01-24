@@ -1,8 +1,5 @@
+#pragma once
 
-#ifndef ANIM_CONTROLLER_H
-#define ANIM_CONTROLLER_H
-
-#include "Anim.h"
 #include "AnimationManager.h"
 #include "Time.h"
 #include "PyramidObject.h"
@@ -18,32 +15,33 @@ enum PlayMode
 class AnimController
 {
 public:
-	~AnimController();
+	AnimController(AnimNode *, PyramidObject *);
 
-	void processAnimation( Time &tCurr );
-	AnimController( AnimNode *inBucket, PyramidObject *inRoot);
-	void setIndex( const int _index );
-	void setPlayback( PlayMode inMode );
-	void walk_anim_node();
-	PyramidObject *getSkeleton();
+	const void processAnimation( Time & ) const;
+	const void setIndex( const int );
+	const void setPlayback( const PlayMode );
+	const void walkAnimNode() const;
 
-	AnimController *next;
-	AnimController *prev;
-	Frame_Bucket *result;
+	PyramidObject *getSkeleton() const;
 
 private:
-	void switchTime( Time &tCurr );
-	void findMaxTime( Time &outTime );
-	void setBonePose(PyramidObject *node);
-	void priv_walk_anim_node(PyramidObject *node);
-	void setSkeletonController( );
 	AnimController();
-	
+
+	const void switchTime(Time &) const;
+	const void findMaxTime(Time &) const;
+	const void setBonePose(PyramidObject * const) const;
+	const void privWalkAnimNode(PyramidObject * const) const;
+	const void setSkeletonController() const;
+
+private:
 	// data
 	int index;
 	PlayMode pMode;
 	AnimNode *animBucket;
 	PyramidObject *skeletonRoot;
-};
 
-#endif
+public:
+	AnimController *next;
+	AnimController *prev;
+	Frame_Bucket *result;
+};

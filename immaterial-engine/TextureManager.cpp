@@ -1,41 +1,34 @@
 
-#include <string.h>
-
-#include "OpenGL.h"
 #include "DEBUGGING.h"
 #include "File.h"
 
-#include "TextureNode.h"
 #include "TextureManager.h"
 #include "GraphicsObjectFileHdr.h"
 #include "TGAHeader.h"
 #include "md5.h"
 
-TextureMan::TextureMan()
-{
-	this->active = 0;
-}
+TextureMan::TextureMan() 
+	: active(nullptr)
+{ }
 
 // singleton
-TextureMan* TextureMan::privGetInstance()
-{
+TextureMan* TextureMan::privGetInstance() {
 	static TextureMan textMan;
 	return &textMan;
 }
 
-void TextureMan::AddTexture( const char * const inAssetName, const TextureName inName )
-{
+void TextureMan::AddTexture( const char * const inAssetName, const TextureName inName ) {
 	GLuint textureID;
-	GLuint *pTextureID = &textureID;
+	auto pTextureID = &textureID;
 
 	// get instance
-	TextureMan *pTextMan = TextureMan::privGetInstance();
+	auto pTextMan = privGetInstance();
 
 	// load texture to gpu, get ID from gpu
 	pTextMan->privLoadTexture( inAssetName, pTextureID );
 
 	// make a new node, set its values
-	TextureNode *pNode = new TextureNode();
+	auto pNode = new TextureNode;
 	pNode->set( inAssetName, inName, textureID, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE );
 
 	// add said node to front of active texture list
@@ -43,15 +36,14 @@ void TextureMan::AddTexture( const char * const inAssetName, const TextureName i
 }
 
 // for use when loading textures from .ctf (converted TGA file)
-bool TextureMan::LoadTexture( const char * const fileName, const char * const textID )
-{
+bool TextureMan::LoadTexture( const char * const fileName, const char * const textID ) {
 	GLuint textureID;
-	GLuint *pTextureID = &textureID;
+	auto pTextureID = &textureID;
 
 	// get instance
-	TextureMan *pTextMan = TextureMan::privGetInstance();
+	auto pTextMan = privGetInstance();
 
-	unsigned char* lTexture = getTGAFile( fileName );
+	auto lTexture = getTGAFile( fileName );
 	pTextMan->privLoadMyTexture( lTexture, pTextureID );
 
 	// hash the string textID and store it as the textureID for the manager
@@ -60,22 +52,20 @@ bool TextureMan::LoadTexture( const char * const fileName, const char * const te
 	GLuint hashID = out.dWord_0 ^ out.dWord_1 ^ out.dWord_2 ^ out.dWord_3;
 
 	// make a new node, set its values
-	TextureNode *pNode = new TextureNode();
+	auto pNode = new TextureNode;
 	pNode->set( fileName, hashID, textureID, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE );
 
 	// add said node to front of active texture list
 	pTextMan->privAddToFront( pNode, pTextMan->active );
-
 	return true;
 }
 
-bool TextureMan::LoadBufferedTexture( const unsigned char * const textBuff, const tffInfo & inHdr )
-{
+bool TextureMan::LoadBufferedTexture( const unsigned char * const textBuff, const tffInfo & inHdr ) {
 	GLuint textureID;
-	GLuint *pTextureID = &textureID;
+	auto pTextureID = &textureID;
 
 	// get instance
-	TextureMan *pTextMan = TextureMan::privGetInstance();
+	auto pTextMan = privGetInstance();
 
 	pTextMan->privLoadMyTexture( textBuff, pTextureID );
 
@@ -85,40 +75,33 @@ bool TextureMan::LoadBufferedTexture( const unsigned char * const textBuff, cons
 	GLuint hashID = out.dWord_0 ^ out.dWord_1 ^ out.dWord_2 ^ out.dWord_3;
 
 	// make a new node, set its values
-	TextureNode *pNode = new TextureNode();
+	auto pNode = new TextureNode;
 	pNode->set( inHdr.textName, hashID, textureID, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE );
 
 	// add said node to front of active texture list
 	pTextMan->privAddToFront( pNode, pTextMan->active );
-
 	return true;
 }
 
-GLuint TextureMan::Find( const GLuint inName )
-{
+GLuint TextureMan::Find( const GLuint inName ) {
 	// get instance
-	TextureMan *pTextMan = TextureMan::privGetInstance();
+	auto pTextMan = privGetInstance();
 	
-	TextureNode *walker = (TextureNode *)pTextMan->active;
+	auto walker = (TextureNode *)pTextMan->active;
 	
 	// if there is a texture to be asked for, return it
-	if (inName != NOT_INITIALIZED)
-	{
+	if (inName != NOT_INITIALIZED) {
 		// find node
-		while ( walker != 0 )
-		{
-			if ( walker->name == inName )
-			{
+		while ( walker != nullptr ) {
+			if ( walker->name == inName ) {
 				break;
 			}
 
 			walker = (TextureNode *)walker->next;
 		}
-	}
-	else	// otherwise, return the dummy texture (first one ever loaded)
-	{
-		while ( (TextureNode *)walker->next != 0 )
-		{
+	} else {
+		// otherwise, return the dummy texture (first one ever loaded)
+		while ( (TextureNode *)walker->next != nullptr ) {
 			walker = (TextureNode *)walker->next;
 		}
 	}
@@ -127,16 +110,11 @@ GLuint TextureMan::Find( const GLuint inName )
 	return walker->textureID;
 }
 
-void TextureMan::DeleteTextures()
-{
-	// get instance
-	TextureMan *pTextMan = TextureMan::privGetInstance();
-
+void TextureMan::DeleteTextures() {
 	// delete textures from GPU
-	TextureNode *walker = (TextureNode *)pTextMan->active;
-	TextureNode *tmp = walker;
-	while ( walker != 0 )
-	{
+	auto walker = ( TextureNode * ) privGetInstance()->active;
+	auto tmp = walker;
+	while ( walker != nullptr ) {
 		walker = (TextureNode *)walker->next;
 		glDeleteTextures( 1, &tmp->textureID );
 		delete tmp;
@@ -144,35 +122,29 @@ void TextureMan::DeleteTextures()
 	}
 }
 
-void TextureMan::privAddToFront( TextureNodeLink *node, TextureNodeLink *&head )
-{
+const void TextureMan::privAddToFront( TextureNodeLink *node, TextureNodeLink *&head ) {
 	assert (node != 0);
 
 	// empty list
 	if (head == 0)
 	{
 		head = node;
-		node->next = 0;
-		node->prev = 0;
-	}
-	else	// non-empty list, add to front
-	{
+	} else {
+		// non-empty list, add to front
 		node->next = head;
 		head->prev = node;
 		head = node;
 	}
 }
 
-void TextureMan::privLoadTexture( const char * const inAssetName, GLuint *&textureID )
-{
+const void TextureMan::privLoadTexture( const char * const inAssetName, GLuint *&textureID ) {
 	// get handle to texture, bind it, then load it.
 	glGenTextures( 1, textureID );
 	glBindTexture( GL_TEXTURE_2D, *textureID );
 	this->privLoadTGATexture( inAssetName, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE );
 }
 
-void TextureMan::privLoadMyTexture( const unsigned char * const tgaData, GLuint *&textureID )
-{
+const void TextureMan::privLoadMyTexture( const unsigned char * const tgaData, GLuint *&textureID ) {
 	// get handle to texture, bind it, then load it.
 	glGenTextures( 1, textureID );
 	glBindTexture( GL_TEXTURE_2D, *textureID );
@@ -180,8 +152,7 @@ void TextureMan::privLoadMyTexture( const unsigned char * const tgaData, GLuint 
 }
 
 // Load a TGA as a 2D Texture. Completely initialize the state
-bool TextureMan::privLoadTGATexture(const char *szFileName, GLenum minFilter, GLenum magFilter, GLenum wrapMode)
-{
+bool TextureMan::privLoadTGATexture(const char *szFileName, GLenum minFilter, GLenum magFilter, GLenum wrapMode) {
 	GLbyte *pBits;
 	int nWidth, nHeight, nComponents;
 	GLenum eFormat;
@@ -213,14 +184,13 @@ bool TextureMan::privLoadTGATexture(const char *szFileName, GLenum minFilter, GL
 bool TextureMan::privLoadMyTGATexture( const unsigned char * const tgaData, GLenum minFilter, GLenum magFilter, GLenum wrapMode )
 {
 	// my TGA Function
-	GLbyte *pBits = 0;
+	GLbyte *pBits;
 	int nWidth, nHeight, nComponents;
 	GLenum eFormat;
 
 	pBits = myReadTGABits(tgaData, nWidth, nHeight, nComponents, eFormat);
 
-	if (pBits == NULL)
-	{
+	if (pBits == nullptr) {
 		return false;
 	}
 

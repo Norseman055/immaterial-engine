@@ -1,25 +1,20 @@
-#ifndef CHUNK_HEADER_H
-#define CHUNK_HEADER_H
-
-enum ChunkType
-{
-   VERTS_TYPE = 0xA0000000,
-   NORMS_TYPE,
-   ANIM_TYPE,
-   TEXTURE_TYPE,
-   UV_TYPE
-};
+#pragma once
 
 #define CHUNK_NAME_SIZE 20
 
-struct ChunkHeader
+enum ChunkType
 {
-   ChunkType      type;
-   char           chunkName[CHUNK_NAME_SIZE];
-   int            chunkSize;
-   unsigned int   hashNum;
+	VERTS_TYPE = 0xA0000000,
+	NORMS_TYPE,
+	ANIM_TYPE,
+	TEXTURE_TYPE,
+	UV_TYPE
 };
 
-
-
-#endif
+struct ChunkHeader
+{
+	ChunkType      type;
+	char           chunkName[CHUNK_NAME_SIZE];
+	int            chunkSize;
+	unsigned int   hashNum;
+};

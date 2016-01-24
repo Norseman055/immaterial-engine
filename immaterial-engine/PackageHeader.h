@@ -1,5 +1,4 @@
-#ifndef PACKAGE_HEADER_H
-#define PACKAGE_HEADER_H
+#pragma once
 
 #define PACKAGE_VERSION_SIZE 20
 #define PACKAGE_NAME_SIZE 20
@@ -11,7 +10,3 @@ struct PackageHeader
    int      numChunks;
    int      totalSize;   // size of file (without package header)
 };
-
-
-
-#endif

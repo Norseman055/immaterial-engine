@@ -1,7 +1,5 @@
-#ifndef TEXTURE_MANAGER_H
-#define TEXTURE_MANAGER_H
+#pragma once
 
-#include "OpenGL.h"
 #include "TextureNode.h"
 #include "GraphicsObjectFileHdr.h"
 
@@ -19,15 +17,13 @@ private:
 	static TextureMan *privGetInstance();
 	TextureMan();
 
-	void privLoadTexture( const char * const inAssetName, GLuint *&textureID );
-	void privLoadMyTexture( const unsigned char * const tgaData, GLuint *&textureID );
+	const void privLoadTexture( const char * const inAssetName, GLuint *&textureID );
+	const void privLoadMyTexture( const unsigned char * const tgaData, GLuint *&textureID );
 	bool privLoadTGATexture( const char *szFileName, GLenum inMinFilter, GLenum inMagFilter, GLenum inWrapMode );
 	bool privLoadMyTGATexture( const unsigned char * const tgaData, GLenum inMinFilter, GLenum inMagFilter, GLenum inWrapMode );
-	void privAddToFront( TextureNodeLink *node, TextureNodeLink *&head );
+	const void privAddToFront( TextureNodeLink *node, TextureNodeLink *&head );
 
 private:
 	TextureNodeLink *active;
 
 };
-
-#endif

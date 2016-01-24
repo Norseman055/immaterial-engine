@@ -64,6 +64,7 @@
       <IgnoreSpecificDefaultLibraries>LIBCMT;LIBCMTD;</IgnoreSpecificDefaultLibraries>
       <SubSystem>Windows</SubSystem>
       <AdditionalOptions>/ENTRY:mainCRTStartup %(AdditionalOptions)</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -82,6 +83,7 @@
       <IgnoreSpecificDefaultLibraries>LIBCMT;LIBCMTD;</IgnoreSpecificDefaultLibraries>
       <SubSystem>Windows</SubSystem>
       <AdditionalOptions>/ENTRY:mainCRTStartup %(AdditionalOptions)</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

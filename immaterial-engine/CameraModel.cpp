@@ -1,26 +1,18 @@
-#include "OpenGL.h"
-#include "DEBUGGING.h"
 
 #include "CameraModel.h"
-#include "MathEngine.h"
-#include "CameraObject.h"
+#include "DEBUGGING.h"
 #include "CameraManager.h"
 
 extern GLShaderManager shaderManager;
 
 CameraModel::CameraModel()
-{
-	out("CameraModel(): ----------------\n");
+{ }
+
+const void CameraModel::update() {
+	this->createVAO( CameraMan::Find( CAMERA_CULLING ) );
 }
 
-void CameraModel::update()
-{
-	CameraObject *cam = CameraMan::Find( CAMERA_CULLING );
-	this->createVAO( cam );
-}
-
-void CameraModel::createVAO( CameraObject *cam )
-{
+const void CameraModel::createVAO( CameraObject* const cam ) {
 	struct MyVertex_stride
 	{
 		float x;

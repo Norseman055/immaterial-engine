@@ -1,6 +1,4 @@
-
-#ifndef ARCHIVE_MANAGER_H
-#define ARCHIVE_MANAGER_H
+#pragma once
 
 #include "DEBUGGING.h"
 
@@ -13,5 +11,3 @@ private:
 	ArchiveMan();
 	static ArchiveMan * privGetInstance();
 };
-
-#endif

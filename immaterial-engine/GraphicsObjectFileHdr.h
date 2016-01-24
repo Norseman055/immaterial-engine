@@ -1,5 +1,4 @@
-#ifndef GRAPHICS_OBJECT_FILE_HDR_H
-#define GRAPHICS_OBJECT_FILE_HDR_H
+#pragma once
 
 #include <string.h>
 
@@ -39,5 +38,3 @@ struct gObjFileHdr
 		: numVerts(0), vertBufferOffset(0), numTriList(0), triListBufferOffset(0)
 	{ }
 };
-
-#endif

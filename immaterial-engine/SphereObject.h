@@ -1,10 +1,6 @@
-#ifndef SPHERE_OBJECT_H
-#define SPHERE_OBJECT_H
+#pragma once
 
 #include "GraphicsObject.h"
-#include "TextureNode.h"
-#include "ShaderTypes.h"
-#include "BoundingSphere.h"
 
 enum SphereMove
 {
@@ -19,24 +15,24 @@ public:
 	SphereObject();
 
 	// for bounding volumes
-	void setPos( const Vect & v );
-	void setRad( const float radius );
+	const void setPos( const Vect & v );
+	const void setRad( const float radius );
 	
-	void setExtSphere( const Sphere &sphere );
-	void setExtMatrix( const Matrix &world );
+	const void setExtSphere( const Sphere& );
+	const void setExtMatrix( const Matrix& );
 
-	void setGraphicsObjec( GraphicsObject *graphicsObject );
+	const void setGraphicsObjec( GraphicsObject* const);
 
 	// Specific to Sphere
-	void setStartPos( const Vect & v);
+	const void setStartPos( const Vect& );
 	Vect getStartPos();
-	void setLightColor( const Vect & v);
-	void setLightPos( const Vect & v);
-	void setTextureName( TextureName inName );
-	void setStockShaderMode ( ShaderType inVal );
-	void setOriginalSphere( Sphere &origSphere );
-	void setSphereObject ();
-	Sphere getSphere();
+	const void setLightColor( const Vect& );
+	const void setLightPos( const Vect& );
+	const void setTextureName( const TextureName );
+	const void setStockShaderMode( const ShaderType );
+	const void setOriginalSphere( const Sphere& );
+	const void setSphereObject ();
+	Sphere getSphere() const;
 
 	// must define, base class has abstract methods
 	void transform( void );
@@ -46,16 +42,9 @@ public:
 
 private:
 	// internal variables for the instance
-	float	angle_y;
-	float	angle_z;
-
-	Vect color;
-	Sphere sphere;
-	
 	Matrix extWorld;
+	Vect color;
 	Sphere extSphere;
-
+	Sphere sphere;
 	SphereObject *cullingSphere;
 };
-
-#endif
