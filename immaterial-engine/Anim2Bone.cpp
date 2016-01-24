@@ -1,4 +1,3 @@
-
 #include "OpenGL.h"
 #include "DEBUGGING.h"
 #include "Constants.h"
@@ -18,13 +17,12 @@ void walkAnimNode( GraphicsObject *node );
 
 extern PyramidModel *myPyramid;
 
-void SetTeddyHierarchy()
-{
+void SetTeddyHierarchy() {
 	// ____________________ ANIMATION TESTING _______________________
 
 	myPyramid = new PyramidModel;
 	myPyramid->createVAO();
-	
+
 	// ________________________ TEDDY TEST _____________________________
 	auto *tree = GraphicsObjMan::GetMainTree();
 	pRootNode = tree->getRoot();
@@ -89,13 +87,12 @@ void SetTeddyHierarchy()
 	auto *pBip01_Head = new PyramidObject( "Bip01_Head", 19 );
 	tree->insert( pBip01_Head, pBip01_Neck );
 
-	pBip01->setLightColor( Vect(0.5f, 1.5f, 0.5f) );
-	pBip01_L_Foot->setLightColor( Vect(1.5f, 0.5f, 0.5f) );
-	pBip01_R_Foot->setLightColor( Vect(0.5f, 0.5f, 1.5f) );
+	pBip01->setLightColor( Vect( 0.5f, 1.5f, 0.5f ) );
+	pBip01_L_Foot->setLightColor( Vect( 1.5f, 0.5f, 0.5f ) );
+	pBip01_R_Foot->setLightColor( Vect( 0.5f, 0.5f, 1.5f ) );
 }
 
-void SetHumanoidHierarchy()
-{
+void SetHumanoidHierarchy() {
 	// ____________________ ANIMATION TESTING _______________________
 	myPyramid = new PyramidModel;
 	myPyramid->createVAO();
