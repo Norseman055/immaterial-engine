@@ -8,8 +8,7 @@ AnimNode::AnimNode( const char * const inName, const int inFrames, const int inB
 	if (strlen(inName) < ANIM_ASSET_NAME_SIZE)	{
 		memcpy(this->animName, inName, strlen(inName));
 		this->animName[strlen(inName)] = '\0';
-	}
-	else	{
+	} else {
 		memcpy(this->animName, inName, ANIM_ASSET_NAME_SIZE - 1);
 		this->animName[ANIM_ASSET_NAME_SIZE - 1] = '\0';
 	}
@@ -25,8 +24,7 @@ const void AnimNode::addBucket( Frame_Bucket * node )
 
 	if (this->animData == nullptr) {
 		this->animData = node;
-	}
-	else {
+	} else {
 		auto ptr = this->animData;
 		// go to last bucket in list
 		while (ptr->nextBucket != nullptr)	{

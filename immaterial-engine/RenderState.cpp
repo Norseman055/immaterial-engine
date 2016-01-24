@@ -5,6 +5,7 @@
 #include "AnimControllerMan.h"
 #include "GraphicsManager.h"
 #include "ModelManager.h"
+#include "CameraManager.h"
 
 // GL GLOBALS
 extern GLShaderManager shaderManager;
@@ -17,6 +18,7 @@ void ShutdownRC(void) {
 	GraphicsObjMan::DeleteGraphicsObjects();
 	ModelMan::DeleteModels();
 	TextureMan::DeleteTextures();
+	CameraMan::DeleteCameras();
 }
 
 // ------------------------------------------------------------------------

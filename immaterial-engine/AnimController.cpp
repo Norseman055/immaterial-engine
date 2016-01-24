@@ -75,7 +75,7 @@ const void AnimController::processAnimation( Time & tCurr ) const
 
 	auto bResult = this->result->pBone;
 
-	while( tCurr >= pTmp->KeyTime && pTmp->nextBucket != 0 )
+	while( tCurr >= pTmp->KeyTime && pTmp->nextBucket != nullptr )
 	{
 		pTmp = pTmp->nextBucket;
 	}
@@ -121,9 +121,9 @@ const void AnimController::privWalkAnimNode( PyramidObject * const node ) const
 {
 	setBonePose( node );
 
-	PyramidObject *child = nullptr;
+	PyramidObject *child = 0;
 
-	if (node->getChild() != nullptr)	{
+	if (node->getChild() != 0)	{
 		child = (PyramidObject *)node->getChild();
 		while (child != 0)	{
 			privWalkAnimNode( child );
@@ -178,9 +178,11 @@ PyramidObject* AnimController::getSkeleton() const
 }
 
 AnimController::AnimController( AnimNode *inBucket, PyramidObject *inRoot )
-	: index(-1), pMode(Loop), animBucket(inBucket), skeletonRoot(inRoot), next(nullptr), prev(nullptr), result(nullptr)
+	: index(-1), pMode(Loop), animBucket(inBucket), skeletonRoot(inRoot), next(nullptr), prev(nullptr)
 {
 	setSkeletonController();
+	this->result = new Frame_Bucket;
+	this->result->pBone = new Bone;
 }
 
 const void AnimController::setSkeletonController( ) const

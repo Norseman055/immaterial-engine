@@ -13,6 +13,7 @@ public:
 	static void LoadCameras();
 	static void AddCamera( CameraObject* const );
 	static void RemoveCamera( );
+	static void DeleteCameras();
 	static void SetCurrCamera( CameraObject* const );
 	static void SwitchState();
 	static CameraObject* Find( const CameraName );

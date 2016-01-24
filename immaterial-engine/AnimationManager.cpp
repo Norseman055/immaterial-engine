@@ -37,10 +37,10 @@ void AnimationMan::LoadAnimationBuffer(const unsigned char* const animBuff, cons
 
 const void AnimationMan::privAddToFront( AnimNode* const node, AnimNode*& head) const
 {
-	assert (node != 0);
+	assert (node != nullptr);
 
 	// empty list
-	if (head == 0)
+	if (head == nullptr)
 	{
 		head = node;
 	}
@@ -54,8 +54,7 @@ const void AnimationMan::privAddToFront( AnimNode* const node, AnimNode*& head) 
 
 AnimNode* AnimationMan::GetAnimation( const char* const inName )
 {
-	auto aMan = privGetInstance();
-	auto walker = aMan->animList;
+	auto walker = privGetInstance()->animList;
 	while (walker->next != nullptr)	{
 		if (strcmp(walker->getName(), inName) == 0)	{
 			break;
@@ -82,7 +81,7 @@ void AnimationMan::DeleteAnimations()
 	auto walker = aMan->animList;
 	auto tmp = walker;
 
-	while(walker != 0)	{
+	while(walker != nullptr)	{
 		walker = walker->next;
 		delete tmp;
 		tmp = walker;

@@ -16,6 +16,11 @@ public:
 private:
 	AnimNode();
 	
+private:
+	// data
+	char animName[32];
+	Frame_Bucket *animData;
+
 public:
 	// data links
 	int numKeyframes;
@@ -23,8 +28,4 @@ public:
 	AnimNode* next;
 	AnimNode* prev;
 
-private:
-	// data
-	Frame_Bucket *animData;
-	char animName[32];
 };

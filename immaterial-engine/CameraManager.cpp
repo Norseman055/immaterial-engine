@@ -76,6 +76,16 @@ void CameraMan::RemoveCamera( ) {
 	}
 }
 
+void CameraMan::DeleteCameras() {
+	auto walker = ( CameraNode * ) privGetInstance()->active;
+	auto tmp = walker;
+	while ( walker != nullptr ) {
+		walker = ( CameraNode* ) walker->next;
+		delete tmp;
+		tmp = walker;
+	}
+}
+
 void CameraMan::SetCurrCamera( CameraObject* const inCam ) {
 	privGetInstance()->currCamera = inCam;
 }
