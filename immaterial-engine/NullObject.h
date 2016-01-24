@@ -6,12 +6,12 @@
 
 class NullObject : public GraphicsObject {
 public:
-	NullObject(const char * const _Name);
-	
+	NullObject( const char * const _Name );
+
 	// must define, base class has abstract methods
 	void transform( void );
 	void draw( void );
-	void setRenderState(void);
-	void checkCulling(void);
-	Vect getStartPos(void);
+	void setRenderState( void );
+	void checkCulling( void );
+	Vect getStartPos( void );
 };

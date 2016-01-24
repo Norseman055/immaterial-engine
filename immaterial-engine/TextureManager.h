@@ -3,14 +3,13 @@
 #include "TextureNode.h"
 #include "GraphicsObjectFileHdr.h"
 
-class TextureMan
-{
+class TextureMan {
 public:
-	static void AddTexture( const char * const inAssetName, const TextureName inName);
+	static void AddTexture( const char * const inAssetName, const TextureName inName );
 	static bool LoadTexture( const char * const fileName, const char * const TextID );
 	static bool LoadBufferedTexture( const unsigned char * const textBuff, const tffInfo & info );
 	static void DeleteTextures();
-	static GLuint Find( const GLuint inName);
+	static GLuint Find( const GLuint inName );
 
 private:
 	// singleton
@@ -25,5 +24,4 @@ private:
 
 private:
 	TextureNodeLink *active;
-
 };

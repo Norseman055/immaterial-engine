@@ -17,10 +17,9 @@ struct TGAHEADER {
 	char	ImageDescriptor;
 
 	TGAHEADER()
-		: IDLength(0), ColorMapType(0), DataTypeCode(0), ColorMapOrigin(0), ColorMapLength(0), ColorMapDepth(0),
-			x_origin(0), y_origin(0), width(0), height(0), BitsPerPixel(0), ImageDescriptor(0)
-	{}
+		: IDLength( 0 ), ColorMapType( 0 ), DataTypeCode( 0 ), ColorMapOrigin( 0 ), ColorMapLength( 0 ), ColorMapDepth( 0 ),
+		x_origin( 0 ), y_origin( 0 ), width( 0 ), height( 0 ), BitsPerPixel( 0 ), ImageDescriptor( 0 ) { }
 };
 
-GLbyte* myReadTGABits( const void* , GLint & , GLint & , GLint & , GLenum & );
+GLbyte* myReadTGABits( const void*, GLint &, GLint &, GLint &, GLenum & );
 unsigned char* getTGAFile( const char* const );

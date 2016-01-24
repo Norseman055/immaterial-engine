@@ -1,4 +1,3 @@
-
 // ===== MY HEADERS =====
 #include <vld.h>	// Visual Leak Detector - Advanced memory leak Open Source software
 
@@ -12,7 +11,7 @@
 #include "PyramidModel.h"
 
 // ----------------------------------------------------------------------------
-// Score card - How many do we have?  
+// Score card - How many do we have?
 // Goal remove them all into proper systems
 // Keep all Globals defined here, extern elsewhere
 // ----------------------------------------------------------------------------
@@ -23,22 +22,20 @@ PyramidModel		*myPyramid;
 // ----------------------------------------------------------------------------
 // Uncaught exception handler to help program exit cleanly
 // ----------------------------------------------------------------------------
-void terminate_prog()
-{
-	out("Main(): ---------- TERMINATED ----------");
-	exit(-1);
+void terminate_prog() {
+	out( "Main(): ---------- TERMINATED ----------" );
+	exit( -1 );
 }
 
 // ----------------------------------------------------------------------------
 // Main entry point for GLUT based programs
-int main(int argc, char* argv[])
-{
-	try{
+int main( int argc, char* argv[] ) {
+	try {
 		// set directory
-		gltSetWorkingDirectory(argv[0]);
+		gltSetWorkingDirectory( argv[0] );
 
 		// initialize GLUT
-		glutInit(&argc, argv);
+		glutInit( &argc, argv );
 
 		// create graphics windows with defaults
 		createGraphicsWindow();
@@ -47,7 +44,7 @@ int main(int argc, char* argv[])
 		// Internal context (state) for the graphics chips
 		SetupRC();
 
-		// Main Loop, stays running 
+		// Main Loop, stays running
 		// Processes, messages, keystrokes until window is closed
 		glutMainLoop();
 
@@ -55,9 +52,7 @@ int main(int argc, char* argv[])
 		ShutdownRC();
 
 		return 0;
-	}
-	catch (...)
-	{
+	} catch ( ... ) {
 		terminate_prog();
 	}
 }

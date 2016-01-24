@@ -2,8 +2,7 @@
 
 #include "DEBUGGING.h"
 
-class ArchiveMan
-{
+class ArchiveMan {
 public:
 	static void LoadArchive( const char * fileName );
 

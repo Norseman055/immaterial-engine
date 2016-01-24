@@ -5,7 +5,7 @@
 class PyramidModel {
 public:
 	PyramidModel();
-	void createVAO(void);
+	void createVAO( void );
 
 	// Temporary placement for now
 	GLuint				vao;

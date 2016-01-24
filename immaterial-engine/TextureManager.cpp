@@ -1,4 +1,3 @@
-
 #include "DEBUGGING.h"
 #include "File.h"
 
@@ -7,9 +6,8 @@
 #include "TGAHeader.h"
 #include "md5.h"
 
-TextureMan::TextureMan() 
-	: active(nullptr)
-{ }
+TextureMan::TextureMan()
+	: active( nullptr ) { }
 
 // singleton
 TextureMan* TextureMan::privGetInstance() {
@@ -48,7 +46,7 @@ bool TextureMan::LoadTexture( const char * const fileName, const char * const te
 
 	// hash the string textID and store it as the textureID for the manager
 	MD5Output out;
-	MD5Buffer ((unsigned char *)textID, strlen(textID), out);
+	MD5Buffer( ( unsigned char * ) textID, strlen( textID ), out );
 	GLuint hashID = out.dWord_0 ^ out.dWord_1 ^ out.dWord_2 ^ out.dWord_3;
 
 	// make a new node, set its values
@@ -71,7 +69,7 @@ bool TextureMan::LoadBufferedTexture( const unsigned char * const textBuff, cons
 
 	// hash the string inName and store it as the textureID for the manager
 	MD5Output out;
-	MD5Buffer ((unsigned char *)inHdr.textName, strlen(inHdr.textName), out);
+	MD5Buffer( ( unsigned char * ) inHdr.textName, strlen( inHdr.textName ), out );
 	GLuint hashID = out.dWord_0 ^ out.dWord_1 ^ out.dWord_2 ^ out.dWord_3;
 
 	// make a new node, set its values
@@ -86,23 +84,23 @@ bool TextureMan::LoadBufferedTexture( const unsigned char * const textBuff, cons
 GLuint TextureMan::Find( const GLuint inName ) {
 	// get instance
 	auto pTextMan = privGetInstance();
-	
-	auto walker = (TextureNode *)pTextMan->active;
-	
+
+	auto walker = ( TextureNode * ) pTextMan->active;
+
 	// if there is a texture to be asked for, return it
-	if (inName != NOT_INITIALIZED) {
+	if ( inName != NOT_INITIALIZED ) {
 		// find node
 		while ( walker != nullptr ) {
 			if ( walker->name == inName ) {
 				break;
 			}
 
-			walker = (TextureNode *)walker->next;
+			walker = ( TextureNode * ) walker->next;
 		}
 	} else {
 		// otherwise, return the dummy texture (first one ever loaded)
-		while ( (TextureNode *)walker->next != nullptr ) {
-			walker = (TextureNode *)walker->next;
+		while ( ( TextureNode * ) walker->next != nullptr ) {
+			walker = ( TextureNode * ) walker->next;
 		}
 	}
 
@@ -115,7 +113,7 @@ void TextureMan::DeleteTextures() {
 	auto walker = ( TextureNode * ) privGetInstance()->active;
 	auto tmp = walker;
 	while ( walker != nullptr ) {
-		walker = (TextureNode *)walker->next;
+		walker = ( TextureNode * ) walker->next;
 		glDeleteTextures( 1, &tmp->textureID );
 		delete tmp;
 		tmp = walker;
@@ -123,11 +121,10 @@ void TextureMan::DeleteTextures() {
 }
 
 const void TextureMan::privAddToFront( TextureNodeLink *node, TextureNodeLink *&head ) {
-	assert (node != 0);
+	assert( node != 0 );
 
 	// empty list
-	if (head == 0)
-	{
+	if ( head == 0 ) {
 		head = node;
 	} else {
 		// non-empty list, add to front
@@ -152,63 +149,62 @@ const void TextureMan::privLoadMyTexture( const unsigned char * const tgaData, G
 }
 
 // Load a TGA as a 2D Texture. Completely initialize the state
-bool TextureMan::privLoadTGATexture(const char *szFileName, GLenum minFilter, GLenum magFilter, GLenum wrapMode) {
+bool TextureMan::privLoadTGATexture( const char *szFileName, GLenum minFilter, GLenum magFilter, GLenum wrapMode ) {
 	GLbyte *pBits;
 	int nWidth, nHeight, nComponents;
 	GLenum eFormat;
-	
+
 	// Read the texture bits
-	pBits = gltReadTGABits(szFileName, &nWidth, &nHeight, &nComponents, &eFormat);
-	if(pBits == NULL) 
+	pBits = gltReadTGABits( szFileName, &nWidth, &nHeight, &nComponents, &eFormat );
+	if ( pBits == NULL )
 		return false;
-	
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapMode);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapMode);
-	
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter);
-    
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glTexImage2D(GL_TEXTURE_2D, 0, nComponents, nWidth, nHeight, 0,
-				 eFormat, GL_UNSIGNED_BYTE, pBits);
-    
-    if(minFilter == GL_LINEAR_MIPMAP_LINEAR || 
-       minFilter == GL_LINEAR_MIPMAP_NEAREST ||
-       minFilter == GL_NEAREST_MIPMAP_LINEAR ||
-       minFilter == GL_NEAREST_MIPMAP_NEAREST)
-        glGenerateMipmap(GL_TEXTURE_2D);
-    
+
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapMode );
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapMode );
+
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter );
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter );
+
+	glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
+	glTexImage2D( GL_TEXTURE_2D, 0, nComponents, nWidth, nHeight, 0,
+				  eFormat, GL_UNSIGNED_BYTE, pBits );
+
+	if ( minFilter == GL_LINEAR_MIPMAP_LINEAR ||
+		 minFilter == GL_LINEAR_MIPMAP_NEAREST ||
+		 minFilter == GL_NEAREST_MIPMAP_LINEAR ||
+		 minFilter == GL_NEAREST_MIPMAP_NEAREST )
+		 glGenerateMipmap( GL_TEXTURE_2D );
+
 	return true;
 }
 
-bool TextureMan::privLoadMyTGATexture( const unsigned char * const tgaData, GLenum minFilter, GLenum magFilter, GLenum wrapMode )
-{
+bool TextureMan::privLoadMyTGATexture( const unsigned char * const tgaData, GLenum minFilter, GLenum magFilter, GLenum wrapMode ) {
 	// my TGA Function
 	GLbyte *pBits;
 	int nWidth, nHeight, nComponents;
 	GLenum eFormat;
 
-	pBits = myReadTGABits(tgaData, nWidth, nHeight, nComponents, eFormat);
+	pBits = myReadTGABits( tgaData, nWidth, nHeight, nComponents, eFormat );
 
-	if (pBits == nullptr) {
+	if ( pBits == nullptr ) {
 		return false;
 	}
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapMode);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapMode);
-	
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter);
-    
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glTexImage2D(GL_TEXTURE_2D, 0, nComponents, nWidth, nHeight, 0,
-				 eFormat, GL_UNSIGNED_BYTE, pBits);
-    
-    if(minFilter == GL_LINEAR_MIPMAP_LINEAR || 
-       minFilter == GL_LINEAR_MIPMAP_NEAREST ||
-       minFilter == GL_NEAREST_MIPMAP_LINEAR ||
-       minFilter == GL_NEAREST_MIPMAP_NEAREST)
-        glGenerateMipmap(GL_TEXTURE_2D);
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapMode );
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapMode );
+
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter );
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter );
+
+	glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
+	glTexImage2D( GL_TEXTURE_2D, 0, nComponents, nWidth, nHeight, 0,
+				  eFormat, GL_UNSIGNED_BYTE, pBits );
+
+	if ( minFilter == GL_LINEAR_MIPMAP_LINEAR ||
+		 minFilter == GL_LINEAR_MIPMAP_NEAREST ||
+		 minFilter == GL_NEAREST_MIPMAP_LINEAR ||
+		 minFilter == GL_NEAREST_MIPMAP_NEAREST )
+		 glGenerateMipmap( GL_TEXTURE_2D );
 
 	return true;
 }

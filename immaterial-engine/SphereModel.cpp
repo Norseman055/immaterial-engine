@@ -1,4 +1,3 @@
-
 // MY HEADERS
 #include "DEBUGGING.h"
 
@@ -14,7 +13,7 @@ extern GLShaderManager shaderManager;
 #define USE_SPHERE_FILE 1 // 1 - uses the data file "sphere.cdm", 0 - creates and uses the file "sphere.cdm".
 
 SphereModel::SphereModel() {
-	out("SphereModel(): ---------------\n");
+	out( "SphereModel(): ---------------\n" );
 }
 
 void SphereModel::createVAO() {
@@ -28,48 +27,48 @@ void SphereModel::createVAO() {
 		float ny;
 		float nz;
 	};
-	
+
 	struct MyTriList {
 		unsigned short v1;
 		unsigned short v2;
 		unsigned short v3;
 	};
-	
+
 	FileHandle fh;
 	FileError  ferror;
 
 #if USE_SPHERE_FILE
 
 	ferror = File::open( fh, "sphere.cdm", FILE_READ );
-	assert (ferror == FILE_SUCCESS);
+	assert( ferror == FILE_SUCCESS );
 
 	// get header data
 	gObjFileHdr cubeHdr;
 
-	ferror = File::read( fh, &cubeHdr, sizeof(gObjFileHdr) );
-	assert (ferror == FILE_SUCCESS);
+	ferror = File::read( fh, &cubeHdr, sizeof( gObjFileHdr ) );
+	assert( ferror == FILE_SUCCESS );
 
 	// create vertex buffer
-	auto pVerts = (MyVertex_stride *)malloc(cubeHdr.numVerts * sizeof(MyVertex_stride) );
+	auto pVerts = ( MyVertex_stride * ) malloc( cubeHdr.numVerts * sizeof( MyVertex_stride ) );
 
 	// load verts
 	ferror = File::seek( fh, FILE_SEEK_BEGIN, cubeHdr.vertBufferOffset );
-	assert (ferror == FILE_SUCCESS);
+	assert( ferror == FILE_SUCCESS );
 
-	ferror = File::read( fh, pVerts, cubeHdr.numVerts * sizeof(MyVertex_stride) );
+	ferror = File::read( fh, pVerts, cubeHdr.numVerts * sizeof( MyVertex_stride ) );
 
 	// create trilist buffer
-	auto tlist = (MyTriList *)malloc( cubeHdr.numTriList * sizeof(MyTriList) );
+	auto tlist = ( MyTriList * ) malloc( cubeHdr.numTriList * sizeof( MyTriList ) );
 
 	// load triList
 	ferror = File::seek( fh, FILE_SEEK_BEGIN, cubeHdr.triListBufferOffset );
-	assert (ferror == FILE_SUCCESS);
+	assert( ferror == FILE_SUCCESS );
 
-	ferror = File::read( fh, tlist, cubeHdr.numTriList * sizeof(MyTriList) );
-	assert (ferror == FILE_SUCCESS);
+	ferror = File::read( fh, tlist, cubeHdr.numTriList * sizeof( MyTriList ) );
+	assert( ferror == FILE_SUCCESS );
 
 	ferror = File::close( fh );
-	assert (ferror == FILE_SUCCESS);
+	assert( ferror == FILE_SUCCESS );
 
 #else
 	MyTriList tlist[200];
@@ -1974,124 +1973,124 @@ void SphereModel::createVAO() {
 	gObjFileHdr sphereHdr;
 
 	// write data of header to sphereHdr
-	ferror = File::read( fh, &sphereHdr, sizeof(gObjFileHdr) );
-	assert (ferror == FILE_SUCCESS);
+	ferror = File::read( fh, &sphereHdr, sizeof( gObjFileHdr ) );
+	assert( ferror == FILE_SUCCESS );
 
 	// close
 	ferror = File::close( fh );
 
-		// 2. Write the data to the file
-	
+	// 2. Write the data to the file
+
 	// create file if not done already, start with header
 	ferror = File::open( fh, "sphere.cdm", FILE_READ_WRITE );
-	assert (ferror == FILE_SUCCESS);
+	assert( ferror == FILE_SUCCESS );
 
 	// write the header
-	ferror = File::write( fh, &sphereHdr, sizeof(gObjFileHdr) );
-	assert (ferror == FILE_SUCCESS);
+	ferror = File::write( fh, &sphereHdr, sizeof( gObjFileHdr ) );
+	assert( ferror == FILE_SUCCESS );
 
-		// update header with numVerts, VertBufferOffset
+	// update header with numVerts, VertBufferOffset
 	sphereHdr.numVerts = 121;
 	ferror = File::tell( fh, sphereHdr.vertBufferOffset );
-	assert (ferror == FILE_SUCCESS);
+	assert( ferror == FILE_SUCCESS );
 
-		// write the vertex data
-	ferror = File::write( fh, pVerts, 121 * sizeof(MyVertex_stride) );
-	assert (ferror == FILE_SUCCESS);
+	// write the vertex data
+	ferror = File::write( fh, pVerts, 121 * sizeof( MyVertex_stride ) );
+	assert( ferror == FILE_SUCCESS );
 
-		// update header with numTriList, triListBufferOffset
+	// update header with numTriList, triListBufferOffset
 	sphereHdr.numTriList = 200;
 	ferror = File::tell( fh, sphereHdr.triListBufferOffset );
-	assert (ferror == FILE_SUCCESS);
+	assert( ferror == FILE_SUCCESS );
 
-		// write the triList data
-	ferror = File::write( fh, tlist, 200 * sizeof(MyTriList) );
-	assert (ferror == FILE_SUCCESS);
+	// write the triList data
+	ferror = File::write( fh, tlist, 200 * sizeof( MyTriList ) );
+	assert( ferror == FILE_SUCCESS );
 
-		// fix header with updated data
+	// fix header with updated data
 	ferror = File::seek( fh, FILE_SEEK_BEGIN, 0 );
-	assert (ferror == FILE_SUCCESS);
+	assert( ferror == FILE_SUCCESS );
 
-	ferror = File::write( fh, &sphereHdr, sizeof(gObjFileHdr) );
-	assert (ferror == FILE_SUCCESS);
+	ferror = File::write( fh, &sphereHdr, sizeof( gObjFileHdr ) );
+	assert( ferror == FILE_SUCCESS );
 
-		// close file
+	// close file
 	ferror = File::close( fh );
-	assert (ferror == FILE_SUCCESS);
+	assert( ferror == FILE_SUCCESS );
 
 #endif
 
 	// -------------------------------------------------------------------
 
 	/* Allocate and assign a Vertex Array Object to our handle */
-    glGenVertexArrays(1, &this->vao);
- 
-    /* Bind our Vertex Array Object as the current used object */
-    glBindVertexArray(this->vao);
+	glGenVertexArrays( 1, &this->vao );
 
-    //GLuint vbo;
-    GLuint vbo[2];
+	/* Bind our Vertex Array Object as the current used object */
+	glBindVertexArray( this->vao );
 
-    /* Allocate and assign two Vertex Buffer Objects to our handle */
-    glGenBuffers(2, vbo);
- 
-    // Load the combined data: ---------------------------------------------------------
+	//GLuint vbo;
+	GLuint vbo[2];
 
-		/* Bind our first VBO as being the active buffer and storing vertex attributes (coordinates) */
-		glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
- 
-		/* Copy the vertex data to our buffer */
-		// glBufferData(type, size in bytes, data, usage) 
-		glBufferData(GL_ARRAY_BUFFER, sizeof(MyVertex_stride) * 121, pVerts, GL_STATIC_DRAW);
-		
-   // VERTEX data: ---------------------------------------------------------
-		
-		// Set Attribute to 0
-		//           WHY - 0? and not 1,2,3 (this is tied to the shader attribute, it is defined in GLShaderManager.h)
-		//           GLT_ATTRIBUTE_VERTEX = 0
+	/* Allocate and assign two Vertex Buffer Objects to our handle */
+	glGenBuffers( 2, vbo );
 
-		// Specifies the index of the generic vertex attribute to be enabled
-		glEnableVertexAttribArray(GLT_ATTRIBUTE_VERTEX);  
+	// Load the combined data: ---------------------------------------------------------
 
-		/* Specify that our coordinate data is going into attribute index 0, and contains 3 floats per vertex */
-		// ( GLuint index,  GLint size,  GLenum type,  GLboolean normalized,  GLsizei stride,  const GLvoid * pointer);
-		auto offsetVert = (void *)((unsigned int)&pVerts[0].x - (unsigned int)pVerts);
-		glVertexAttribPointer(GLT_ATTRIBUTE_VERTEX, 3, GL_FLOAT,  GL_FALSE, sizeof(MyVertex_stride), offsetVert);
-          
+	/* Bind our first VBO as being the active buffer and storing vertex attributes (coordinates) */
+	glBindBuffer( GL_ARRAY_BUFFER, vbo[0] );
+
+	/* Copy the vertex data to our buffer */
+	// glBufferData(type, size in bytes, data, usage)
+	glBufferData( GL_ARRAY_BUFFER, sizeof( MyVertex_stride ) * 121, pVerts, GL_STATIC_DRAW );
+
+	// VERTEX data: ---------------------------------------------------------
+
+	// Set Attribute to 0
+	//           WHY - 0? and not 1,2,3 (this is tied to the shader attribute, it is defined in GLShaderManager.h)
+	//           GLT_ATTRIBUTE_VERTEX = 0
+
+	// Specifies the index of the generic vertex attribute to be enabled
+	glEnableVertexAttribArray( GLT_ATTRIBUTE_VERTEX );
+
+	/* Specify that our coordinate data is going into attribute index 0, and contains 3 floats per vertex */
+	// ( GLuint index,  GLint size,  GLenum type,  GLboolean normalized,  GLsizei stride,  const GLvoid * pointer);
+	auto offsetVert = ( void * ) (( unsigned int ) &pVerts[0].x - ( unsigned int ) pVerts);
+	glVertexAttribPointer( GLT_ATTRIBUTE_VERTEX, 3, GL_FLOAT, GL_FALSE, sizeof( MyVertex_stride ), offsetVert );
+
 	// Texture data: ---------------------------------------------------------
 
-		// Set Attribute to 3
-		//           WHY - 3? and not 1,2,3 (this is tied to the shader attribute, it is defined in GLShaderManager.h)
-		//           GLT_ATTRIBUTE_TEXTURE0 = 3
+	// Set Attribute to 3
+	//           WHY - 3? and not 1,2,3 (this is tied to the shader attribute, it is defined in GLShaderManager.h)
+	//           GLT_ATTRIBUTE_TEXTURE0 = 3
 
-		// Specifies the index of the generic vertex attribute to be enabled
-		glEnableVertexAttribArray(GLT_ATTRIBUTE_TEXTURE0);  
+	// Specifies the index of the generic vertex attribute to be enabled
+	glEnableVertexAttribArray( GLT_ATTRIBUTE_TEXTURE0 );
 
-		/* Specify that our coordinate data is going into attribute index 3, and contains 2 floats per vertex */
-		// ( GLuint index,  GLint size,  GLenum type,  GLboolean normalized,  GLsizei stride,  const GLvoid * pointer);
-		auto offsetTex = (void *)((unsigned int)&pVerts[0].s - (unsigned int)pVerts);
-		glVertexAttribPointer(GLT_ATTRIBUTE_TEXTURE0, 2, GL_FLOAT,  GL_FALSE, sizeof(MyVertex_stride), offsetTex);
+	/* Specify that our coordinate data is going into attribute index 3, and contains 2 floats per vertex */
+	// ( GLuint index,  GLint size,  GLenum type,  GLboolean normalized,  GLsizei stride,  const GLvoid * pointer);
+	auto offsetTex = ( void * ) (( unsigned int ) &pVerts[0].s - ( unsigned int ) pVerts);
+	glVertexAttribPointer( GLT_ATTRIBUTE_TEXTURE0, 2, GL_FLOAT, GL_FALSE, sizeof( MyVertex_stride ), offsetTex );
 
 	// Normal data: ---------------------------------------------------------
 
-		// Set Attribute to 2
-		//           WHY - 2? and not 1,2,3 (this is tied to the shader attribute, it is defined in GLShaderManager.h)
-		//           GLT_ATTRIBUTE_NORMAL = 2
+	// Set Attribute to 2
+	//           WHY - 2? and not 1,2,3 (this is tied to the shader attribute, it is defined in GLShaderManager.h)
+	//           GLT_ATTRIBUTE_NORMAL = 2
 
-		// Specifies the index of the generic vertex attribute to be enabled
-		glEnableVertexAttribArray(GLT_ATTRIBUTE_NORMAL);  
+	// Specifies the index of the generic vertex attribute to be enabled
+	glEnableVertexAttribArray( GLT_ATTRIBUTE_NORMAL );
 
-		/* Specify that our coordinate data is going into attribute index 3, and contains 2 floats per vertex */
-		// ( GLuint index,  GLint size,  GLenum type,  GLboolean normalized,  GLsizei stride,  const GLvoid * pointer);
-		auto offsetNorm = (void *)((unsigned int)&pVerts[0].nx - (unsigned int)pVerts);
-		glVertexAttribPointer(GLT_ATTRIBUTE_NORMAL, 3, GL_FLOAT,  GL_FALSE, sizeof(MyVertex_stride), offsetNorm);
+	/* Specify that our coordinate data is going into attribute index 3, and contains 2 floats per vertex */
+	// ( GLuint index,  GLint size,  GLenum type,  GLboolean normalized,  GLsizei stride,  const GLvoid * pointer);
+	auto offsetNorm = ( void * ) (( unsigned int ) &pVerts[0].nx - ( unsigned int ) pVerts);
+	glVertexAttribPointer( GLT_ATTRIBUTE_NORMAL, 3, GL_FLOAT, GL_FALSE, sizeof( MyVertex_stride ), offsetNorm );
 
 	// Load the index data: ---------------------------------------------------------
-	
-		/* Bind our 2nd VBO as being the active buffer and storing index ) */
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo[1]);
 
-		/* Copy the index data to our buffer */
-		// glBufferData(type, size in bytes, data, usage) 
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(MyTriList) * 200, tlist, GL_STATIC_DRAW);
+	/* Bind our 2nd VBO as being the active buffer and storing index ) */
+	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, vbo[1] );
+
+	/* Copy the index data to our buffer */
+	// glBufferData(type, size in bytes, data, usage)
+	glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof( MyTriList ) * 200, tlist, GL_STATIC_DRAW );
 }

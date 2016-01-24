@@ -6,8 +6,7 @@
 
 class GraphicsObject;
 
-class AnimControllerMan
-{
+class AnimControllerMan {
 public:
 	static void AddController( AnimController* const );
 	static void ProcessAnimation( Time &tCurr );
@@ -17,7 +16,7 @@ public:
 private:
 	AnimControllerMan();
 	static AnimControllerMan* privGetInstance();
-	const void privAddToFront(AnimController *inNode, AnimController* &head);
+	const void privAddToFront( AnimController *inNode, AnimController* &head );
 	const void privWalkAnimNode( GraphicsObject *node );
 	const void setBonePose( GraphicsObject *node );
 

@@ -4,9 +4,8 @@ class CameraObject;
 
 class CameraNodeLink {
 public:
-	CameraNodeLink() 
-		: next(nullptr), prev(nullptr)
-	{ }
+	CameraNodeLink()
+		: next( nullptr ), prev( nullptr ) { }
 
 	CameraNodeLink *next;
 	CameraNodeLink *prev;
@@ -17,6 +16,6 @@ public:
 	CameraNode();
 	const void set( CameraObject* const );
 
-public: 
+public:
 	CameraObject *myCamera;
 };

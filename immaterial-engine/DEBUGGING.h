@@ -5,7 +5,7 @@
 #include <stdio.h>
 
 static char buff[256];  // Needs a buffer - big enough
-	// Magic macro
+// Magic macro
 #define out(A,...) sprintf_s(buff,A,##__VA_ARGS__); OutputDebugString(buff);
 
 #define UNUSED(x) x

@@ -10,9 +10,9 @@ public:
 	PyramidObject();
 	PyramidObject( const char* const );
 	PyramidObject( const char* const, const int );
-	
-	const void setControllerDepthFirst(const AnimController * const inController);
-	
+
+	const void setControllerDepthFirst( const AnimController * const inController );
+
 	// Specific to Pyramid
 	const void setStartPos( const Vect& );
 	const void setLightColor( const Vect& );
@@ -28,12 +28,12 @@ public:
 	// must define, base class has abstract methods
 	void transform( void );
 	void draw( void );
-	void setRenderState(void);
-	void checkCulling(void);
+	void setRenderState( void );
+	void checkCulling( void );
 	Vect getStartPos();
 
 	// bring out into new type of object: animation object? remove from graphic object entirely
-	void setIndex(int val);
+	void setIndex( int val );
 
 private:
 	// internal variables for the instance

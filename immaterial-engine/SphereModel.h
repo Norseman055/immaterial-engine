@@ -5,7 +5,7 @@
 class SphereModel {
 public:
 	SphereModel();
-	void createVAO(void);
+	void createVAO( void );
 
 	// Temp for now
 	GLuint vao;

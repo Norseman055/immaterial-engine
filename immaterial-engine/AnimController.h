@@ -4,18 +4,16 @@
 #include "Time.h"
 #include "PyramidObject.h"
 
-enum PlayMode
-{
+enum PlayMode {
 	Loop = 0,
-	Rewind, 
+	Rewind,
 	Clamp,
 	Pause
 };
 
-class AnimController
-{
+class AnimController {
 public:
-	AnimController(AnimNode *, PyramidObject *);
+	AnimController( AnimNode *, PyramidObject * );
 
 	const void processAnimation( Time & ) const;
 	const void setIndex( const int );
@@ -27,10 +25,10 @@ public:
 private:
 	AnimController();
 
-	const void switchTime(Time &) const;
-	const void findMaxTime(Time &) const;
-	const void setBonePose(PyramidObject * const) const;
-	const void privWalkAnimNode(PyramidObject * const) const;
+	const void switchTime( Time & ) const;
+	const void findMaxTime( Time & ) const;
+	const void setBonePose( PyramidObject * const ) const;
+	const void privWalkAnimNode( PyramidObject * const ) const;
 	const void setSkeletonController() const;
 
 private:

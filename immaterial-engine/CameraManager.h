@@ -12,7 +12,7 @@ class CameraMan {
 public:
 	static void LoadCameras();
 	static void AddCamera( CameraObject* const );
-	static void RemoveCamera( );
+	static void RemoveCamera();
 	static void DeleteCameras();
 	static void SetCurrCamera( CameraObject* const );
 	static void SwitchState();

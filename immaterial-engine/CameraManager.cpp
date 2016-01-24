@@ -5,8 +5,7 @@
 #include "GraphicsManager.h"
 
 CameraMan::CameraMan()
-	: active(nullptr), currCamera(nullptr), camState(ORBIT)
-{ }
+	: active( nullptr ), currCamera( nullptr ), camState( ORBIT ) { }
 
 // singleton
 CameraMan* CameraMan::privGetInstance() {
@@ -19,19 +18,19 @@ void CameraMan::LoadCameras() {
 	auto cam0 = new CameraObject( CAMERA_CULLING );
 
 	cam0->setViewport( 0, 0, GAME_WIDTH, GAME_HEIGHT );
-	cam0->setPerspective( 35.0f, float(GAME_WIDTH)/float(GAME_HEIGHT), 1.0f, 10000.0f );
-	cam0->setOrientAndPosition( Vect(0.0f, 1.0f,0.0f), Vect(0.0f,0.0f,10.0f), Vect(180.0f,0.0f,2000.0f) );
+	cam0->setPerspective( 35.0f, float( GAME_WIDTH ) / float( GAME_HEIGHT ), 1.0f, 10000.0f );
+	cam0->setOrientAndPosition( Vect( 0.0f, 1.0f, 0.0f ), Vect( 0.0f, 0.0f, 10.0f ), Vect( 180.0f, 0.0f, 2000.0f ) );
 	cam0->updateCamera();
 
 	CameraMan::AddCamera( cam0 );
 	GraphicsObjMan::AddDebugObject( cam0 );
 
 	// create overview camera (watches camera0)
-	auto cam1 = new CameraObject ( CAMERA_OVERVIEW );
+	auto cam1 = new CameraObject( CAMERA_OVERVIEW );
 
 	cam1->setViewport( 0, 0, GAME_WIDTH, GAME_HEIGHT );
-	cam1->setPerspective( 35.0f, float(GAME_WIDTH)/float(GAME_HEIGHT), 1.0f, 10000.0f );
-	cam1->setOrientAndPosition( Vect(0.0f, 0.0f, 1.0f), Vect(0.0f, 0.0f, 4.0f), Vect(500.0f, 0.0f, 4.0f) );
+	cam1->setPerspective( 35.0f, float( GAME_WIDTH ) / float( GAME_HEIGHT ), 1.0f, 10000.0f );
+	cam1->setOrientAndPosition( Vect( 0.0f, 0.0f, 1.0f ), Vect( 0.0f, 0.0f, 4.0f ), Vect( 500.0f, 0.0f, 4.0f ) );
 
 	CameraMan::AddCamera( cam1 );
 
@@ -41,7 +40,7 @@ void CameraMan::LoadCameras() {
 	auto myCameraModel = new CameraModel;
 	myCameraModel->createVAO( cam0 );
 
-	cam0->setCameraModel(myCameraModel);
+	cam0->setCameraModel( myCameraModel );
 }
 
 void CameraMan::AddCamera( CameraObject* const inCamera ) {
@@ -56,22 +55,22 @@ void CameraMan::AddCamera( CameraObject* const inCamera ) {
 	cMan->privAddToFront( node, cMan->active );
 }
 
-void CameraMan::RemoveCamera( ) {
+void CameraMan::RemoveCamera() {
 	// get instance
 	auto cMan = privGetInstance();
 
 	// remove current camera from the list
-	auto walker = (CameraNode *)cMan->active;
+	auto walker = ( CameraNode * ) cMan->active;
 	auto tmp = cMan->NextCamera();
 
 	// do not remove the culling camera. i want that one at all times.
-	if (cMan->currCamera->getName() != CAMERA_CULLING) {
-		while (walker != nullptr) {
+	if ( cMan->currCamera->getName() != CAMERA_CULLING ) {
+		while ( walker != nullptr ) {
 			if ( walker->myCamera == cMan->currCamera ) {
 				cMan->privRemoveFromList( walker, cMan->active );
 				cMan->SetCurrCamera( tmp );
 			}
-			walker = (CameraNode *)walker->next;
+			walker = ( CameraNode * ) walker->next;
 		}
 	}
 }
@@ -120,11 +119,11 @@ CameraObject* CameraMan::GetCurrCamera() {
 
 CameraObject* CameraMan::NextCamera() {
 	auto cMan = CameraMan::privGetInstance();
-	
+
 	// return next camera in list
 	auto walker = ( CameraNode* ) cMan->currCamera;
-		
-	if( walker->next != nullptr ) {
+
+	if ( walker->next != nullptr ) {
 		walker = ( CameraNode* ) walker->next;
 	} else {
 		walker = ( CameraNode* ) cMan->active;
@@ -138,9 +137,9 @@ CameraState CameraMan::GetState() {
 }
 
 const void CameraMan::privAddToFront( CameraNodeLink* const node, CameraNodeLink*& head ) const {
-	assert (node != nullptr);
+	assert( node != nullptr );
 
-	if (head == nullptr) {
+	if ( head == nullptr ) {
 		head = node;
 	} else {
 		node->next = head;
@@ -150,10 +149,10 @@ const void CameraMan::privAddToFront( CameraNodeLink* const node, CameraNodeLink
 }
 
 const void CameraMan::privRemoveFromList( CameraNodeLink* const node, CameraNodeLink *&head ) const {
-	assert (node != nullptr);
-	
-	if (node->prev == nullptr) {
-		if (node->next == nullptr) {
+	assert( node != nullptr );
+
+	if ( node->prev == nullptr ) {
+		if ( node->next == nullptr ) {
 			// only in list
 			head = nullptr;
 		} else {
@@ -161,7 +160,7 @@ const void CameraMan::privRemoveFromList( CameraNodeLink* const node, CameraNode
 			node->next->prev = nullptr;
 			head = node->next;
 		}
-	} else if (node->next == nullptr) {
+	} else if ( node->next == nullptr ) {
 		// last on list
 		node->prev->next = nullptr;
 	} else {

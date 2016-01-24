@@ -8,8 +8,8 @@ struct Sphere : public Align16 {
 };
 
 struct Vertex {
-		float x;
-		float y;
-		float z;
-		float w;
+	float x;
+	float y;
+	float z;
+	float w;
 };

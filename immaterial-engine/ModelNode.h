@@ -8,29 +8,26 @@
 class ModelNodeLink {
 public:
 	ModelNodeLink()
-		: next(nullptr), prev(nullptr)
-	{ }
+		: next( nullptr ), prev( nullptr ) { }
 
 	ModelNodeLink *next;
 	ModelNodeLink *prev;
 };
 
-class ModelNode : public ModelNodeLink
-{
+class ModelNode : public ModelNodeLink {
 public:
 	ModelNode();
 	void set( const char * const inModelName,
-				GLuint inHash,
-				Model * inMod);
+			  GLuint inHash,
+			  Model * inMod );
 
-public:	
+public:
 	// name of model from file
-	char modelName[ MODEL_NAME_SIZE ];
+	char modelName[MODEL_NAME_SIZE];
 
 	// hashed model name
 	GLuint hashName;
 
 	// VAO reference to model in GPU
 	Model *storedModel;
-
 };

@@ -1,3 +1,3 @@
 #pragma once
 
-void RenderScene(void);
+void RenderScene( void );

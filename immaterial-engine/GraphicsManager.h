@@ -9,8 +9,8 @@ class GraphicsObject;
 // Singleton
 class GraphicsObjMan {
 public:
-	static void AddObject( GraphicsObject* const);
-	static void AddDebugObject( GraphicsObject* const);
+	static void AddObject( GraphicsObject* const );
+	static void AddDebugObject( GraphicsObject* const );
 	static void DrawObjects();
 	static GraphicsObject* FindByLocation( Vect& );
 	static GraphicsObject* GetFirstObj();

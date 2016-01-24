@@ -16,24 +16,23 @@ enum CullResult {
 	CULL_OUTSIDE
 };
 
-class CameraObject : public GraphicsObject
-{
+class CameraObject : public GraphicsObject {
 public:
-	CullResult CullTest(const Sphere&);
+	CullResult CullTest( const Sphere& );
 
-	void transform(void);
-	void draw(void);
-	void setRenderState(void);
-	void checkCulling(void);
+	void transform( void );
+	void draw( void );
+	void setRenderState( void );
+	void checkCulling( void );
 
-	    // Setup on single camera
-	const void setPerspective(const float, const float, const float, const float);
-	const void setViewport(const int, const int, const int, const int);
-	const void setOrientAndPosition(const Vect&, const Vect&, const Vect&);
-	const void setCameraModel(CameraModel* const);
+	// Setup on single camera
+	const void setPerspective( const float, const float, const float, const float );
+	const void setViewport( const int, const int, const int, const int );
+	const void setOrientAndPosition( const Vect&, const Vect&, const Vect& );
+	const void setCameraModel( CameraModel* const );
 
-	 // update camera system
-	const void updateCamera(void);
+	// update camera system
+	const void updateCamera( void );
 
 	// Get the matrices for rendering
 	Matrix &getViewMatrix();
@@ -50,18 +49,17 @@ public:
 
 	const void setPos( const Vect& );
 	Vect getStartPos();
-			
+
 	const void getFieldOfView( float& ) const;
 	const void setFieldOfView( const float );
 
 	const void getNearDist( float& ) const;
 	const void setNearDist( const float );
 
-
 	const void getNearTopLeft( Vect& ) const;
 	const void getNearTopRight( Vect& ) const;
 	const void getNearBottomLeft( Vect& ) const;
-	const void getNearBottomRight( Vect& ) const;	
+	const void getNearBottomRight( Vect& ) const;
 	const void getFarTopLeft( Vect& ) const;
 	const void getFarTopRight( Vect& ) const;
 	const void getFarBottomLeft( Vect& ) const;
@@ -78,7 +76,7 @@ private:  // methods
 	const void privUpdateProjectionMatrix();
 	const void privUpdateViewMatrix();
 
-private:  // data 
+private:  // data
 
 	// Projection Matrix
 	Matrix projMatrix;

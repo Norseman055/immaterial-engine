@@ -4,10 +4,9 @@
 
 #define ANIM_ASSET_NAME_SIZE 32
 
-class AnimNode
-{
+class AnimNode {
 public:
-	AnimNode(const char * const, const int, const int);
+	AnimNode( const char * const, const int, const int );
 
 	const void addBucket( Frame_Bucket * );
 	char* getName();
@@ -15,7 +14,7 @@ public:
 
 private:
 	AnimNode();
-	
+
 private:
 	// data
 	char animName[32];
@@ -27,5 +26,4 @@ public:
 	int numBones;
 	AnimNode* next;
 	AnimNode* prev;
-
 };

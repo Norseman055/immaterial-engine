@@ -1,27 +1,23 @@
-
 #include "CameraModel.h"
 #include "DEBUGGING.h"
 #include "CameraManager.h"
 
 extern GLShaderManager shaderManager;
 
-CameraModel::CameraModel()
-{ }
+CameraModel::CameraModel() { }
 
 const void CameraModel::update() {
 	this->createVAO( CameraMan::Find( CAMERA_CULLING ) );
 }
 
 const void CameraModel::createVAO( CameraObject* const cam ) {
-	struct MyVertex_stride
-	{
+	struct MyVertex_stride {
 		float x;
 		float y;
 		float z;
 	};
 
-	struct MyTriList
-	{
+	struct MyTriList {
 		unsigned short v1;
 		unsigned short v2;
 		unsigned short v3;
@@ -114,48 +110,46 @@ const void CameraModel::createVAO( CameraObject* const cam ) {
 	pVerts[8].z = vTmp[z];
 
 	/* Allocate and assign a Vertex Array Object to our handle */
-    glGenVertexArrays(1, &this->vao);
- 
+	glGenVertexArrays( 1, &this->vao );
+
 	/* Bind our Vertex Array Object as the current used object */
-    glBindVertexArray(this->vao);
+	glBindVertexArray( this->vao );
 
-    //GLuint vbo;
-    GLuint vbo[2];
+	//GLuint vbo;
+	GLuint vbo[2];
 
-    /* Allocate and assign two Vertex Buffer Objects to our handle */
-    glGenBuffers(2, vbo);
- 
-    // Load the combined data: ---------------------------------------------------------
+	/* Allocate and assign two Vertex Buffer Objects to our handle */
+	glGenBuffers( 2, vbo );
 
-		/* Bind our first VBO as being the active buffer and storing vertex attributes (coordinates) */
-		glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
- 
-		/* Copy the vertex data to our buffer */
-        // glBufferData(type, size in bytes, data, usage) 
-		glBufferData(GL_ARRAY_BUFFER, sizeof(MyVertex_stride) * 9, pVerts, GL_STATIC_DRAW);
-		
+	// Load the combined data: ---------------------------------------------------------
+
+	/* Bind our first VBO as being the active buffer and storing vertex attributes (coordinates) */
+	glBindBuffer( GL_ARRAY_BUFFER, vbo[0] );
+
+	/* Copy the vertex data to our buffer */
+	// glBufferData(type, size in bytes, data, usage)
+	glBufferData( GL_ARRAY_BUFFER, sizeof( MyVertex_stride ) * 9, pVerts, GL_STATIC_DRAW );
+
 	// VERTEX data: ---------------------------------------------------------
-		
-		// Set Attribute to 0
-        //           WHY - 0? and not 1,2,3 (this is tied to the shader attribute, it is defined in GLShaderManager.h)
-        //           GLT_ATTRIBUTE_VERTEX = 0
 
-        // Specifies the index of the generic vertex attribute to be enabled
-		glEnableVertexAttribArray(0);  
+	// Set Attribute to 0
+	//           WHY - 0? and not 1,2,3 (this is tied to the shader attribute, it is defined in GLShaderManager.h)
+	//           GLT_ATTRIBUTE_VERTEX = 0
 
-		/* Specify that our coordinate data is going into attribute index 0, and contains 3 floats per vertex */
-        // ( GLuint index,  GLint size,  GLenum type,  GLboolean normalized,  GLsizei stride,  const GLvoid * pointer);
-        void *offsetVert = (void *)((unsigned int)&pVerts[0].x - (unsigned int)&pVerts[0].x);
-		glVertexAttribPointer(0, 3, GL_FLOAT,  GL_FALSE, sizeof(MyVertex_stride), offsetVert);
-		 
-            
-    
+	// Specifies the index of the generic vertex attribute to be enabled
+	glEnableVertexAttribArray( 0 );
+
+	/* Specify that our coordinate data is going into attribute index 0, and contains 3 floats per vertex */
+	// ( GLuint index,  GLint size,  GLenum type,  GLboolean normalized,  GLsizei stride,  const GLvoid * pointer);
+	void *offsetVert = ( void * ) (( unsigned int ) &pVerts[0].x - ( unsigned int ) &pVerts[0].x);
+	glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, sizeof( MyVertex_stride ), offsetVert );
+
 	// Load the index data: ---------------------------------------------------------
-	
-		/* Bind our 2nd VBO as being the active buffer and storing index ) */
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo[1]);
 
-	    /* Copy the index data to our buffer */
-        // glBufferData(type, size in bytes, data, usage) 
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(MyTriList)*8, &tlist[0].v1, GL_STATIC_DRAW);
+	/* Bind our 2nd VBO as being the active buffer and storing index ) */
+	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, vbo[1] );
+
+	/* Copy the index data to our buffer */
+	// glBufferData(type, size in bytes, data, usage)
+	glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof( MyTriList ) * 8, &tlist[0].v1, GL_STATIC_DRAW );
 }

@@ -2,11 +2,10 @@
 
 class SphereObject;
 
-class GenObject : public GraphicsObject
-{
+class GenObject : public GraphicsObject {
 public:
 	GenObject();
-	
+
 	// Generic object functions
 	Vect getStartPos() const;
 	const void setStartPos( const Vect& );
@@ -22,8 +21,8 @@ public:
 	// must define, base class has abstract methods
 	void transform( void );
 	void draw( void );
-	void setRenderState(void);
-	void checkCulling(void);
+	void setRenderState( void );
+	void checkCulling( void );
 
 private:
 	GLuint  modelVAO;

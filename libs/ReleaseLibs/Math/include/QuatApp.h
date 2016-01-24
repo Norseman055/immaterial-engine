@@ -1,4 +1,3 @@
-
 /*****************************************************************************/
 /*                                                                           */
 /* file: QuatApp.h                                                           */
@@ -10,18 +9,13 @@
 
 #include "Quat.h"
 
-
-class QuatApp
-{
-		
+class QuatApp {
 public:
 	static void Slerp( Quat &result, const Quat &source, const Quat &target, const float slerpFactor );
-    
+
 	static void SlerpArray( Quat *result, const Quat *source, const Quat *target, const float slerpFactor, const int numQuats );
-
-
 };
-	
-#endif 
+
+#endif
 
 /**** END of QuatApp.h *******************************************************/

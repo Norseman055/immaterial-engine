@@ -1,73 +1,68 @@
-
 #include "AnimController.h"
 #include "AnimControllerMan.h"
 #include "GraphicsManager.h"
 
-const void AnimController::findMaxTime( Time &tMax ) const
-{
+const void AnimController::findMaxTime( Time &tMax ) const {
 	auto node = this->animBucket;
 	auto pTmp = node->getData();
-	while(pTmp->nextBucket != nullptr) {
+	while ( pTmp->nextBucket != nullptr ) {
 		pTmp = pTmp->nextBucket;
 	}
 	tMax = pTmp->KeyTime;
 };
 
-const void AnimController::switchTime( Time &tCurr ) const
-{
-	auto deltaTime = 0.2f * Time(TIME_NTSC_30_FRAME);
+const void AnimController::switchTime( Time &tCurr ) const {
+	auto deltaTime = 0.2f * Time( TIME_NTSC_30_FRAME );
 
 	Time maxTime;
-	this->findMaxTime(maxTime);
+	this->findMaxTime( maxTime );
 
-	switch(this->pMode)
-	{
-	case Loop:
-		tCurr += deltaTime;
-		if( tCurr < Time(TIME_ZERO) )	{
-			tCurr = maxTime;	}
-		else if ( tCurr > maxTime )	{
-			tCurr = Time(TIME_ZERO);	}
-		else	{
-			// do nothing
-		}
-		break;
-	case Clamp:
-		tCurr += deltaTime;
-		if( tCurr < Time(TIME_ZERO) )	{
-			tCurr = Time(TIME_ZERO);	}
-		else if ( tCurr > maxTime )	{
-			tCurr = maxTime;	}
-		else	{
-			// do nothing
-		}
-		break;
-	case Rewind:
-		tCurr -= deltaTime;
-		if(tCurr < Time(TIME_ZERO))	{
-			tCurr = maxTime;	}
-		else if (tCurr > maxTime)	{
-			tCurr = Time(TIME_ZERO);	}
-		else	{
-			// do nothing
-		}
-		break;
-	case Pause:
-		// do not change current time.
-		if (tCurr < Time(TIME_ZERO))	{
-			tCurr = Time(TIME_ZERO);	}
-		else if (tCurr > maxTime )	{
-			tCurr = maxTime;	}
-		else	{
-			// do nothing
-		}
-		break;
+	switch ( this->pMode ) {
+		case Loop:
+			tCurr += deltaTime;
+			if ( tCurr < Time( TIME_ZERO ) ) {
+				tCurr = maxTime;
+			} else if ( tCurr > maxTime ) {
+				tCurr = Time( TIME_ZERO );
+			} else {
+				// do nothing
+			}
+			break;
+		case Clamp:
+			tCurr += deltaTime;
+			if ( tCurr < Time( TIME_ZERO ) ) {
+				tCurr = Time( TIME_ZERO );
+			} else if ( tCurr > maxTime ) {
+				tCurr = maxTime;
+			} else {
+				// do nothing
+			}
+			break;
+		case Rewind:
+			tCurr -= deltaTime;
+			if ( tCurr < Time( TIME_ZERO ) ) {
+				tCurr = maxTime;
+			} else if ( tCurr > maxTime ) {
+				tCurr = Time( TIME_ZERO );
+			} else {
+				// do nothing
+			}
+			break;
+		case Pause:
+			// do not change current time.
+			if ( tCurr < Time( TIME_ZERO ) ) {
+				tCurr = Time( TIME_ZERO );
+			} else if ( tCurr > maxTime ) {
+				tCurr = maxTime;
+			} else {
+				// do nothing
+			}
+			break;
 	}
 }
 
-const void AnimController::processAnimation( Time & tCurr ) const
-{
-	switchTime(tCurr);
+const void AnimController::processAnimation( Time & tCurr ) const {
+	switchTime( tCurr );
 
 	auto node = this->animBucket;
 	auto pTmp = node->getData();
@@ -75,8 +70,7 @@ const void AnimController::processAnimation( Time & tCurr ) const
 
 	auto bResult = this->result->pBone;
 
-	while( tCurr >= pTmp->KeyTime && pTmp->nextBucket != nullptr )
-	{
+	while ( tCurr >= pTmp->KeyTime && pTmp->nextBucket != nullptr ) {
 		pTmp = pTmp->nextBucket;
 	}
 
@@ -86,20 +80,19 @@ const void AnimController::processAnimation( Time & tCurr ) const
 	auto pB = pTmp;
 
 	// find the "S" of the time
-	float tS = (tCurr - pA->KeyTime)  /(pB->KeyTime - pA->KeyTime);
-	
-	// interpolate to 
+	float tS = (tCurr - pA->KeyTime) / (pB->KeyTime - pA->KeyTime);
+
+	// interpolate to
 	auto bA = pA->pBone;
 	auto bB = pB->pBone;
 
-   // Interpolate to tS time, for all bones
-	for( int i = 0; i < node->numBones; i++ )
-	{
+	// Interpolate to tS time, for all bones
+	for ( int i = 0; i < node->numBones; i++ ) {
 		// interpolate ahoy!
-		VectApp::Lerp(bResult->T, bA->T, bB->T, tS);
-		QuatApp::Slerp(bResult->Q, bA->Q, bB->Q, tS);
-		VectApp::Lerp(bResult->S, bA->S, bB->S, tS);
-		
+		VectApp::Lerp( bResult->T, bA->T, bB->T, tS );
+		QuatApp::Slerp( bResult->Q, bA->Q, bB->Q, tS );
+		VectApp::Lerp( bResult->S, bA->S, bB->S, tS );
+
 		// advance the pointer
 		bA++;
 		bB++;
@@ -107,42 +100,38 @@ const void AnimController::processAnimation( Time & tCurr ) const
 	}
 }
 
-const void AnimController::setPlayback( const PlayMode inMode )
-{
+const void AnimController::setPlayback( const PlayMode inMode ) {
 	this->pMode = inMode;
 }
 
-const void AnimController::walkAnimNode() const
-{
-	this->privWalkAnimNode(this->skeletonRoot);
+const void AnimController::walkAnimNode() const {
+	this->privWalkAnimNode( this->skeletonRoot );
 }
 
-const void AnimController::privWalkAnimNode( PyramidObject * const node ) const
-{
+const void AnimController::privWalkAnimNode( PyramidObject * const node ) const {
 	setBonePose( node );
 
 	PyramidObject *child = 0;
 
-	if (node->getChild() != 0)	{
-		child = (PyramidObject *)node->getChild();
-		while (child != 0)	{
+	if ( node->getChild() != 0 ) {
+		child = ( PyramidObject * ) node->getChild();
+		while ( child != 0 ) {
 			privWalkAnimNode( child );
-			child = (PyramidObject *)child->getSibling();
+			child = ( PyramidObject * ) child->getSibling();
 		}
 	}
 }
 
-const void AnimController::setBonePose( PyramidObject * const node ) const
-{
+const void AnimController::setBonePose( PyramidObject * const node ) const {
 	auto childNode = node;
-	auto parentNode = (PyramidObject *)node->getParent();
+	auto parentNode = ( PyramidObject * ) node->getParent();
 
-	if( parentNode == GraphicsObjMan::GetMainTree()->getRoot() )
+	if ( parentNode == GraphicsObjMan::GetMainTree()->getRoot() )
 		return;
 
-	if (parentNode != 0 && childNode != 0)	{
+	if ( parentNode != 0 && childNode != 0 ) {
 		// Now get the world matrices
-		Vect start(0.0f,0.0f,0.0f);
+		Vect start( 0.0f, 0.0f, 0.0f );
 
 		parentNode->transform();
 		auto ptA = start * parentNode->getWorld();
@@ -157,8 +146,8 @@ const void AnimController::setBonePose( PyramidObject * const node ) const
 		auto mag = dir.mag();
 
 		// Set the orientation and length for bone 0
-		Matrix S( SCALE, BONE_WIDTH, BONE_WIDTH, mag);
-		Quat Q( ROT_ORIENT, dir.getNorm(), Vect( 0.0f, 1.0f, 0.0f) );
+		Matrix S( SCALE, BONE_WIDTH, BONE_WIDTH, mag );
+		Quat Q( ROT_ORIENT, dir.getNorm(), Vect( 0.0f, 1.0f, 0.0f ) );
 		Matrix T( TRANS, ptB );
 
 		auto BoneOrient = S * Q * T;
@@ -167,30 +156,25 @@ const void AnimController::setBonePose( PyramidObject * const node ) const
 	}
 }
 
-const void AnimController::setIndex( const int _index )
-{
+const void AnimController::setIndex( const int _index ) {
 	this->index = _index;
 }
 
-PyramidObject* AnimController::getSkeleton() const
-{
+PyramidObject* AnimController::getSkeleton() const {
 	return this->skeletonRoot;
 }
 
 AnimController::AnimController( AnimNode *inBucket, PyramidObject *inRoot )
-	: index(-1), pMode(Loop), animBucket(inBucket), skeletonRoot(inRoot), next(nullptr), prev(nullptr)
-{
+	: index( -1 ), pMode( Loop ), animBucket( inBucket ), skeletonRoot( inRoot ), next( nullptr ), prev( nullptr ) {
 	setSkeletonController();
 	this->result = new Frame_Bucket;
 	this->result->pBone = new Bone;
 }
 
-const void AnimController::setSkeletonController( ) const
-{
+const void AnimController::setSkeletonController() const {
 	auto walker = this->skeletonRoot;
 	walker->setControllerDepthFirst( this );
 }
 
 AnimController::AnimController()
-	: index(0), pMode(Pause), animBucket(nullptr), skeletonRoot(nullptr), next(nullptr), prev(nullptr), result(nullptr)
-{ }
+	: index( 0 ), pMode( Pause ), animBucket( nullptr ), skeletonRoot( nullptr ), next( nullptr ), prev( nullptr ), result( nullptr ) { }

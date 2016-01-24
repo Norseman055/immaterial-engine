@@ -5,7 +5,7 @@
 class CameraObject;
 
 class CameraModel {
-public: 
+public:
 	CameraModel();
 
 	const void createVAO( CameraObject* const );

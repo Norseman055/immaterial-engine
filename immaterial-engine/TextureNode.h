@@ -22,8 +22,7 @@ enum TextureName {
 class TextureNodeLink {
 public:
 	TextureNodeLink()
-		: next(nullptr), prev(nullptr)
-	{ }
+		: next( nullptr ), prev( nullptr ) { }
 
 	TextureNodeLink *next;
 	TextureNodeLink *prev;
