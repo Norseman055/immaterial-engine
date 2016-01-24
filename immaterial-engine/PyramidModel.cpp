@@ -332,7 +332,7 @@ void PyramidModel::createVAO() {
 		// first center around origin
 		Matrix Trans( TRANS, 0.0f, 1.0f, 0.0f );
 
-		// shink the Y axis to be 0-1,
+		// shrink the Y axis to be 0-1,
 		Matrix Scale( SCALE, 1.0f, 0.5f, 1.0f );
 
 		// rotates it to Z axis

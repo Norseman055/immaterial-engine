@@ -104,12 +104,18 @@ void CameraMan::SwitchState() {
 CameraObject* CameraMan::Find( const CameraName inName ) {
 	// find the camera node
 	auto walker = ( CameraNode * ) privGetInstance()->active;
+
 	while ( walker != nullptr ) {
 		if ( walker->myCamera->getName() == inName ) {
 			break;
 		}
 		walker = ( CameraNode * ) walker->next;
 	}
+
+	if ( walker == nullptr ) {
+		walker = ( CameraNode * ) privGetInstance()->active;
+	}
+
 	return walker->myCamera;
 }
 

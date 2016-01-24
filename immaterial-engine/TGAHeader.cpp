@@ -20,7 +20,7 @@ GLbyte* myReadTGABits( const void * lTexture, GLint & nWidth, GLint & nHeight, G
 	nWidth = tgaHeader->width;
 	nHeight = tgaHeader->height;
 
-	// 1, 3, 4 bytes per pixel are good. rest are bad. tell them theyre bad, load null texture.
+	// 1, 3, 4 bytes per pixel are good. rest are bad. tell them they're bad, load null texture.
 	if ( tgaHeader->BitsPerPixel == 8 || tgaHeader->BitsPerPixel == 24 || tgaHeader->BitsPerPixel == 32 ) {
 		sDepth = tgaHeader->BitsPerPixel / 8;
 		lImageSize = tgaHeader->width * tgaHeader->height * sDepth;

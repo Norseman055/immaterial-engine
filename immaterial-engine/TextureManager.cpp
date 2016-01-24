@@ -97,6 +97,10 @@ GLuint TextureMan::Find( const GLuint inName ) {
 
 			walker = ( TextureNode * ) walker->next;
 		}
+
+		if ( walker == nullptr ) {
+			return 0x0;
+		}
 	} else {
 		// otherwise, return the dummy texture (first one ever loaded)
 		while ( ( TextureNode * ) walker->next != nullptr ) {
