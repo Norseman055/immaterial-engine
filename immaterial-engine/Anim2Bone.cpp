@@ -1,11 +1,4 @@
-#include "OpenGL.h"
-#include "DEBUGGING.h"
-#include "Constants.h"
-
 #include "GraphicsManager.h"
-#include "GlobalState.h"
-#include "UserInterface.h"
-#include "RenderScene.h"
 #include "PyramidObject.h"
 #include "AnimControllerMan.h"
 

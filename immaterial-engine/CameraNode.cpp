@@ -6,6 +6,6 @@
 CameraNode::CameraNode()
 	: myCamera( nullptr ) { }
 
-const void CameraNode::set( CameraObject* const inCamera ) {
+void CameraNode::set( CameraObject* const inCamera ) {
 	this->myCamera = inCamera;
 }

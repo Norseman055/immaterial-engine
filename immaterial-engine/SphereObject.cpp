@@ -13,15 +13,15 @@ SphereObject::SphereObject()
 	this->cullingSphere = this;
 };
 
-const void SphereObject::setPos( const Vect& v ) {
+void SphereObject::setPos( const Vect& v ) {
 	this->sphere.cntr.set( v );
 }
 
-const void SphereObject::setRad( const float radius ) {
+void SphereObject::setRad( const float radius ) {
 	this->sphere.rad = radius;
 }
 
-const void SphereObject::setStartPos( const Vect& v ) {
+void SphereObject::setStartPos( const Vect& v ) {
 	this->startPos.set( v );
 };
 
@@ -29,27 +29,27 @@ Vect SphereObject::getStartPos() {
 	return this->startPos;
 };
 
-const void SphereObject::setLightColor( const Vect& v ) {
+void SphereObject::setLightColor( const Vect& v ) {
 	this->lightColor.set( v );
 };
 
-const void SphereObject::setLightPos( const Vect& v ) {
+void SphereObject::setLightPos( const Vect& v ) {
 	this->lightPos.set( v );
 };
 
-const void SphereObject::setExtSphere( const Sphere& mySphere ) {
+void SphereObject::setExtSphere( const Sphere& mySphere ) {
 	this->extSphere = mySphere;
 }
 
-const void SphereObject::setExtMatrix( const Matrix& world ) {
+void SphereObject::setExtMatrix( const Matrix& world ) {
 	this->extWorld.set( world );
 }
 
-const void SphereObject::setTextureName( const TextureName inName ) {
+void SphereObject::setTextureName( const TextureName inName ) {
 	this->Texture = inName;
 };
 
-const void SphereObject::setStockShaderMode( const ShaderType inVal ) {
+void SphereObject::setStockShaderMode( const ShaderType inVal ) {
 	this->Shading = inVal;
 };
 

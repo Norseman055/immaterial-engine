@@ -13,30 +13,26 @@ public:
 	SphereObject();
 
 	// for bounding volumes
-	const void setPos( const Vect & v );
-	const void setRad( const float radius );
+	void setPos( const Vect & v );
+	void setRad( const float radius );
 
-	const void setExtSphere( const Sphere& );
-	const void setExtMatrix( const Matrix& );
-
-	const void setGraphicsObjec( GraphicsObject* const );
+	void setExtSphere( const Sphere& );
+	void setExtMatrix( const Matrix& );
 
 	// Specific to Sphere
-	const void setStartPos( const Vect& );
-	Vect getStartPos();
-	const void setLightColor( const Vect& );
-	const void setLightPos( const Vect& );
-	const void setTextureName( const TextureName );
-	const void setStockShaderMode( const ShaderType );
-	const void setOriginalSphere( const Sphere& );
-	const void setSphereObject();
+	void setStartPos( const Vect& );
+	Vect getStartPos() override;
+	void setLightColor( const Vect& );
+	void setLightPos( const Vect& );
+	void setTextureName( const TextureName );
+	void setStockShaderMode( const ShaderType );
 	Sphere getSphere() const;
 
 	// must define, base class has abstract methods
-	void transform( void );
-	void draw( void );
-	void setRenderState( void );
-	void checkCulling( void );
+	void transform( void ) override;
+	void draw( void ) override;
+	void setRenderState( void ) override;
+	void checkCulling( void ) override;
 
 private:
 	// internal variables for the instance

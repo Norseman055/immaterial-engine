@@ -15,23 +15,22 @@ class AnimController {
 public:
 	AnimController( AnimNode *, PyramidObject * );
 
-	const void processAnimation( Time & ) const;
-	const void setIndex( const int );
-	const void setPlayback( const PlayMode );
-	const void walkAnimNode() const;
+	void processAnimation( Time & ) const;
+	void setIndex( const int );
+	void setPlayback( const PlayMode );
+	void walkAnimNode() const;
 
 	PyramidObject *getSkeleton() const;
 
 private:
 	AnimController();
 
-	const void switchTime( Time & ) const;
-	const void findMaxTime( Time & ) const;
-	const void setBonePose( PyramidObject * const ) const;
-	const void privWalkAnimNode( PyramidObject * const ) const;
-	const void setSkeletonController() const;
+	void switchTime( Time & ) const;
+	void findMaxTime( Time & ) const;
+	void setBonePose( PyramidObject * const ) const;
+	void privWalkAnimNode( PyramidObject * const ) const;
+	void setSkeletonController() const;
 
-private:
 	// data
 	int index;
 	PlayMode pMode;

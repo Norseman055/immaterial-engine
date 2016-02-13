@@ -5,6 +5,7 @@
 #include "TextureManager.h"
 #include "AnimationManager.h"
 #include "File.h"
+#include "DEBUGGING.h"
 
 void ArchiveMan::LoadArchive( const char * fileName ) {
 	PackageHeader pHead;
@@ -18,7 +19,7 @@ void ArchiveMan::LoadArchive( const char * fileName ) {
 	ferror = File::read( fh, &pHead, sizeof( PackageHeader ) );
 	assert( ferror == FILE_SUCCESS );
 
-	for ( int i = 0; i < pHead.numChunks; i++ ) {
+	for ( auto i = 0; i < pHead.numChunks; i++ ) {
 		ferror = File::read( fh, &cHead, sizeof( ChunkHeader ) );
 		assert( ferror == FILE_SUCCESS );
 

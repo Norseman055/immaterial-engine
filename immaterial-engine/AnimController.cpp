@@ -2,7 +2,7 @@
 #include "AnimControllerMan.h"
 #include "GraphicsManager.h"
 
-const void AnimController::findMaxTime( Time &tMax ) const {
+void AnimController::findMaxTime( Time &tMax ) const {
 	auto node = this->animBucket;
 	auto pTmp = node->getData();
 	while ( pTmp->nextBucket != nullptr ) {
@@ -11,7 +11,7 @@ const void AnimController::findMaxTime( Time &tMax ) const {
 	tMax = pTmp->KeyTime;
 };
 
-const void AnimController::switchTime( Time &tCurr ) const {
+void AnimController::switchTime( Time &tCurr ) const {
 	auto deltaTime = 0.2f * Time( TIME_NTSC_30_FRAME );
 
 	Time maxTime;
@@ -61,7 +61,7 @@ const void AnimController::switchTime( Time &tCurr ) const {
 	}
 }
 
-const void AnimController::processAnimation( Time & tCurr ) const {
+void AnimController::processAnimation( Time & tCurr ) const {
 	switchTime( tCurr );
 
 	auto node = this->animBucket;
@@ -80,14 +80,14 @@ const void AnimController::processAnimation( Time & tCurr ) const {
 	auto pB = pTmp;
 
 	// find the "S" of the time
-	float tS = (tCurr - pA->KeyTime) / (pB->KeyTime - pA->KeyTime);
+	auto tS = (tCurr - pA->KeyTime) / (pB->KeyTime - pA->KeyTime);
 
 	// interpolate to
 	auto bA = pA->pBone;
 	auto bB = pB->pBone;
 
 	// Interpolate to tS time, for all bones
-	for ( int i = 0; i < node->numBones; i++ ) {
+	for ( auto i = 0; i < node->numBones; i++ ) {
 		// interpolate ahoy!
 		VectApp::Lerp( bResult->T, bA->T, bB->T, tS );
 		QuatApp::Slerp( bResult->Q, bA->Q, bB->Q, tS );
@@ -100,36 +100,36 @@ const void AnimController::processAnimation( Time & tCurr ) const {
 	}
 }
 
-const void AnimController::setPlayback( const PlayMode inMode ) {
+void AnimController::setPlayback( const PlayMode inMode ) {
 	this->pMode = inMode;
 }
 
-const void AnimController::walkAnimNode() const {
+void AnimController::walkAnimNode() const {
 	this->privWalkAnimNode( this->skeletonRoot );
 }
 
-const void AnimController::privWalkAnimNode( PyramidObject * const node ) const {
+void AnimController::privWalkAnimNode( PyramidObject * const node ) const {
 	setBonePose( node );
 
-	PyramidObject *child = 0;
+	PyramidObject *child;
 
-	if ( node->getChild() != 0 ) {
-		child = ( PyramidObject * ) node->getChild();
-		while ( child != 0 ) {
+	if ( node->getChild() != nullptr ) {
+		child = static_cast< PyramidObject * >(node->getChild());
+		while ( child != nullptr ) {
 			privWalkAnimNode( child );
-			child = ( PyramidObject * ) child->getSibling();
+			child = static_cast< PyramidObject * >(child->getSibling());
 		}
 	}
 }
 
-const void AnimController::setBonePose( PyramidObject * const node ) const {
+void AnimController::setBonePose( PyramidObject * const node ) const {
 	auto childNode = node;
-	auto parentNode = ( PyramidObject * ) node->getParent();
+	auto parentNode = static_cast< PyramidObject * >(node->getParent());
 
 	if ( parentNode == GraphicsObjMan::GetMainTree()->getRoot() )
 		return;
 
-	if ( parentNode != 0 && childNode != 0 ) {
+	if ( parentNode != nullptr && childNode != nullptr ) {
 		// Now get the world matrices
 		Vect start( 0.0f, 0.0f, 0.0f );
 
@@ -156,7 +156,7 @@ const void AnimController::setBonePose( PyramidObject * const node ) const {
 	}
 }
 
-const void AnimController::setIndex( const int _index ) {
+void AnimController::setIndex( const int _index ) {
 	this->index = _index;
 }
 
@@ -171,7 +171,7 @@ AnimController::AnimController( AnimNode *inBucket, PyramidObject *inRoot )
 	this->result->pBone = new Bone;
 }
 
-const void AnimController::setSkeletonController() const {
+void AnimController::setSkeletonController() const {
 	auto walker = this->skeletonRoot;
 	walker->setControllerDepthFirst( this );
 }

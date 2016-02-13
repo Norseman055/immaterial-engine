@@ -1,40 +1,40 @@
 #include "AnimationManager.h"
 #include "DEBUGGING.h"
 
-void AnimationMan::LoadAnimationBuffer( const unsigned char* const animBuff, const AnimFileHdr& aHdr ) {
+void AnimationMan::LoadAnimationBuffer( unsigned char* const animBuff, const AnimFileHdr& aHdr ) {
 	auto aMan = privGetInstance();
 
 	auto node = new AnimNode( aHdr.animName, aHdr.numKeyframes, aHdr.numBones );
 
 	// set pointers to first keyframe data and bone data
-	auto KTHdr = ( KeyTimeHdr * ) animBuff;
+	auto KTHdr = reinterpret_cast< KeyTimeHdr * >(animBuff);
 	auto ptr = KTHdr->bArray;
 
 	// now have an animNode with the proper data, now i need to create the frame buckets for the animation
-	Frame_Bucket *tmp = nullptr;
-	for ( int i = 0; i < aHdr.numKeyframes; i++ ) {
+	Frame_Bucket *tmp;
+	for ( auto i = 0; i < aHdr.numKeyframes; i++ ) {
 		// make new frame bucket, add data
 		tmp = new Frame_Bucket;
 		tmp->KeyTime = KTHdr->KeyTime * Time( TIME_NTSC_30_FRAME );
 
 		// copy bones
 		tmp->pBone = new Bone[aHdr.numBones];
-		for ( int j = 0; j < aHdr.numBones; j++ ) {
+		for ( auto j = 0; j < aHdr.numBones; j++ ) {
 			tmp->pBone[j] = ptr[j];
 		}
 
 		node->addBucket( tmp );
 
 		// advance pointers
-		KTHdr = ( KeyTimeHdr* ) (( unsigned int ) ptr + (sizeof( Bone ) * aHdr.numBones));
+		KTHdr = reinterpret_cast< KeyTimeHdr* >(reinterpret_cast< unsigned int >( ptr ) +(sizeof( Bone ) * aHdr.numBones));
 		ptr = KTHdr->bArray;
 	}
 
 	aMan->privAddToFront( node, aMan->animList );
 };
 
-const void AnimationMan::privAddToFront( AnimNode* const node, AnimNode*& head ) const {
-	assert( node != nullptr );
+void AnimationMan::privAddToFront( AnimNode* const node, AnimNode*& head ) const {
+	assert( node );
 
 	// empty list
 	if ( head == nullptr ) {

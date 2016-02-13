@@ -54,9 +54,9 @@ void ModelMan::LoadModel( const char * const inFileName ) {
 	ferror = File::read( fh, pVerts, modelHdr.numVerts * sizeof( MyVertex_stride ) );
 	assert( ferror == FILE_SUCCESS );
 
-	// calc ritter sphere, save into the model later
+	// calculate ritter sphere, save into the model later
 	auto bound = new Vertex[modelHdr.numVerts];
-	for ( int i = 0; i < modelHdr.numVerts; i++ ) {
+	for ( auto i = 0; i < modelHdr.numVerts; i++ ) {
 		bound[i].x = pVerts[i].x;
 		bound[i].y = pVerts[i].y;
 		bound[i].z = pVerts[i].z;
@@ -76,7 +76,7 @@ void ModelMan::LoadModel( const char * const inFileName ) {
 	ferror = File::close( fh );
 	assert( ferror == FILE_SUCCESS );
 
-	// debug testing- make sure i have all verts and all tris
+	// debug testing- make sure i have all verts and all tri's
 	//printf("\n");
 	//for (int i = 0; i < modelHdr.numVerts; i++)
 	//{
@@ -92,7 +92,7 @@ void ModelMan::LoadModel( const char * const inFileName ) {
 
 	// Load model into GPU, store VAO handle ------------------------------------------
 	auto myModel = new Model;
-	RitterSphere( myModel->boundingVol, ( Vect * ) &bound[0].x, modelHdr.numVerts );
+	RitterSphere( myModel->boundingVol, reinterpret_cast< Vect * >(&bound[0].x), modelHdr.numVerts );
 	myModel->numTri = modelHdr.numTriList;
 
 	/* Allocate and assign a Vertex Array Object to our handle */
@@ -127,7 +127,7 @@ void ModelMan::LoadModel( const char * const inFileName ) {
 
 	/* Specify that our coordinate data is going into attribute index 0, and contains 3 floats per vertex */
 	// ( GLuint index,  GLint size,  GLenum type,  GLboolean normalized,  GLsizei stride,  const GLvoid * pointer);
-	auto offsetVert = ( void * ) (( unsigned int ) &pVerts[0].x - ( unsigned int ) pVerts);
+	auto offsetVert = reinterpret_cast< void * >(reinterpret_cast< unsigned int >(&pVerts[0].x) - reinterpret_cast< unsigned int >(pVerts));
 	glVertexAttribPointer( GLT_ATTRIBUTE_VERTEX, 3, GL_FLOAT, GL_FALSE, sizeof( MyVertex_stride ), offsetVert );
 
 	// Texture data: ---------------------------------------------------------
@@ -141,7 +141,7 @@ void ModelMan::LoadModel( const char * const inFileName ) {
 
 	/* Specify that our coordinate data is going into attribute index 3, and contains 2 floats per vertex */
 	// ( GLuint index,  GLint size,  GLenum type,  GLboolean normalized,  GLsizei stride,  const GLvoid * pointer);
-	auto offsetTex = ( void * ) (( unsigned int ) &pVerts[0].s - ( unsigned int ) pVerts);
+	auto offsetTex = reinterpret_cast< void * >(reinterpret_cast< unsigned int >(&pVerts[0].s) - reinterpret_cast< unsigned int >(pVerts));
 	glVertexAttribPointer( GLT_ATTRIBUTE_TEXTURE0, 2, GL_FLOAT, GL_FALSE, sizeof( MyVertex_stride ), offsetTex );
 
 	// Normal data: ---------------------------------------------------------
@@ -155,7 +155,7 @@ void ModelMan::LoadModel( const char * const inFileName ) {
 
 	/* Specify that our coordinate data is going into attribute index 3, and contains 2 floats per vertex */
 	// ( GLuint index,  GLint size,  GLenum type,  GLboolean normalized,  GLsizei stride,  const GLvoid * pointer);
-	auto offsetNorm = ( void * ) (( unsigned int ) &pVerts[0].nx - ( unsigned int ) pVerts);
+	auto offsetNorm = reinterpret_cast< void * >(reinterpret_cast< unsigned int >(&pVerts[0].nx) - reinterpret_cast< unsigned int >(pVerts));
 	glVertexAttribPointer( GLT_ATTRIBUTE_NORMAL, 3, GL_FLOAT, GL_FALSE, sizeof( MyVertex_stride ), offsetNorm );
 
 	// Load the index data: ---------------------------------------------------------
@@ -168,7 +168,7 @@ void ModelMan::LoadModel( const char * const inFileName ) {
 	glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof( MyTriList ) * modelHdr.numTriList, tlist, GL_STATIC_DRAW );
 
 	// Model loaded into GPU, VAO stored in myModel->vao. Generate model name by dropping extension.
-	auto pMMan = ModelMan::privGetInstance();
+	auto pMMan = privGetInstance();
 
 	auto modName = new char[strlen( inFileName ) - 3];
 	memcpy( modName, inFileName, strlen( inFileName ) - 4 );
@@ -176,8 +176,8 @@ void ModelMan::LoadModel( const char * const inFileName ) {
 
 	// hash the model name and store it as the hashName for the manager
 	MD5Output out;
-	MD5Buffer( ( unsigned char * ) modName, strlen( modName ), out );
-	GLuint hashID = out.dWord_0 ^ out.dWord_1 ^ out.dWord_2 ^ out.dWord_3;
+	MD5Buffer( reinterpret_cast< unsigned char * >(modName), strlen( modName ), out );
+	auto hashID = out.dWord_0 ^ out.dWord_1 ^ out.dWord_2 ^ out.dWord_3;
 
 	auto pNode = new ModelNode;
 	pNode->set( modName, hashID, myModel );
@@ -189,34 +189,34 @@ void ModelMan::LoadModel( const char * const inFileName ) {
 	delete[]( pVerts );
 }
 
-void ModelMan::LoadBufferedModel( const unsigned char * const modelBuff ) {
-	auto modelHdr = ( gObjFileHdr * ) modelBuff;
-	auto vOffset = ( MyVertex_stride * ) (( unsigned int ) modelBuff + modelHdr->vertBufferOffset);
+void ModelMan::LoadBufferedModel( unsigned char * const modelBuff ) {
+	auto modelHdr = reinterpret_cast< gObjFileHdr * >(modelBuff);
+	auto vOffset = reinterpret_cast< MyVertex_stride * >(reinterpret_cast< unsigned int >( modelBuff ) +modelHdr->vertBufferOffset);
 
 	// copy verts
 	auto pVerts = new MyVertex_stride[modelHdr->numVerts];
-	for ( int i = 0; i < modelHdr->numVerts; i++ ) {
+	for ( auto i = 0; i < modelHdr->numVerts; i++ ) {
 		pVerts[i] = vOffset[i];
 	}
 
 	// calc ritter sphere, save into the model later
 	auto bound = new Vertex[modelHdr->numVerts];
-	for ( int i = 0; i < modelHdr->numVerts; i++ ) {
+	for ( auto i = 0; i < modelHdr->numVerts; i++ ) {
 		bound[i].x = pVerts[i].x;
 		bound[i].y = pVerts[i].y;
 		bound[i].z = pVerts[i].z;
 	}
 
 	// copy trilist
-	auto tOffset = ( MyTriList * ) (( unsigned int ) modelBuff + modelHdr->triListBufferOffset);
+	auto tOffset = reinterpret_cast< MyTriList * >(reinterpret_cast< unsigned int >( modelBuff ) +modelHdr->triListBufferOffset);
 	auto tlist = new MyTriList[modelHdr->numTriList];
-	for ( int i = 0; i < modelHdr->numTriList; i++ ) {
+	for ( auto i = 0; i < modelHdr->numTriList; i++ ) {
 		tlist[i] = tOffset[i];
 	}
 
 	// Load model into GPU, store VAO handle ------------------------------------------
 	auto myModel = new Model;
-	RitterSphere( myModel->boundingVol, ( Vect * ) &bound[0].x, modelHdr->numVerts );
+	RitterSphere( myModel->boundingVol, reinterpret_cast< Vect * >(&bound[0].x), modelHdr->numVerts );
 	myModel->numTri = modelHdr->numTriList;
 
 	/* Allocate and assign a Vertex Array Object to our handle */
@@ -251,7 +251,7 @@ void ModelMan::LoadBufferedModel( const unsigned char * const modelBuff ) {
 
 	/* Specify that our coordinate data is going into attribute index 0, and contains 3 floats per vertex */
 	// ( GLuint index,  GLint size,  GLenum type,  GLboolean normalized,  GLsizei stride,  const GLvoid * pointer);
-	auto offsetVert = ( void * ) (( unsigned int ) &pVerts[0].x - ( unsigned int ) pVerts);
+	auto offsetVert = reinterpret_cast< void * >(reinterpret_cast< unsigned int >(&pVerts[0].x) - reinterpret_cast< unsigned int >(pVerts));
 	glVertexAttribPointer( GLT_ATTRIBUTE_VERTEX, 3, GL_FLOAT, GL_FALSE, sizeof( MyVertex_stride ), offsetVert );
 
 	// Texture data: ---------------------------------------------------------
@@ -265,7 +265,7 @@ void ModelMan::LoadBufferedModel( const unsigned char * const modelBuff ) {
 
 	/* Specify that our coordinate data is going into attribute index 3, and contains 2 floats per vertex */
 	// ( GLuint index,  GLint size,  GLenum type,  GLboolean normalized,  GLsizei stride,  const GLvoid * pointer);
-	auto offsetTex = ( void * ) (( unsigned int ) &pVerts[0].s - ( unsigned int ) pVerts);
+	auto offsetTex = reinterpret_cast< void * >(reinterpret_cast< unsigned int >(&pVerts[0].s) - reinterpret_cast< unsigned int >(pVerts));
 	glVertexAttribPointer( GLT_ATTRIBUTE_TEXTURE0, 2, GL_FLOAT, GL_FALSE, sizeof( MyVertex_stride ), offsetTex );
 
 	// Normal data: ---------------------------------------------------------
@@ -279,7 +279,7 @@ void ModelMan::LoadBufferedModel( const unsigned char * const modelBuff ) {
 
 	/* Specify that our coordinate data is going into attribute index 3, and contains 2 floats per vertex */
 	// ( GLuint index,  GLint size,  GLenum type,  GLboolean normalized,  GLsizei stride,  const GLvoid * pointer);
-	auto offsetNorm = ( void * ) (( unsigned int ) &pVerts[0].nx - ( unsigned int ) pVerts);
+	auto offsetNorm = reinterpret_cast< void * >(reinterpret_cast< unsigned int >(&pVerts[0].nx) - reinterpret_cast< unsigned int >(pVerts));
 	glVertexAttribPointer( GLT_ATTRIBUTE_NORMAL, 3, GL_FLOAT, GL_FALSE, sizeof( MyVertex_stride ), offsetNorm );
 
 	// Load the index data: ---------------------------------------------------------
@@ -292,7 +292,7 @@ void ModelMan::LoadBufferedModel( const unsigned char * const modelBuff ) {
 	glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof( MyTriList ) * modelHdr->numTriList, tlist, GL_STATIC_DRAW );
 
 	// Model loaded into GPU, VAO stored in myModel->vao. Generate model name by dropping extension.
-	auto pMMan = ModelMan::privGetInstance();
+	auto pMMan = privGetInstance();
 
 	auto modName = new char[strlen( modelHdr->objName ) - 3];
 	memcpy( modName, modelHdr->objName, strlen( modelHdr->objName ) - 4 );
@@ -300,8 +300,8 @@ void ModelMan::LoadBufferedModel( const unsigned char * const modelBuff ) {
 
 	// hash the model name and store it as the hash name for the manager
 	MD5Output out;
-	MD5Buffer( ( unsigned char * ) modName, strlen( modName ), out );
-	GLuint hashID = out.dWord_0 ^ out.dWord_1 ^ out.dWord_2 ^ out.dWord_3;
+	MD5Buffer( reinterpret_cast< unsigned char * >(modName), strlen( modName ), out );
+	auto hashID = out.dWord_0 ^ out.dWord_1 ^ out.dWord_2 ^ out.dWord_3;
 
 	auto pNode = new ModelNode;
 	pNode->set( modName, hashID, myModel );
@@ -313,32 +313,32 @@ void ModelMan::LoadBufferedModel( const unsigned char * const modelBuff ) {
 	delete[]( pVerts );
 }
 
-Model* ModelMan::Find( const char * const inModelName ) {
+Model* ModelMan::Find( char * const inModelName ) {
 	assert( inModelName );
 
-	auto walker = ( ModelNode * ) privGetInstance()->active;
+	auto walker = static_cast< ModelNode * >(privGetInstance()->active);
 	auto tmp = walker->storedModel;
 
 	// hash inModelName, use the int to find the model
 	MD5Output out;
-	MD5Buffer( ( unsigned char * ) inModelName, strlen( inModelName ), out );
-	GLuint hashID = out.dWord_0 ^ out.dWord_1 ^ out.dWord_2 ^ out.dWord_3;
+	MD5Buffer( reinterpret_cast< unsigned char * >(inModelName), strlen( inModelName ), out );
+	auto hashID = out.dWord_0 ^ out.dWord_1 ^ out.dWord_2 ^ out.dWord_3;
 
 	// if there is a model to be asked for, return it
 	if ( strlen( inModelName ) > 0 ) {
 		// find node
 		while ( walker != nullptr ) {
-			// i REALLY dislike strings, but for now itll serve the purpose. maybe hash the object name and use that as a compare?
+			// i REALLY dislike strings, but for now it'll serve the purpose. maybe hash the object name and use that as a compare?
 			if ( hashID == walker->hashName ) {
 				break;
 			}
 
-			walker = ( ModelNode * ) walker->next;
+			walker = static_cast< ModelNode * >(walker->next);
 		}
 	} else {
 		// otherwise, return a dummy model (first one ever loaded)
-		while ( ( ModelNode * ) walker->next != nullptr ) {
-			walker = ( ModelNode * ) walker->next;
+		while ( static_cast< ModelNode * >(walker->next) != nullptr ) {
+			walker = static_cast< ModelNode * >(walker->next);
 		}
 	}
 
@@ -350,11 +350,11 @@ Model* ModelMan::Find( const char * const inModelName ) {
 	return tmp;
 }
 
-const void ModelMan::privAddToFront( ModelNodeLink* const node, ModelNodeLink *& head ) {
+void ModelMan::privAddToFront( ModelNodeLink* const node, ModelNodeLink *& head ) const {
 	assert( node != nullptr );
 
 	// empty list
-	if ( head == 0 ) {
+	if ( head == nullptr ) {
 		head = node;
 	} else {
 		// non-empty list, add to front

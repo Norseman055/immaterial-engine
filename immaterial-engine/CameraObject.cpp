@@ -4,7 +4,7 @@
 
 extern GLShaderManager shaderManager;
 
-CullResult CameraObject::CullTest( const Sphere& sphere ) {
+CullResult CameraObject::CullTest( const Sphere& sphere ) const {
 	auto result = CULL_INSIDE;
 
 	// first test
@@ -53,7 +53,7 @@ void CameraObject::setRenderState() {
 void CameraObject::draw() {
 	if ( this->model != nullptr ) {
 		glBindVertexArray( this->model->vao );
-		glDrawElements( GL_TRIANGLES, 8 * 3, GL_UNSIGNED_SHORT, 0 );
+		glDrawElements( GL_TRIANGLES, 8 * 3, GL_UNSIGNED_SHORT, nullptr );
 	}
 }
 
@@ -61,7 +61,7 @@ void CameraObject::checkCulling() { }
 
 // critical informational knobs for the perspective matrix
 // Field of View Y is in degrees (copying lame OpenGL)
-const void CameraObject::setPerspective( const float Fovy, const float Aspect, const float NearDist, const float FarDist ) {
+void CameraObject::setPerspective( const float Fovy, const float Aspect, const float NearDist, const float FarDist ) {
 	this->aspectRatio = Aspect;
 	this->fovy = Fovy;
 	this->nearDist = NearDist;
@@ -69,7 +69,7 @@ const void CameraObject::setPerspective( const float Fovy, const float Aspect, c
 };
 
 // Just a pass through to setup the view port screen sub window
-const void CameraObject::setViewport( const int inX, const int inY, const int width, const int height ) {
+void CameraObject::setViewport( const int inX, const int inY, const int width, const int height ) {
 	this->viewport_x = inX;
 	this->viewport_y = inY;
 	this->viewport_width = width;
@@ -79,12 +79,12 @@ const void CameraObject::setViewport( const int inX, const int inY, const int wi
 };
 
 // Simple wrapper
-const void CameraObject::privSetViewState() {
+void CameraObject::privSetViewState() const {
 	glViewport( this->viewport_x, this->viewport_y, this->viewport_width, this->viewport_height );
 };
 
 // Goal, calculate the near height / width, same for far plane
-const void CameraObject::privCalcPlaneHeightWidth() {
+void CameraObject::privCalcPlaneHeightWidth() {
 	this->near_height = 2.0f * tanf( (this->fovy * MATH_PI / 180.0f) * .5f ) * this->nearDist;
 	this->near_width = this->near_height * this->aspectRatio;
 
@@ -92,7 +92,7 @@ const void CameraObject::privCalcPlaneHeightWidth() {
 	this->far_width = this->far_height * this->aspectRatio;
 };
 
-const void CameraObject::setOrientAndPosition( const Vect &inUp, const Vect &inLookAt, const Vect &inPos ) {
+void CameraObject::setOrientAndPosition( const Vect &inUp, const Vect &inLookAt, const Vect &inPos ) {
 	this->vLookAt = inLookAt;
 
 	// Point out of the screen into your EYE
@@ -109,7 +109,7 @@ const void CameraObject::setOrientAndPosition( const Vect &inUp, const Vect &inL
 	this->vPos = inPos;
 };
 
-const void CameraObject::privCalcFrustumVerts() {
+void CameraObject::privCalcFrustumVerts() {
 	this->nearTopLeft = this->vPos - this->vDir * this->nearDist + this->vUp * this->near_height * 0.5f - this->vRight * this->near_width * 0.5f;
 	this->nearTopRight = this->vPos - this->vDir * this->nearDist + this->vUp * this->near_height * 0.5f + this->vRight * this->near_width * 0.5f;
 	this->nearBottomLeft = this->vPos - this->vDir * this->nearDist - this->vUp * this->near_height * 0.5f - this->vRight * this->near_width * 0.5f;
@@ -120,7 +120,7 @@ const void CameraObject::privCalcFrustumVerts() {
 	this->farBottomRight = this->vPos - this->vDir * this->farDist - this->vUp * this->far_height * 0.5f + this->vRight * this->far_width * 0.5f;
 };
 
-const void CameraObject::privCalcFrustumCollisionNormals() {
+void CameraObject::privCalcFrustumCollisionNormals() {
 	// Normals of the frustum around nearTopLeft
 	auto A = this->nearBottomLeft - this->nearTopLeft;
 	auto B = this->nearTopRight - this->nearTopLeft;
@@ -150,8 +150,8 @@ const void CameraObject::privCalcFrustumCollisionNormals() {
 	this->bottomNorm.norm();
 };
 
-// The projection matrix (note it's invertable)
-const void CameraObject::privUpdateProjectionMatrix() {
+// The projection matrix (note it's invertible)
+void CameraObject::privUpdateProjectionMatrix() {
 	this->projMatrix[m0] = 2.0f * this->nearDist / this->near_width;
 	this->projMatrix[m1] = 0.0f;
 	this->projMatrix[m2] = 0.0f;
@@ -173,7 +173,7 @@ const void CameraObject::privUpdateProjectionMatrix() {
 	this->projMatrix[m15] = 0.0f;
 };
 
-const void CameraObject::privUpdateViewMatrix() {
+void CameraObject::privUpdateViewMatrix() {
 	// This functions assumes the your vUp, vRight, vDir are still unit
 	// And perpendicular to each other
 	// view = Rot(orient) * trans(-(eye.basis) )
@@ -201,7 +201,7 @@ const void CameraObject::privUpdateViewMatrix() {
 };
 
 // Update everything (make sure it's consistent)
-const void CameraObject::updateCamera() {
+void CameraObject::updateCamera() {
 	// First find the near height/width, far height/width
 	this->privCalcPlaneHeightWidth();
 
@@ -227,11 +227,11 @@ Matrix& CameraObject::getProjMatrix() {
 	return this->projMatrix;
 };
 
-const void CameraObject::getPos( Vect &outPos ) const {
+void CameraObject::getPos( Vect &outPos ) const {
 	outPos = this->vPos;
 };
 
-const void CameraObject::setPos( const Vect &inPos ) {
+void CameraObject::setPos( const Vect &inPos ) {
 	this->vPos = inPos;
 };
 
@@ -239,67 +239,67 @@ Vect CameraObject::getStartPos() {
 	return this->vPos;
 };
 
-const void CameraObject::getDir( Vect &outDir ) const {
+void CameraObject::getDir( Vect &outDir ) const {
 	outDir = this->vDir;
 };
 
-const void CameraObject::getUp( Vect &outUp ) const {
+void CameraObject::getUp( Vect &outUp ) const {
 	outUp = this->vUp;
 };
 
-const void CameraObject::getLookAt( Vect &outLookAt ) const {
+void CameraObject::getLookAt( Vect &outLookAt ) const {
 	outLookAt = this->vLookAt;
 }
 
-const void CameraObject::getRight( Vect &outRight ) const {
+void CameraObject::getRight( Vect &outRight ) const {
 	outRight = this->vRight;
 }
 
-const void CameraObject::getFieldOfView( float &Value ) const {
+void CameraObject::getFieldOfView( float &Value ) const {
 	Value = this->aspectRatio;
 };
 
-const void CameraObject::setFieldOfView( const float Value ) {
+void CameraObject::setFieldOfView( const float Value ) {
 	this->aspectRatio = Value;
 };
 
-const void CameraObject::getNearDist( float &Value ) const {
+void CameraObject::getNearDist( float &Value ) const {
 	Value = this->nearDist;
 };
 
-const void CameraObject::setNearDist( const float Value ) {
+void CameraObject::setNearDist( const float Value ) {
 	this->nearDist = Value;
 };
 
-const void CameraObject::getNearTopLeft( Vect &vOut ) const {
+void CameraObject::getNearTopLeft( Vect &vOut ) const {
 	vOut = this->nearTopLeft;
 };
 
-const void CameraObject::getNearTopRight( Vect &vOut ) const {
+void CameraObject::getNearTopRight( Vect &vOut ) const {
 	vOut = this->nearTopRight;
 };
 
-const void CameraObject::getNearBottomLeft( Vect &vOut )const {
+void CameraObject::getNearBottomLeft( Vect &vOut )const {
 	vOut = this->nearBottomLeft;
 };
 
-const void CameraObject::getNearBottomRight( Vect &vOut ) const {
+void CameraObject::getNearBottomRight( Vect &vOut ) const {
 	vOut = this->nearBottomRight;
 };
 
-const void CameraObject::getFarTopLeft( Vect &vOut ) const {
+void CameraObject::getFarTopLeft( Vect &vOut ) const {
 	vOut = this->farTopLeft;
 };
 
-const void CameraObject::getFarTopRight( Vect &vOut ) const {
+void CameraObject::getFarTopRight( Vect &vOut ) const {
 	vOut = this->farTopRight;
 };
 
-const void CameraObject::getFarBottomLeft( Vect &vOut ) const {
+void CameraObject::getFarBottomLeft( Vect &vOut ) const {
 	vOut = this->farBottomLeft;
 };
 
-const void CameraObject::getFarBottomRight( Vect &vOut )const {
+void CameraObject::getFarBottomRight( Vect &vOut )const {
 	vOut = this->farBottomRight;
 };
 
@@ -307,7 +307,7 @@ CameraName CameraObject::getName() const {
 	return this->name;
 };
 
-const void CameraObject::setCameraModel( CameraModel* const inModel ) {
+void CameraObject::setCameraModel( CameraModel* const inModel ) {
 	this->model = inModel;
 };
 
@@ -317,7 +317,8 @@ CameraObject::CameraObject( const CameraName inName )
 }
 
 CameraObject::CameraObject()
-	: name( CAMERA_GENERIC ), model( nullptr ) {
+	: nearDist( 0 ), farDist( 0 ), fovy( 0 ), aspectRatio( 0 ), near_height( 0 ), near_width( 0 ), far_height( 0 ), far_width( 0 ),
+	viewport_x( 0 ), viewport_y( 0 ), viewport_width( 0 ), viewport_height( 0 ), model( nullptr ), name( CAMERA_GENERIC ) {
 	this->World.set( IDENTITY );
 	this->ModelView.set( IDENTITY );
 	this->lightColor.set( 1.0f, 1.0f, 1.0f, 1.0f );

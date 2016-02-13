@@ -8,7 +8,7 @@ class GraphicsObject;
 
 #define NUM_BONES 80
 
-struct Bone : public Align16 {
+struct Bone : Align16 {
 	Vect T;
 	Quat Q;
 	Vect S;

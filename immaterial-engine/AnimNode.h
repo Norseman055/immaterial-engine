@@ -8,14 +8,13 @@ class AnimNode {
 public:
 	AnimNode( const char * const, const int, const int );
 
-	const void addBucket( Frame_Bucket * );
+	void addBucket( Frame_Bucket * );
 	char* getName();
 	Frame_Bucket* getData() const;
 
 private:
 	AnimNode();
 
-private:
 	// data
 	char animName[32];
 	Frame_Bucket *animData;

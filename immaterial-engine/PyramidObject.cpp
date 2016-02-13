@@ -3,22 +3,21 @@
 #include "CameraManager.h"
 #include "CameraObject.h"
 #include "GraphicsManager.h"
-#include "ModelManager.h"
 #include "AnimController.h"
 
 extern GLShaderManager shaderManager;
 extern PyramidModel *myPyramid;
 extern Frame_Bucket *pHead;
 
-const void PyramidObject::setControllerDepthFirst( const AnimController * const inCont ) {
+void PyramidObject::setControllerDepthFirst( const AnimController * const inCont ) {
 	PyramidObject *myChild;
 	this->controller = inCont;
 
-	if ( this->getChild() != 0 ) {
-		myChild = (PyramidObject *)this->getChild();
-		while ( myChild != 0 ) {
+	if ( this->getChild() != nullptr ) {
+		myChild = static_cast< PyramidObject * >(this->getChild());
+		while ( myChild != nullptr ) {
 			myChild->setControllerDepthFirst( inCont );
-			myChild = ( PyramidObject * ) myChild->getSibling();
+			myChild = static_cast< PyramidObject * >(myChild->getSibling());
 		}
 	}
 }
@@ -46,7 +45,7 @@ PyramidObject::PyramidObject( const char* const _name, const int _index )
 	this->indexBoneArray = _index;
 }
 
-const void PyramidObject::setStartPos( const Vect& v ) {
+void PyramidObject::setStartPos( const Vect& v ) {
 	this->startPos = v;
 	setSphereObject();
 };
@@ -55,34 +54,34 @@ Vect PyramidObject::getStartPos() {
 	return this->startPos;
 };
 
-const void PyramidObject::setLightColor( const Vect& v ) {
+void PyramidObject::setLightColor( const Vect& v ) {
 	this->lightColor = v;
 };
 
-const void PyramidObject::setLightPos( const Vect& v ) {
+void PyramidObject::setLightPos( const Vect& v ) {
 	this->lightPos = v;
 };
 
-const void PyramidObject::setOriginalSphere( const Sphere& inObj ) {
+void PyramidObject::setOriginalSphere( const Sphere& inObj ) {
 	this->origSphere = inObj;
 }
 
-const void PyramidObject::setSphereObject() {
+void PyramidObject::setSphereObject() const {
 	sphereObj->setPos( this->startPos );
 	sphereObj->setLightColor( Vect( 0.0f, 1.0f, 0.0f, 1.0f ) );
 	sphereObj->setRad( this->origSphere.rad );
 	GraphicsObjMan::AddDebugObject( sphereObj );
 }
 
-const void PyramidObject::setTextureName( const TextureName inName ) {
+void PyramidObject::setTextureName( const TextureName inName ) {
 	this->Texture = inName;
 };
 
-const void PyramidObject::setStockShaderMode( const ShaderType inVal ) {
+void PyramidObject::setStockShaderMode( const ShaderType inVal ) {
 	this->Shading = inVal;
 };
 
-const void PyramidObject::setController( AnimController* const inController ) {
+void PyramidObject::setController( AnimController* const inController ) {
 	this->controller = inController;
 }
 
@@ -95,7 +94,7 @@ void PyramidObject::checkCulling() {
 	}
 };
 
-const void PyramidObject::setModel( PyramidModel* const inModel ) {
+void PyramidObject::setModel( PyramidModel* const inModel ) {
 	this->model = inModel;
 }
 
@@ -103,17 +102,17 @@ void PyramidObject::setIndex( const int val ) {
 	this->indexBoneArray = val;
 }
 
-const void PyramidObject::setScale( const float val ) {
+void PyramidObject::setScale( const float val ) {
 	this->scale = val;
 }
 
 void PyramidObject::transform() {
 	Matrix ParentWorld;
 
-	if ( this->getParent() == 0 ) {
+	if ( this->getParent() == nullptr ) {
 		ParentWorld.set( IDENTITY );
 	} else {
-		auto parentObj = (PyramidObject *) this->getParent();
+		auto parentObj = static_cast< PyramidObject * >(this->getParent());
 		ParentWorld = parentObj->World;
 	}
 
@@ -183,7 +182,7 @@ void PyramidObject::setRenderState() {
 			glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 			glEnable( GL_CULL_FACE );
 			break;
-		case Shader_Wireframe:
+		default:
 			// modelViewProj matrix, stock shader.
 			shaderManager.UseStockShader( GLT_SHADER_FLAT,
 										  &mvp,
@@ -198,5 +197,5 @@ void PyramidObject::setRenderState() {
 
 void PyramidObject::draw() {
 	glBindVertexArray( myPyramid->vao );
-	glDrawElements( GL_TRIANGLES, 6 * 3, GL_UNSIGNED_SHORT, 0 );
+	glDrawElements( GL_TRIANGLES, 6 * 3, GL_UNSIGNED_SHORT, nullptr );
 };

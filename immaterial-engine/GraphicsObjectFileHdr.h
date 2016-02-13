@@ -1,7 +1,5 @@
 #pragma once
 
-#include <string.h>
-
 #define OBJ_NAME_SIZE	32
 #define TEXT_NAME_SIZE	32
 
@@ -33,5 +31,5 @@ struct gObjFileHdr {
 	tffInfo 	 textInfo;
 
 	gObjFileHdr()
-		: numVerts( 0 ), vertBufferOffset( 0 ), numTriList( 0 ), triListBufferOffset( 0 ) { }
+		: numVerts( 0 ), vertBufferOffset( 0 ), numTriList( 0 ), triListBufferOffset( 0 ), numTextures( 0 ) { }
 };

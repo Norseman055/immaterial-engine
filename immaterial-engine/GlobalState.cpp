@@ -5,11 +5,9 @@
 #include "GraphicsManager.h"
 #include "CameraManager.h"
 #include "ModelManager.h"
-#include "GenericObject.h"
 #include "ArchiveManager.h"
 
 // animation testing
-#include "PyramidModel.h"
 #include "AnimControllerMan.h"
 
 void createGraphicsWindow() {
@@ -33,9 +31,9 @@ void createGraphicsWindow() {
 	glutDisplayFunc( RenderScene );
 
 	// Extension library - initialize
-	GLenum err = glewInit();
+	auto err = glewInit();
 	if ( GLEW_OK != err ) {
-		fprintf( stderr, "GLEW Error: %s\n", glewGetErrorString( err ) );
+		fprintf( stderr, "GLEW Error: %p\n", glewGetErrorString( err ) );
 		// return error
 	}
 
@@ -52,7 +50,7 @@ void frameworkStartup() {
 
 	SetHumanoidHierarchy();
 
-	auto humanShot = new AnimController( AnimationMan::GetAnimation( "punch" ), ( PyramidObject * ) GraphicsObjMan::GetFirstObj() );
+	auto humanShot = new AnimController( AnimationMan::GetAnimation( "punch" ), static_cast< PyramidObject * >(GraphicsObjMan::GetFirstObj()) );
 	humanShot->setPlayback( Loop );
 	AnimControllerMan::AddController( humanShot );
 };

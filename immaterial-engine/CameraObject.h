@@ -18,63 +18,63 @@ enum CullResult {
 
 class CameraObject : public GraphicsObject {
 public:
-	CullResult CullTest( const Sphere& );
+	CullResult CullTest( const Sphere& ) const;
 
-	void transform( void );
-	void draw( void );
-	void setRenderState( void );
-	void checkCulling( void );
+	void transform( void ) override;
+	void draw( void ) override;
+	void setRenderState( void ) override;
+	void checkCulling( void ) override;
 
 	// Setup on single camera
-	const void setPerspective( const float, const float, const float, const float );
-	const void setViewport( const int, const int, const int, const int );
-	const void setOrientAndPosition( const Vect&, const Vect&, const Vect& );
-	const void setCameraModel( CameraModel* const );
+	void setPerspective( const float, const float, const float, const float );
+	void setViewport( const int, const int, const int, const int );
+	void setOrientAndPosition( const Vect&, const Vect&, const Vect& );
+	void setCameraModel( CameraModel* const );
 
 	// update camera system
-	const void updateCamera( void );
+	void updateCamera( void );
 
 	// Get the matrices for rendering
 	Matrix &getViewMatrix();
 	Matrix &getProjMatrix();
 
 	// accessors
-	const void getPos( Vect& ) const;
-	const void getDir( Vect& ) const;
-	const void getUp( Vect& ) const;
-	const void getLookAt( Vect& ) const;
-	const void getRight( Vect& ) const;
+	void getPos( Vect& ) const;
+	void getDir( Vect& ) const;
+	void getUp( Vect& ) const;
+	void getLookAt( Vect& ) const;
+	void getRight( Vect& ) const;
 
 	CameraName getName() const;
 
-	const void setPos( const Vect& );
-	Vect getStartPos();
+	void setPos( const Vect& );
+	Vect getStartPos() override;
 
-	const void getFieldOfView( float& ) const;
-	const void setFieldOfView( const float );
+	void getFieldOfView( float& ) const;
+	void setFieldOfView( const float );
 
-	const void getNearDist( float& ) const;
-	const void setNearDist( const float );
+	void getNearDist( float& ) const;
+	void setNearDist( const float );
 
-	const void getNearTopLeft( Vect& ) const;
-	const void getNearTopRight( Vect& ) const;
-	const void getNearBottomLeft( Vect& ) const;
-	const void getNearBottomRight( Vect& ) const;
-	const void getFarTopLeft( Vect& ) const;
-	const void getFarTopRight( Vect& ) const;
-	const void getFarBottomLeft( Vect& ) const;
-	const void getFarBottomRight( Vect& ) const;
+	void getNearTopLeft( Vect& ) const;
+	void getNearTopRight( Vect& ) const;
+	void getNearBottomLeft( Vect& ) const;
+	void getNearBottomRight( Vect& ) const;
+	void getFarTopLeft( Vect& ) const;
+	void getFarTopRight( Vect& ) const;
+	void getFarBottomLeft( Vect& ) const;
+	void getFarBottomRight( Vect& ) const;
 
-	CameraObject( CameraName name );
+	explicit CameraObject( CameraName name );
 	CameraObject();
 
 private:  // methods
-	const void privSetViewState();
-	const void privCalcPlaneHeightWidth();
-	const void privCalcFrustumVerts();
-	const void privCalcFrustumCollisionNormals();
-	const void privUpdateProjectionMatrix();
-	const void privUpdateViewMatrix();
+	void privSetViewState() const;
+	void privCalcPlaneHeightWidth();
+	void privCalcFrustumVerts();
+	void privCalcFrustumCollisionNormals();
+	void privUpdateProjectionMatrix();
+	void privUpdateViewMatrix();
 
 private:  // data
 

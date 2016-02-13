@@ -2,7 +2,7 @@
 #include "DEBUGGING.h"
 
 AnimNode::AnimNode( const char * const inName, const int inFrames, const int inBones )
-	: numKeyframes( inFrames ), numBones( inBones ), next( nullptr ), prev( nullptr ), animData( nullptr ) {
+	: animData( nullptr ), numKeyframes( inFrames ), numBones( inBones ), next( nullptr ), prev( nullptr ) {
 	if ( strlen( inName ) < ANIM_ASSET_NAME_SIZE ) {
 		memcpy( this->animName, inName, strlen( inName ) );
 		this->animName[strlen( inName )] = '\0';
@@ -13,9 +13,9 @@ AnimNode::AnimNode( const char * const inName, const int inFrames, const int inB
 }
 
 AnimNode::AnimNode()
-	: numKeyframes( 0 ), numBones( 0 ), next( nullptr ), prev( nullptr ), animData( nullptr ) { }
+	: animData( nullptr ), numKeyframes( 0 ), numBones( 0 ), next( nullptr ), prev( nullptr ) { }
 
-const void AnimNode::addBucket( Frame_Bucket * node ) {
+void AnimNode::addBucket( Frame_Bucket * node ) {
 	assert( node != nullptr );
 
 	if ( this->animData == nullptr ) {

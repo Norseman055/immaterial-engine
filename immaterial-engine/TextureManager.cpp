@@ -1,5 +1,4 @@
 #include "DEBUGGING.h"
-#include "File.h"
 
 #include "TextureManager.h"
 #include "GraphicsObjectFileHdr.h"
@@ -15,7 +14,7 @@ TextureMan* TextureMan::privGetInstance() {
 	return &textMan;
 }
 
-void TextureMan::AddTexture( const char * const inAssetName, const TextureName inName ) {
+void TextureMan::AddTexture( char * const inAssetName, const TextureName inName ) {
 	GLuint textureID;
 	auto pTextureID = &textureID;
 
@@ -34,7 +33,7 @@ void TextureMan::AddTexture( const char * const inAssetName, const TextureName i
 }
 
 // for use when loading textures from .ctf (converted TGA file)
-bool TextureMan::LoadTexture( const char * const fileName, const char * const textID ) {
+bool TextureMan::LoadTexture( char * const fileName, char * const textID ) {
 	GLuint textureID;
 	auto pTextureID = &textureID;
 
@@ -46,8 +45,8 @@ bool TextureMan::LoadTexture( const char * const fileName, const char * const te
 
 	// hash the string textID and store it as the textureID for the manager
 	MD5Output out;
-	MD5Buffer( ( unsigned char * ) textID, strlen( textID ), out );
-	GLuint hashID = out.dWord_0 ^ out.dWord_1 ^ out.dWord_2 ^ out.dWord_3;
+	MD5Buffer( reinterpret_cast< unsigned char * >(textID), strlen( textID ), out );
+	auto hashID = out.dWord_0 ^ out.dWord_1 ^ out.dWord_2 ^ out.dWord_3;
 
 	// make a new node, set its values
 	auto pNode = new TextureNode;
@@ -58,7 +57,7 @@ bool TextureMan::LoadTexture( const char * const fileName, const char * const te
 	return true;
 }
 
-bool TextureMan::LoadBufferedTexture( const unsigned char * const textBuff, const tffInfo & inHdr ) {
+bool TextureMan::LoadBufferedTexture( unsigned char * const textBuff, tffInfo & inHdr ) {
 	GLuint textureID;
 	auto pTextureID = &textureID;
 
@@ -69,8 +68,8 @@ bool TextureMan::LoadBufferedTexture( const unsigned char * const textBuff, cons
 
 	// hash the string inName and store it as the textureID for the manager
 	MD5Output out;
-	MD5Buffer( ( unsigned char * ) inHdr.textName, strlen( inHdr.textName ), out );
-	GLuint hashID = out.dWord_0 ^ out.dWord_1 ^ out.dWord_2 ^ out.dWord_3;
+	MD5Buffer( reinterpret_cast< unsigned char * >(inHdr.textName), strlen( inHdr.textName ), out );
+	auto hashID = out.dWord_0 ^ out.dWord_1 ^ out.dWord_2 ^ out.dWord_3;
 
 	// make a new node, set its values
 	auto pNode = new TextureNode;
@@ -85,7 +84,7 @@ GLuint TextureMan::Find( const GLuint inName ) {
 	// get instance
 	auto pTextMan = privGetInstance();
 
-	auto walker = ( TextureNode * ) pTextMan->active;
+	auto walker = static_cast< TextureNode * >(pTextMan->active);
 
 	// if there is a texture to be asked for, return it
 	if ( inName != NOT_INITIALIZED ) {
@@ -95,7 +94,7 @@ GLuint TextureMan::Find( const GLuint inName ) {
 				break;
 			}
 
-			walker = ( TextureNode * ) walker->next;
+			walker = static_cast< TextureNode * >(walker->next);
 		}
 
 		if ( walker == nullptr ) {
@@ -103,8 +102,8 @@ GLuint TextureMan::Find( const GLuint inName ) {
 		}
 	} else {
 		// otherwise, return the dummy texture (first one ever loaded)
-		while ( ( TextureNode * ) walker->next != nullptr ) {
-			walker = ( TextureNode * ) walker->next;
+		while ( static_cast< TextureNode * >(walker->next) != nullptr ) {
+			walker = static_cast< TextureNode * >(walker->next);
 		}
 	}
 
@@ -114,21 +113,21 @@ GLuint TextureMan::Find( const GLuint inName ) {
 
 void TextureMan::DeleteTextures() {
 	// delete textures from GPU
-	auto walker = ( TextureNode * ) privGetInstance()->active;
+	auto walker = static_cast< TextureNode * >(privGetInstance()->active);
 	auto tmp = walker;
 	while ( walker != nullptr ) {
-		walker = ( TextureNode * ) walker->next;
+		walker = static_cast< TextureNode * >(walker->next);
 		glDeleteTextures( 1, &tmp->textureID );
 		delete tmp;
 		tmp = walker;
 	}
 }
 
-const void TextureMan::privAddToFront( TextureNodeLink *node, TextureNodeLink *&head ) {
-	assert( node != 0 );
+void TextureMan::privAddToFront( TextureNodeLink *node, TextureNodeLink *&head ) const {
+	assert( node );
 
 	// empty list
-	if ( head == 0 ) {
+	if ( head == nullptr ) {
 		head = node;
 	} else {
 		// non-empty list, add to front
@@ -138,14 +137,14 @@ const void TextureMan::privAddToFront( TextureNodeLink *node, TextureNodeLink *&
 	}
 }
 
-const void TextureMan::privLoadTexture( const char * const inAssetName, GLuint *&textureID ) {
+void TextureMan::privLoadTexture( char * const inAssetName, GLuint *&textureID ) const {
 	// get handle to texture, bind it, then load it.
 	glGenTextures( 1, textureID );
 	glBindTexture( GL_TEXTURE_2D, *textureID );
 	this->privLoadTGATexture( inAssetName, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE );
 }
 
-const void TextureMan::privLoadMyTexture( const unsigned char * const tgaData, GLuint *&textureID ) {
+void TextureMan::privLoadMyTexture( unsigned char * const tgaData, GLuint *&textureID ) const {
 	// get handle to texture, bind it, then load it.
 	glGenTextures( 1, textureID );
 	glBindTexture( GL_TEXTURE_2D, *textureID );
@@ -153,14 +152,14 @@ const void TextureMan::privLoadMyTexture( const unsigned char * const tgaData, G
 }
 
 // Load a TGA as a 2D Texture. Completely initialize the state
-bool TextureMan::privLoadTGATexture( const char *szFileName, GLenum minFilter, GLenum magFilter, GLenum wrapMode ) {
+bool TextureMan::privLoadTGATexture( char * const szFileName, GLenum minFilter, GLenum magFilter, GLenum wrapMode ) const {
 	GLbyte *pBits;
 	int nWidth, nHeight, nComponents;
 	GLenum eFormat;
 
 	// Read the texture bits
 	pBits = gltReadTGABits( szFileName, &nWidth, &nHeight, &nComponents, &eFormat );
-	if ( pBits == NULL )
+	if ( pBits == nullptr )
 		return false;
 
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapMode );
@@ -182,7 +181,7 @@ bool TextureMan::privLoadTGATexture( const char *szFileName, GLenum minFilter, G
 	return true;
 }
 
-bool TextureMan::privLoadMyTGATexture( const unsigned char * const tgaData, GLenum minFilter, GLenum magFilter, GLenum wrapMode ) {
+bool TextureMan::privLoadMyTGATexture( unsigned char * const tgaData, GLenum minFilter, GLenum magFilter, GLenum wrapMode ) const {
 	// my TGA Function
 	GLbyte *pBits;
 	int nWidth, nHeight, nComponents;

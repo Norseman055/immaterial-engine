@@ -1,16 +1,15 @@
 #include "CameraModel.h"
-#include "DEBUGGING.h"
 #include "CameraManager.h"
 
 extern GLShaderManager shaderManager;
 
-CameraModel::CameraModel() { }
+CameraModel::CameraModel() : vao( 0 ) { }
 
-const void CameraModel::update() {
+void CameraModel::update() {
 	this->createVAO( CameraMan::Find( CAMERA_CULLING ) );
 }
 
-const void CameraModel::createVAO( CameraObject* const cam ) {
+void CameraModel::createVAO( CameraObject* const cam ) {
 	struct MyVertex_stride {
 		float x;
 		float y;
@@ -141,7 +140,7 @@ const void CameraModel::createVAO( CameraObject* const cam ) {
 
 	/* Specify that our coordinate data is going into attribute index 0, and contains 3 floats per vertex */
 	// ( GLuint index,  GLint size,  GLenum type,  GLboolean normalized,  GLsizei stride,  const GLvoid * pointer);
-	void *offsetVert = ( void * ) (( unsigned int ) &pVerts[0].x - ( unsigned int ) &pVerts[0].x);
+	auto offsetVert = reinterpret_cast< void * >(reinterpret_cast< unsigned int >(&pVerts[0].x) - reinterpret_cast< unsigned int >(&pVerts[0].x));
 	glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, sizeof( MyVertex_stride ), offsetVert );
 
 	// Load the index data: ---------------------------------------------------------

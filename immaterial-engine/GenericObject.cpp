@@ -10,14 +10,14 @@ extern GLShaderManager shaderManager;
 
 // constructor
 GenObject::GenObject()
-	: GraphicsObject() {
+	: GraphicsObject(), modelVAO( 0 ) {
 	this->Shading = Shader_Texture_NoLights;
 
 	this->modelTri = 0;
 	this->sphereObj = new SphereObject;
 };
 
-const void GenObject::setStartPos( const Vect& v ) {
+void GenObject::setStartPos( const Vect& v ) {
 	this->startPos = v;
 };
 
@@ -25,51 +25,51 @@ Vect GenObject::getStartPos() const {
 	return this->startPos;
 }
 
-const void GenObject::setLightColor( const Vect& v ) {
+void GenObject::setLightColor( const Vect& v ) {
 	this->lightColor = v;
 };
 
-const void GenObject::setLightPos( const Vect& v ) {
+void GenObject::setLightPos( const Vect& v ) {
 	this->lightPos = v;
 };
 
-const void GenObject::setOriginalSphere( const Sphere& inObj ) {
+void GenObject::setOriginalSphere( const Sphere& inObj ) {
 	this->origSphere = inObj;
 	setSphereObject();
 }
 
-const void GenObject::setSphereObject() {
+void GenObject::setSphereObject() const {
 	sphereObj->setPos( this->startPos );
 	sphereObj->setLightColor( Vect( 0.0f, 1.0f, 0.0f, 1.0f ) );
 	sphereObj->setRad( this->origSphere.rad );
 	GraphicsObjMan::AddDebugObject( sphereObj );
 }
 
-const void GenObject::setModel( Model* const inModel ) {
+void GenObject::setModel( Model* const inModel ) {
 	this->modelVAO = inModel->vao;
 	this->modelTri = inModel->numTri;
 	this->setOriginalSphere( inModel->boundingVol );
 }
 
-const void GenObject::setTextureName( const TextureName inName ) {
+void GenObject::setTextureName( const TextureName inName ) {
 	this->Texture = inName;
 }
 
-const void GenObject::setTextureName( const char* const inName ) {
+void GenObject::setTextureName( char* const inName ) {
 	MD5Output out;
-	MD5Buffer( ( unsigned char * ) inName, strlen( inName ), out );
-	GLuint hashID = out.dWord_0 ^ out.dWord_1 ^ out.dWord_2 ^ out.dWord_3;
+	MD5Buffer( reinterpret_cast< unsigned char * >(inName), strlen( inName ), out );
+	auto hashID = out.dWord_0 ^ out.dWord_1 ^ out.dWord_2 ^ out.dWord_3;
 
 	this->Texture = hashID;
 };
 
-const void GenObject::setStockShaderMode( const ShaderType inVal ) {
+void GenObject::setStockShaderMode( const ShaderType inVal ) {
 	this->Shading = inVal;
 };
 
 void GenObject::checkCulling() {
-	CameraObject *tmp = CameraMan::Find( CAMERA_CULLING );
-	if ( tmp != NULL ) {
+	auto tmp = CameraMan::Find( CAMERA_CULLING );
+	if ( tmp != nullptr ) {
 		if ( tmp->CullTest( this->sphereObj->getSphere() ) == CULL_INSIDE )
 			this->sphereObj->setLightColor( Vect( 0.0f, 1.0f, 0.0f, 0.0f ) );
 		else
@@ -151,7 +151,7 @@ void GenObject::setRenderState() {
 			glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 			glEnable( GL_CULL_FACE );
 			break;
-		case Shader_Wireframe:
+		default:
 			// modelViewProj matrix, stock shader.
 			shaderManager.UseStockShader( GLT_SHADER_FLAT,
 										  &mvp,
@@ -166,5 +166,5 @@ void GenObject::setRenderState() {
 
 void GenObject::draw() {
 	glBindVertexArray( this->modelVAO );
-	glDrawElements( GL_TRIANGLES, this->modelTri * 3, GL_UNSIGNED_SHORT, 0 );
+	glDrawElements( GL_TRIANGLES, this->modelTri * 3, GL_UNSIGNED_SHORT, nullptr );
 };

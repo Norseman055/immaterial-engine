@@ -36,7 +36,7 @@ void KeyboardKeys( unsigned char key, int x, int y ) {
 	myCamera->getDir( Dir );
 	myCamera->getUp( Up );
 	myCamera->getLookAt( LookAt );
-	float scale = 5.0f;
+	auto scale = 5.0f;
 
 	// "W" key (move forward)
 	if ( key == 0x57 || key == 0x77 ) {
@@ -107,7 +107,7 @@ void KeyboardKeys( unsigned char key, int x, int y ) {
 
 	// "G" key (focus camera to a Game object)
 	if ( key == 0x47 || key == 0x67 ) {
-		// camera takes its current lookat, finds an object in the game object manager with the same startPos as the lookat.
+		// camera takes its current look-at, finds an object in the game object manager with the same startPos as the lookat.
 		auto cam = CameraMan::GetCurrCamera();
 		Vect lookAt, upDir, camPos;
 		cam->getLookAt( lookAt );
@@ -120,18 +120,18 @@ void KeyboardKeys( unsigned char key, int x, int y ) {
 			// if its already getting the first object
 			if ( p->getSibling() != 0 ) {
 				// it then goes to the next object in the graphicsManager and grabs its startPos, and multiplies it by the objects localToWorld matrix.
-				p = ( GraphicsObject * ) p->getSibling();
+				p = static_cast< GraphicsObject * >(p->getSibling());
 			}
 		} else {
 			// if the camera is not looking at first object
-			if ( p != 0 && ( GraphicsObject * ) p->getSibling() != 0 ) {
-				p = ( GraphicsObject * ) p->getSibling();
+			if ( p != nullptr && static_cast< GraphicsObject * >(p->getSibling()) != nullptr ) {
+				p = static_cast< GraphicsObject * >(p->getSibling());
 			} else {
 				p = GraphicsObjMan::GetFirstObj();
 			}
 		}
 
-		// it then sets that Vect as the camera's current lookat.
+		// it then sets that Vect as the camera's current look-at.
 		cam->setOrientAndPosition( upDir, p->getStartPos(), camPos );
 		printf( "Camera focus change. Looking at new game object.\n" );
 	}
@@ -209,7 +209,7 @@ void SpecialKeys( int key, int _x, int _y ) {
 	// convert up_pt to a vector again
 	auto Up_new = Up_pt_new - Pos_new;
 
-	// Upate the camera
+	// Update the camera
 	myCamera->setOrientAndPosition( Up_new, Tar, Pos_new );
 
 	// panning/tilting
@@ -236,7 +236,7 @@ void SpecialKeys( int key, int _x, int _y ) {
 
 	cLook *= MM;
 
-	// Upate the camera
+	// Update the camera
 	myCamera->setOrientAndPosition( cUp, cLook, cPos );
 
 	glutPostRedisplay();

@@ -24,10 +24,9 @@ public:
 private:
 	static CameraMan* privGetInstance();
 	CameraMan();
-	const void privAddToFront( CameraNodeLink* const, CameraNodeLink*& ) const;
-	const void privRemoveFromList( CameraNodeLink* const, CameraNodeLink*& ) const;
+	void privAddToFront( CameraNodeLink* const, CameraNodeLink*& ) const;
+	void privRemoveFromList( CameraNodeLink* const, CameraNodeLink*& ) const;
 
-private:
 	CameraNodeLink *active;
 	CameraObject *currCamera;
 	CameraState camState;

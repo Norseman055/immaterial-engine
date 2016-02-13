@@ -14,8 +14,7 @@ public:
 class CameraNode : public CameraNodeLink {
 public:
 	CameraNode();
-	const void set( CameraObject* const );
+	void set( CameraObject* const );
 
-public:
 	CameraObject *myCamera;
 };

@@ -21,7 +21,6 @@ public:
 			  GLuint inHash,
 			  Model * inMod );
 
-public:
 	// name of model from file
 	char modelName[MODEL_NAME_SIZE];
 

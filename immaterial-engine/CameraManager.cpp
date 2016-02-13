@@ -22,7 +22,7 @@ void CameraMan::LoadCameras() {
 	cam0->setOrientAndPosition( Vect( 0.0f, 1.0f, 0.0f ), Vect( 0.0f, 0.0f, 10.0f ), Vect( 180.0f, 0.0f, 2000.0f ) );
 	cam0->updateCamera();
 
-	CameraMan::AddCamera( cam0 );
+	AddCamera( cam0 );
 	GraphicsObjMan::AddDebugObject( cam0 );
 
 	// create overview camera (watches camera0)
@@ -32,9 +32,9 @@ void CameraMan::LoadCameras() {
 	cam1->setPerspective( 35.0f, float( GAME_WIDTH ) / float( GAME_HEIGHT ), 1.0f, 10000.0f );
 	cam1->setOrientAndPosition( Vect( 0.0f, 0.0f, 1.0f ), Vect( 0.0f, 0.0f, 4.0f ), Vect( 500.0f, 0.0f, 4.0f ) );
 
-	CameraMan::AddCamera( cam1 );
+	AddCamera( cam1 );
 
-	CameraMan::SetCurrCamera( cam0 );
+	SetCurrCamera( cam0 );
 
 	// create the camera model
 	auto myCameraModel = new CameraModel;
@@ -60,7 +60,7 @@ void CameraMan::RemoveCamera() {
 	auto cMan = privGetInstance();
 
 	// remove current camera from the list
-	auto walker = ( CameraNode * ) cMan->active;
+	auto walker = static_cast< CameraNode * >(cMan->active);
 	auto tmp = cMan->NextCamera();
 
 	// do not remove the culling camera. i want that one at all times.
@@ -70,16 +70,16 @@ void CameraMan::RemoveCamera() {
 				cMan->privRemoveFromList( walker, cMan->active );
 				cMan->SetCurrCamera( tmp );
 			}
-			walker = ( CameraNode * ) walker->next;
+			walker = static_cast< CameraNode * >(walker->next);
 		}
 	}
 }
 
 void CameraMan::DeleteCameras() {
-	auto walker = ( CameraNode * ) privGetInstance()->active;
+	auto walker = static_cast< CameraNode * >(privGetInstance()->active);
 	auto tmp = walker;
 	while ( walker != nullptr ) {
-		walker = ( CameraNode* ) walker->next;
+		walker = static_cast< CameraNode* >(walker->next);
 		delete tmp;
 		tmp = walker;
 	}
@@ -103,17 +103,17 @@ void CameraMan::SwitchState() {
 
 CameraObject* CameraMan::Find( const CameraName inName ) {
 	// find the camera node
-	auto walker = ( CameraNode * ) privGetInstance()->active;
+	auto walker = static_cast< CameraNode * >(privGetInstance()->active);
 
 	while ( walker != nullptr ) {
 		if ( walker->myCamera->getName() == inName ) {
 			break;
 		}
-		walker = ( CameraNode * ) walker->next;
+		walker = static_cast< CameraNode * >(walker->next);
 	}
 
 	if ( walker == nullptr ) {
-		walker = ( CameraNode * ) privGetInstance()->active;
+		walker = static_cast< CameraNode * >(privGetInstance()->active);
 	}
 
 	return walker->myCamera;
@@ -127,12 +127,12 @@ CameraObject* CameraMan::NextCamera() {
 	auto cMan = CameraMan::privGetInstance();
 
 	// return next camera in list
-	auto walker = ( CameraNode* ) cMan->currCamera;
+	auto walker = reinterpret_cast< CameraNode* >(cMan->currCamera);
 
 	if ( walker->next != nullptr ) {
-		walker = ( CameraNode* ) walker->next;
+		walker = static_cast< CameraNode* >(walker->next);
 	} else {
-		walker = ( CameraNode* ) cMan->active;
+		walker = static_cast< CameraNode* >(cMan->active);
 	}
 
 	return walker->myCamera;
@@ -142,7 +142,7 @@ CameraState CameraMan::GetState() {
 	return privGetInstance()->camState;
 }
 
-const void CameraMan::privAddToFront( CameraNodeLink* const node, CameraNodeLink*& head ) const {
+void CameraMan::privAddToFront( CameraNodeLink* const node, CameraNodeLink*& head ) const {
 	assert( node != nullptr );
 
 	if ( head == nullptr ) {
@@ -154,7 +154,7 @@ const void CameraMan::privAddToFront( CameraNodeLink* const node, CameraNodeLink
 	}
 }
 
-const void CameraMan::privRemoveFromList( CameraNodeLink* const node, CameraNodeLink *&head ) const {
+void CameraMan::privRemoveFromList( CameraNodeLink* const node, CameraNodeLink *&head ) const {
 	assert( node != nullptr );
 
 	if ( node->prev == nullptr ) {

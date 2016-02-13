@@ -12,7 +12,7 @@ void MostSeparatedPointsOnAABB( int &min, int &max, Vect *pt, int numPts ) {
 	auto minz = 0;
 	auto maxz = 0;
 
-	for ( int i = 1; i < numPts; i++ ) {
+	for ( auto i = 1; i < numPts; i++ ) {
 		if ( pt[i][x] < pt[minx][x] )
 			minx = i;
 		if ( pt[i][x] > pt[maxx][x] )
@@ -28,9 +28,9 @@ void MostSeparatedPointsOnAABB( int &min, int &max, Vect *pt, int numPts ) {
 	}
 
 	// Compute the squared distances for the three pairs of points
-	float dist2x = (pt[maxx] - pt[minx]).dot( pt[maxx] - pt[minx] );
-	float dist2y = (pt[maxy] - pt[miny]).dot( pt[maxy] - pt[miny] );
-	float dist2z = (pt[maxz] - pt[minz]).dot( pt[maxz] - pt[minz] );
+	auto dist2x = (pt[maxx] - pt[minx]).dot( pt[maxx] - pt[minx] );
+	auto dist2y = (pt[maxy] - pt[miny]).dot( pt[maxy] - pt[miny] );
+	auto dist2z = (pt[maxz] - pt[minz]).dot( pt[maxz] - pt[minz] );
 	// Pick the pair (min,max) of points most distant
 	min = minx;
 	max = maxx;
@@ -46,14 +46,14 @@ void MostSeparatedPointsOnAABB( int &min, int &max, Vect *pt, int numPts ) {
 
 void SphereOfSphereAndPt( Sphere &s, Vect &p ) {
 	// Compute squared distance between point and sphere center
-	Vect d = p - s.cntr;
+	auto d = p - s.cntr;
 
-	float dist2 = d.dot( d );
+	auto dist2 = d.dot( d );
 	// Only update s if point p is outside it
 	if ( dist2 > s.rad * s.rad ) {
-		float dist = sqrtf( dist2 );
-		float newRadius = (s.rad + dist) * 0.5f;
-		float k = (newRadius - s.rad) / dist;
+		auto dist = sqrtf( dist2 );
+		auto newRadius = (s.rad + dist) * 0.5f;
+		auto k = (newRadius - s.rad) / dist;
 		s.rad = newRadius;
 		s.cntr += d * k;
 	}
@@ -75,7 +75,7 @@ void RitterSphere( Sphere &s, Vect *pt, int numPts ) {
 	SphereFromDistantPoints( s, pt, numPts );
 
 	// Grow sphere to include all points
-	for ( int i = 0; i < numPts; i++ ) {
+	for ( auto i = 0; i < numPts; i++ ) {
 		SphereOfSphereAndPt( s, pt[i] );
 	}
 }

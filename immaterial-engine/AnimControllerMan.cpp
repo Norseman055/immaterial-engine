@@ -1,5 +1,4 @@
 #include "AnimControllerMan.h"
-#include "GraphicsManager.h"
 #include <assert.h>
 
 void AnimControllerMan::AddController( AnimController* const inControl ) {
@@ -43,7 +42,7 @@ void AnimControllerMan::SetAnimationPose( Time &tCurr ) {
 	}
 }
 
-const void AnimControllerMan::privAddToFront( AnimController *node, AnimController *& head ) {
+void AnimControllerMan::privAddToFront( AnimController *node, AnimController *& head ) {
 	assert( node != nullptr );
 
 	if ( head == nullptr ) {

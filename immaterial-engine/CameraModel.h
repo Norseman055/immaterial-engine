@@ -8,8 +8,8 @@ class CameraModel {
 public:
 	CameraModel();
 
-	const void createVAO( CameraObject* const );
-	const void update();
+	void createVAO( CameraObject* const );
+	void update();
 
 	GLuint vao;
 };

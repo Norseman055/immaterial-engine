@@ -4,7 +4,7 @@
 
 #include "TextureManager.h"
 
-GLbyte* myReadTGABits( const void * lTexture, GLint & nWidth, GLint & nHeight, GLint & nComponents, GLenum & eFormat ) {
+GLbyte* myReadTGABits( void * lTexture, GLint & nWidth, GLint & nHeight, GLint & nComponents, GLenum & eFormat ) {
 	unsigned long lImageSize;
 	short sDepth;
 	GLbyte *pBits = nullptr;
@@ -14,8 +14,8 @@ GLbyte* myReadTGABits( const void * lTexture, GLint & nWidth, GLint & nHeight, G
 	nComponents = GL_RGB;
 	eFormat = GL_RGB;	// For some reason, lTexture changes immediately after this line of code. WHY?????
 
-	auto tgaHeader = ( TGAHEADER * ) lTexture;
-	auto textLoc = ( void * ) (( unsigned int ) lTexture + sizeof( TGAHEADER ));
+	auto tgaHeader = static_cast< TGAHEADER * >(lTexture);
+	auto textLoc = reinterpret_cast< void * >(reinterpret_cast< unsigned int >( lTexture ) +sizeof( TGAHEADER ));
 
 	nWidth = tgaHeader->width;
 	nHeight = tgaHeader->height;
@@ -24,7 +24,7 @@ GLbyte* myReadTGABits( const void * lTexture, GLint & nWidth, GLint & nHeight, G
 	if ( tgaHeader->BitsPerPixel == 8 || tgaHeader->BitsPerPixel == 24 || tgaHeader->BitsPerPixel == 32 ) {
 		sDepth = tgaHeader->BitsPerPixel / 8;
 		lImageSize = tgaHeader->width * tgaHeader->height * sDepth;
-		pBits = ( GLbyte * ) malloc( lImageSize * sizeof( GLbyte ) );
+		pBits = static_cast< GLbyte * >(malloc( lImageSize * sizeof( GLbyte ) ));
 
 		// get address just beyond TGAHEADER in lTexture
 		memcpy( pBits, textLoc, lImageSize );
@@ -78,7 +78,7 @@ unsigned char* getTGAFile( const char * const fileName ) {
 	assert( ferror == FILE_SUCCESS );
 
 	// create buffer for TGA file, read in the texture
-	auto lTexture = ( unsigned char * ) malloc( fSize );
+	auto lTexture = static_cast< unsigned char * >(malloc( fSize ));
 
 	ferror = File::read( fh, lTexture, fSize );
 	assert( ferror == FILE_SUCCESS );

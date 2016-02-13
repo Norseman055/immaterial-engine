@@ -23,8 +23,8 @@ private:
 	// Methods
 	GraphicsObjMan();
 	static GraphicsObjMan *privGetInstance();
-	const void privDrawObjectsDepthFirst( GraphicsObject* const ) const;
-	GraphicsObject* privFindAtLocation( GraphicsObject* const, Vect& );
+	void privDrawObjectsDepthFirst( GraphicsObject* const ) const;
+	GraphicsObject* privFindAtLocation( GraphicsObject* const, Vect& ) const;
 
 	// Data
 	PCSTree goTree;

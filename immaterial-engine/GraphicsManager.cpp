@@ -2,9 +2,6 @@
 
 #include "NullObject.h"
 #include "GraphicsManager.h"
-#include "ChunkHeader.h"
-#include "eat.h"
-#include "PackageHeader.h"
 
 GraphicsObjMan::GraphicsObjMan()
 	: debugOn( false ) {
@@ -20,20 +17,20 @@ void GraphicsObjMan::DeleteGraphicsObjects() {
 }
 
 GraphicsObject* GraphicsObjMan::FindByLocation( Vect &inPos ) {
-	auto pGOM = GraphicsObjMan::privGetInstance();
-	return pGOM->privFindAtLocation( ( GraphicsObject * ) pGOM->goTree.getRoot()->getChild(), inPos );
+	auto pGOM = privGetInstance();
+	return pGOM->privFindAtLocation( static_cast< GraphicsObject * >(pGOM->goTree.getRoot()->getChild()), inPos );
 }
 
-GraphicsObject* GraphicsObjMan::privFindAtLocation( GraphicsObject* const p, Vect& inPos ) {
+GraphicsObject* GraphicsObjMan::privFindAtLocation( GraphicsObject* const p, Vect& inPos ) const {
 	GraphicsObject* retObj = nullptr;
-	GraphicsObject* child = 0;
+	GraphicsObject* child;
 
 	if ( !(p->getStartPos().isEqual( inPos, 0.001f )) ) {
-		if ( p->getSibling() != 0 ) {
-			child = ( GraphicsObject * ) p->getSibling();
-			while ( child != 0 && retObj == nullptr ) {
+		if ( p->getSibling() != nullptr ) {
+			child = static_cast< GraphicsObject * >(p->getSibling());
+			while ( child != nullptr && retObj == nullptr ) {
 				retObj = privFindAtLocation( child, inPos );
-				child = ( GraphicsObject * ) child->getSibling();
+				child = static_cast< GraphicsObject * >(child->getSibling());
 			}
 		}
 	} else {
@@ -44,34 +41,34 @@ GraphicsObject* GraphicsObjMan::privFindAtLocation( GraphicsObject* const p, Vec
 }
 
 GraphicsObject* GraphicsObjMan::GetFirstObj() {
-	return ( GraphicsObject * ) GraphicsObjMan::privGetInstance()->goTree.getRoot()->getChild();
+	return static_cast< GraphicsObject * >(privGetInstance()->goTree.getRoot()->getChild());
 }
 
 void GraphicsObjMan::AddObject( GraphicsObject* const p ) {
-	auto pGOM = GraphicsObjMan::privGetInstance();
+	auto pGOM = privGetInstance();
 	auto root = pGOM->goTree.getRoot();
 
-	assert( root != 0 );
+	assert( root );
 
 	pGOM->goTree.insert( p, root );
 }
 
 void GraphicsObjMan::AddDebugObject( GraphicsObject* const p ) {
-	auto pGOM = GraphicsObjMan::privGetInstance();
+	auto pGOM = privGetInstance();
 	auto root = pGOM->goCull.getRoot();
 
-	assert( root != 0 );
+	assert( root );
 
 	pGOM->goCull.insert( p, root );
 }
 
 void GraphicsObjMan::DrawObjects() {
-	auto pGOM = GraphicsObjMan::privGetInstance();
-	auto root = ( GraphicsObject * ) pGOM->goTree.getRoot();
+	auto pGOM = privGetInstance();
+	auto root = static_cast< GraphicsObject * >(pGOM->goTree.getRoot());
 
 	pGOM->privDrawObjectsDepthFirst( root );
 	if ( pGOM->debugOn ) {
-		root = ( GraphicsObject * ) pGOM->goCull.getRoot();
+		root = static_cast< GraphicsObject * >(pGOM->goCull.getRoot());
 		pGOM->privDrawObjectsDepthFirst( root );
 	}
 }
@@ -81,25 +78,25 @@ GraphicsObjMan* GraphicsObjMan::privGetInstance() {
 	return &gom;
 }
 
-const void GraphicsObjMan::privDrawObjectsDepthFirst( GraphicsObject* const node ) const {
-	GraphicsObject *child = 0;
+void GraphicsObjMan::privDrawObjectsDepthFirst( GraphicsObject* const node ) const {
+	GraphicsObject *child;
 
 	node->transform();
 	node->checkCulling();
 	node->setRenderState();
 	node->draw();
 
-	if ( node->getChild() != 0 ) {
-		child = ( GraphicsObject * ) node->getChild();
-		while ( child != 0 ) {
+	if ( node->getChild() != nullptr ) {
+		child = static_cast< GraphicsObject * >(node->getChild());
+		while ( child != nullptr ) {
 			privDrawObjectsDepthFirst( child );
-			child = ( GraphicsObject * ) child->getSibling();
+			child = static_cast< GraphicsObject * >(child->getSibling());
 		}
 	}
 }
 
 void GraphicsObjMan::DebugSwitch() {
-	auto pGOM = GraphicsObjMan::privGetInstance();
+	auto pGOM = privGetInstance();
 	if ( pGOM->debugOn ) {
 		pGOM->debugOn = false;
 	} else {
@@ -108,6 +105,6 @@ void GraphicsObjMan::DebugSwitch() {
 }
 
 PCSTree* GraphicsObjMan::GetMainTree() {
-	auto pGOM = GraphicsObjMan::privGetInstance();
+	auto pGOM = privGetInstance();
 	return &pGOM->goTree;
 }

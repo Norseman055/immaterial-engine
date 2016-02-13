@@ -23,17 +23,17 @@ class ModelMan {
 public:
 	// loads model from a formatted file
 	static void LoadModel( const char* const );
-	static void LoadBufferedModel( const unsigned char* const );
+	static void LoadBufferedModel( unsigned char* const );
 	static void DeleteModels();
 
 	// find a specified model based on known model name (ex. "pyramid", "cube", etc.)
-	static Model* Find( const char* const );
+	static Model* Find( char* const );
 
 private:
 	// singleton
 	static ModelMan *privGetInstance();
 	ModelMan();
-	const void privAddToFront( ModelNodeLink* const, ModelNodeLink*& );
+	void privAddToFront( ModelNodeLink* const, ModelNodeLink*& ) const;
 
 private:
 	ModelNodeLink *active;

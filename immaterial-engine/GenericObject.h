@@ -8,21 +8,21 @@ public:
 
 	// Generic object functions
 	Vect getStartPos() const;
-	const void setStartPos( const Vect& );
-	const void setLightColor( const Vect& );
-	const void setLightPos( const Vect& );
-	const void setTextureName( const TextureName );
-	const void setTextureName( const char* const );
-	const void setStockShaderMode( const ShaderType );
-	const void setOriginalSphere( const Sphere& );
-	const void setSphereObject();
-	const void setModel( Model* const );
+	void setStartPos( const Vect& );
+	void setLightColor( const Vect& );
+	void setLightPos( const Vect& );
+	void setTextureName( const TextureName );
+	void setTextureName( char* const );
+	void setStockShaderMode( const ShaderType );
+	void setOriginalSphere( const Sphere& );
+	void setSphereObject() const;
+	void setModel( Model* const );
 
 	// must define, base class has abstract methods
-	void transform( void );
-	void draw( void );
-	void setRenderState( void );
-	void checkCulling( void );
+	void transform( void ) override;
+	void draw( void ) override;
+	void setRenderState( void ) override;
+	void checkCulling( void ) override;
 
 private:
 	GLuint  modelVAO;

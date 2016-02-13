@@ -11,7 +11,7 @@ extern GLShaderManager shaderManager;
 // DEFINES
 #define USE_PYRAMID_FILE 1	// 1 - uses the data file "pyramid.cdm", 0 - creates and uses the file "pyramid.cdm".
 
-PyramidModel::PyramidModel() {
+PyramidModel::PyramidModel() : vao( 0 ) {
 	out( "PyramidModel(): ---------------------\n" );
 }
 
@@ -48,7 +48,7 @@ void PyramidModel::createVAO() {
 	assert( ferror == FILE_SUCCESS );
 
 	// create vertex buffer
-	auto pVerts = ( MyVertex_stride * ) malloc( pyramidHdr.numVerts * sizeof( MyVertex_stride ) );
+	auto pVerts = static_cast< MyVertex_stride * >(malloc( pyramidHdr.numVerts * sizeof( MyVertex_stride ) ));
 
 	// load verts
 	ferror = File::seek( fh, FILE_SEEK_BEGIN, pyramidHdr.vertBufferOffset );
@@ -58,7 +58,7 @@ void PyramidModel::createVAO() {
 	assert( ferror == FILE_SUCCESS );
 
 	// create triList buffer
-	auto tlist = ( MyTriList * ) malloc( pyramidHdr.numTriList * sizeof( MyTriList ) );
+	auto tlist = static_cast< MyTriList * >(malloc( pyramidHdr.numTriList * sizeof( MyTriList ) ));
 
 	// load triList
 	ferror = File::seek( fh, FILE_SEEK_BEGIN, pyramidHdr.triListBufferOffset );
@@ -397,7 +397,7 @@ void PyramidModel::createVAO() {
 
 	/* Specify that our coordinate data is going into attribute index 0, and contains 3 floats per vertex */
 	// ( GLuint index,  GLint size,  GLenum type,  GLboolean normalized,  GLsizei stride,  const GLvoid * pointer);
-	auto offsetVert = ( void * ) (( unsigned int ) &pVerts[0].x - ( unsigned int ) pVerts);
+	auto offsetVert = reinterpret_cast< void * >(reinterpret_cast< unsigned int >(&pVerts[0].x) - reinterpret_cast< unsigned int >(pVerts));
 	glVertexAttribPointer( GLT_ATTRIBUTE_VERTEX, 3, GL_FLOAT, GL_FALSE, sizeof( MyVertex_stride ), offsetVert );
 
 	// Texture data: ---------------------------------------------------------
@@ -411,7 +411,7 @@ void PyramidModel::createVAO() {
 
 	/* Specify that our coordinate data is going into attribute index 3, and contains 2 floats per vertex */
 	// ( GLuint index,  GLint size,  GLenum type,  GLboolean normalized,  GLsizei stride,  const GLvoid * pointer);
-	auto offsetTex = ( void * ) (( unsigned int ) &pVerts[0].s - ( unsigned int ) pVerts);
+	auto offsetTex = reinterpret_cast< void * >(reinterpret_cast< unsigned int >(&pVerts[0].s) - reinterpret_cast< unsigned int >(pVerts));
 	glVertexAttribPointer( GLT_ATTRIBUTE_TEXTURE0, 2, GL_FLOAT, GL_FALSE, sizeof( MyVertex_stride ), offsetTex );
 
 	// Normal data: ---------------------------------------------------------
@@ -425,7 +425,7 @@ void PyramidModel::createVAO() {
 
 	/* Specify that our coordinate data is going into attribute index 3, and contains 2 floats per vertex */
 	// ( GLuint index,  GLint size,  GLenum type,  GLboolean normalized,  GLsizei stride,  const GLvoid * pointer);
-	auto offsetNorm = ( void * ) (( unsigned int ) &pVerts[0].nx - ( unsigned int ) pVerts);
+	auto offsetNorm = reinterpret_cast< void * >(reinterpret_cast< unsigned int >(&pVerts[0].nx) - reinterpret_cast< unsigned int >(pVerts));
 	glVertexAttribPointer( GLT_ATTRIBUTE_NORMAL, 3, GL_FLOAT, GL_FALSE, sizeof( MyVertex_stride ), offsetNorm );
 
 	// Load the index data: ---------------------------------------------------------

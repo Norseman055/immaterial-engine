@@ -31,12 +31,12 @@ public:
 class TextureNode : public TextureNodeLink {
 public:
 	TextureNode();
-	const void set( const char * const inAssetName,
-					const GLuint inHashName,
-					const GLuint inTextureID,
-					const GLenum inMinFilter,
-					const GLenum inMagFilter,
-					const GLenum inWrapMode );
+	void set( const char * const inAssetName,
+			  const GLuint inHashName,
+			  const GLuint inTextureID,
+			  const GLenum inMinFilter,
+			  const GLenum inMagFilter,
+			  const GLenum inWrapMode );
 
 private:
 	char assetName[TEXT_ASSET_NAME_SIZE];

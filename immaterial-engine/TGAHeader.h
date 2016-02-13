@@ -21,5 +21,5 @@ struct TGAHEADER {
 		x_origin( 0 ), y_origin( 0 ), width( 0 ), height( 0 ), BitsPerPixel( 0 ), ImageDescriptor( 0 ) { }
 };
 
-GLbyte* myReadTGABits( const void*, GLint &, GLint &, GLint &, GLenum & );
+GLbyte* myReadTGABits( void*, GLint &, GLint &, GLint &, GLenum & );
 unsigned char* getTGAFile( const char* const );

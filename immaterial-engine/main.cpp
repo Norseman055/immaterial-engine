@@ -1,13 +1,9 @@
 // ===== MY HEADERS =====
-#include <vld.h>	// Visual Leak Detector - Advanced memory leak Open Source software
-
 #include "OpenGL.h"
 #include "DEBUGGING.h"
 
 #include "GlobalState.h"
 #include "RenderState.h"
-#include "CameraModel.h"
-#include "Anim.h"
 #include "PyramidModel.h"
 
 // ----------------------------------------------------------------------------

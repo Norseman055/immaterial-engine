@@ -2,7 +2,7 @@
 
 #include "Vect.h"
 
-struct Sphere : public Align16 {
+struct Sphere : Align16 {
 	Vect cntr;
 	float rad;
 };
