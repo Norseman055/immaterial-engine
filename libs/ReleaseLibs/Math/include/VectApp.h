@@ -4,8 +4,7 @@
 /*                                                                           */
 /*****************************************************************************/
 
-#ifndef VectApp_H
-#define VectApp_H
+#pragma once
 
 #include "Vect.h"
 
@@ -18,7 +17,5 @@ public:
 	// lerp array
 	static void LerpArray( Vect *out, const Vect *a, const Vect *b, const float t, const int numVects );
 };
-
-#endif
 
 /**** END of VectApp.h *******************************************************/

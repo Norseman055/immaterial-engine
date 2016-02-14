@@ -103,10 +103,10 @@
     <ClInclude Include="..\libs\ReleaseLibs\GLTools\include\math3d.h" />
     <ClInclude Include="..\libs\ReleaseLibs\GLTools\include\StopWatch.h" />
     <ClInclude Include="..\libs\ReleaseLibs\Math\include\Align16.h" />
-    <ClInclude Include="..\libs\ReleaseLibs\Math\include\Constants.h" />
-    <ClInclude Include="..\libs\ReleaseLibs\Math\include\Enum.h" />
     <ClInclude Include="..\libs\ReleaseLibs\Math\include\MathApp.h" />
+    <ClInclude Include="..\libs\ReleaseLibs\Math\include\MathConstants.h" />
     <ClInclude Include="..\libs\ReleaseLibs\Math\include\MathEngine.h" />
+    <ClInclude Include="..\libs\ReleaseLibs\Math\include\MathEnum.h" />
     <ClInclude Include="..\libs\ReleaseLibs\Math\include\Matrix.h" />
     <ClInclude Include="..\libs\ReleaseLibs\Math\include\Quat.h" />
     <ClInclude Include="..\libs\ReleaseLibs\Math\include\QuatApp.h" />

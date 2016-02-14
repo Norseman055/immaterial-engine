@@ -1,5 +1,4 @@
-#ifndef FILE_H
-#define FILE_H
+#pragma once
 
 #include <windows.h> // win32
 
@@ -33,7 +32,6 @@ typedef HANDLE FileHandle;
 
 class File {
 public:
-
 	static FileError open( FileHandle &fh, const char * const fileName, FileMode mode );
 	static FileError close( FileHandle fh );
 	static FileError write( FileHandle fh, const void * const buffer, const size_t inSize );
@@ -41,9 +39,4 @@ public:
 	static FileError seek( FileHandle fh, FileSeek seek, int offset );
 	static FileError tell( FileHandle fh, int &offset );
 	static FileError flush( FileHandle fh );
-
-private:
-	// feel free to add any private helper functions
 };
-
-#endif

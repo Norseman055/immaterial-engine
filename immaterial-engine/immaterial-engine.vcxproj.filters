@@ -129,12 +129,6 @@
     <ClInclude Include="..\libs\ReleaseLibs\Math\include\Align16.h">
       <Filter>_Math\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\libs\ReleaseLibs\Math\include\Constants.h">
-      <Filter>_Math\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libs\ReleaseLibs\Math\include\Enum.h">
-      <Filter>_Math\include</Filter>
-    </ClInclude>
     <ClInclude Include="..\libs\ReleaseLibs\Math\include\MathApp.h">
       <Filter>_Math\include</Filter>
     </ClInclude>
@@ -320,6 +314,12 @@
     </ClInclude>
     <ClInclude Include="..\libs\ReleaseLibs\GLTools\include\GL\wglew.h">
       <Filter>_GLTools\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ReleaseLibs\Math\include\MathConstants.h">
+      <Filter>_Math\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ReleaseLibs\Math\include\MathEnum.h">
+      <Filter>_Math\include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

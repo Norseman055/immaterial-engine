@@ -1,16 +1,13 @@
-#ifndef MATHENGINE_H
-#define MATHENGINE_H
+#pragma once
 
-#include "Util.h"
-#include "Vect.h"
+#include "Align16.h"
+#include "MathConstants.h"
+#include "MathEnum.h"
 #include "Matrix.h"
 #include "Quat.h"
-#include "Enum.h"
-#include "Constants.h"
-#include "VectApp.h"
 #include "QuatApp.h"
-#include "Align16.h"
+#include "Util.h"
+#include "Vect.h"
+#include "VectApp.h"
 
 #define ENGINE_MATH_TOLERANCE 0.0001f
-
-#endif

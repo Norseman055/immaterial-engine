@@ -1,10 +1,10 @@
-#ifndef ENGINE_MATH_VECT_H
-#define ENGINE_MATH_VECT_H
+#pragma once
 
-#include <smmintrin.h>
-#include "Constants.h"
-#include "Enum.h"
 #include "Align16.h"
+#include "MathConstants.h"
+#include "MathEnum.h"
+#include <smmintrin.h>
+
 // forward declare
 class Matrix;
 class Quat;
@@ -14,44 +14,44 @@ public:
 
 	Vect();
 	Vect( const float x, const float y, const float z, const float w = 1.0f );
-	Vect( const __m128 inM );
+	Vect( const __m128& inM );
 	~Vect();
 
-	const void operator = (const Vect &t);
-	const Vect operator + (const Vect &t)const;
-	const void operator += (const Vect &t);
-	const Vect operator - (const Vect &t)const;
-	const void operator -= (const Vect &t);
-	const Vect operator * (const Matrix &t)const;
-	const void operator *= (const Matrix &t);
-	const void operator *= (const float f);
-	const Vect operator * (const float f)const;	// vect * float
-	friend const Vect operator * (const float f, const Vect &v);	// float * vect
-	friend const Vect operator + (const Vect &t);
-	friend const Vect operator - (const Vect &t);
+	void operator = (const Vect &t);
+	Vect operator + (const Vect &t)const;
+	void operator += (const Vect &t);
+	Vect operator - (const Vect &t)const;
+	void operator -= (const Vect &t);
+	Vect operator * (const Matrix &t)const;
+	void operator *= (const Matrix &t);
+	void operator *= (const float f);
+	Vect operator * (const float f)const;	// vect * float
+	friend Vect operator * (const float f, const Vect &v);	// float * vect
+	friend Vect operator + (const Vect &t);
+	friend Vect operator - (const Vect &t);
 
-	const float operator[]( const x_enum )const;
+	float operator[]( const x_enum )const;
 	float& operator[]( const x_enum );
-	const float operator[]( const y_enum )const;
+	float operator[]( const y_enum )const;
 	float& operator[]( const y_enum );
-	const float operator[]( const z_enum )const;
+	float operator[]( const z_enum )const;
 	float& operator[]( const z_enum );
-	const float operator[]( const w_enum )const;
+	float operator[]( const w_enum )const;
 	float& operator[]( const w_enum );
 
-	const bool isEqual( const Vect &t, const float &precision = MATH_TOLERANCE )const;
-	const bool isZero( const float &precision = 0.01f )const;
+	bool isEqual( const Vect &t, const float &precision = MATH_TOLERANCE )const;
+	bool isZero( const float &precision = 0.01f )const;
 
-	const float dot( const Vect &t )const;
-	const Vect cross( const Vect &t )const;
-	const void norm();
-	const Vect getNorm()const;
-	const float mag()const;
-	const float magSqr()const;
-	const float getAngle( const Vect &t )const;
+	float dot( const Vect &t )const;
+	Vect cross( const Vect &t )const;
+	void norm();
+	Vect getNorm()const;
+	float mag()const;
+	float magSqr()const;
+	float getAngle( const Vect &t )const;
 
-	const void set( const float x, const float y, const float z, const float w = 1.0f );
-	const void set( const Vect &v );
+	void set( const float x, const float y, const float z, const float w = 1.0f );
+	void set( const Vect &v );
 
 private:
 	friend Matrix;
@@ -71,5 +71,3 @@ private:
 		};
 	};
 };
-
-#endif

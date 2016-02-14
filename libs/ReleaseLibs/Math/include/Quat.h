@@ -5,15 +5,13 @@
 /*                                                                           */
 /*****************************************************************************/
 
-#ifndef ENGINE_MATH_QUAT_H
-#define ENGINE_MATH_QUAT_H
+#pragma once
 
 /*****************************************************************************/
 /* Includes:                                                                 */
 /*****************************************************************************/
+#include "MathEnum.h"
 #include "Matrix.h"
-#include "Enum.h"
-#include "Vect.h"
 
 /*************************************************************************
 *
@@ -35,91 +33,94 @@ public:
 
 	Quat();
 	Quat( const Quat &q0 );
-	Quat( const Matrix &m0 );
+	Quat( const __m128 &m0 );
 	Quat( const float f0, const float f1, const float f2, const float f3 );
 	Quat( const Vect &v, const float f0 );
-	Quat( const Rot3AxisType, const float f0, const float f1, const float f2 );
-	Quat( const RotType in, const float f0 );
-	Quat( const RotAxisAngleType, const Vect &v, const float f0 );
-	Quat( const RotOrientType in, const Vect &v0, const Vect &v1 );
+	Quat( const Matrix &m0 );
+	Quat( RotType in, const float f0 );
+	Quat( RotAxisAngleType, const Vect &v, const float f0 );
+	Quat( Rot3AxisType, const float f0, const float f1, const float f2 );
+	Quat( RotOrientType in, const Vect &v0, const Vect &v1 );
+	Quat( MatrixSpecialType in );
+	~Quat();
 
-	const float operator[]( const x_enum )const;
-	const float operator[]( const y_enum )const;
-	const float operator[]( const z_enum )const;
-	const float operator[]( const w_enum )const;
+	float operator[]( const x_enum )const;
+	float operator[]( const y_enum )const;
+	float operator[]( const z_enum )const;
+	float operator[]( const w_enum )const;
 	float& operator[]( const x_enum );
 	float& operator[]( const y_enum );
 	float& operator[]( const z_enum );
 	float& operator[]( const w_enum );
 
-	const void set( const float f0, const float f1, const float f2, const float f3 );
-	const void set( const Matrix &m );
-	const void set( const RotType in, const float f );
-	const void set( const Vect &v, const float f );
-	const void set( const RotAxisAngleType, const Vect &v, const float f0 );
-	const void set( const RotOrientType in, const Vect &v0, const Vect &v1 );
-	const void set( const MatrixSpecialType in );
-	const void set( const Rot3AxisType, const float f0, const float f1, const float f2 );
+	void set( const float f0, const float f1, const float f2, const float f3 );
+	void set( const Vect &v, const float f );
+	void set( const Matrix &m );
+	void set( const __m128 &xm );
+	void set( RotType in, const float f );
+	void set( RotAxisAngleType, const Vect &v, const float f0 );
+	void set( Rot3AxisType, const float f0, const float f1, const float f2 );
+	void set( RotOrientType in, const Vect &v0, const Vect &v1 );
+	void set( MatrixSpecialType in );
 
-	const void setVect( const Vect &v0 );
-	const void getVect( Vect &v0 );
+	void setVect( const Vect &v0 );
+	void getVect( Vect &v0 ) const;
 
 	// binary
-	const void operator = (const Quat &q);
-	const Quat operator + (const Quat &q)const;
-	const Quat operator + (const float f0)const;
-	const void operator += (const Quat &q);
-	const void operator += (const float f0);
-	friend const Quat operator + (const float f0, const Quat &t);
-	const Quat operator - (const Quat &q)const;
-	const Quat operator - (const float f0)const;
-	const void operator -= (const Quat &q);
-	const void operator -= (const float f0);
-	friend const Quat operator - (const float f0, const Quat &q);
-	const Quat operator * (const Quat &q)const;
-	const Quat operator * (const float f)const;
-	const void operator *= (const Quat &q);
-	const void operator *= (const float f0);
-	const void operator *= (const Matrix &m);
-	friend const Quat operator * (const float f0, const Quat &q);
-	const Quat operator / (const Quat &q)const;
-	const Quat operator / (const float f0)const;
-	const void operator /= (const Quat &q);
-	const void operator /= (const float f0);
-	friend const Quat operator / (const float f0, const Quat &q);
+	void operator = (const Quat &q);
+	Quat operator + (const Quat &q)const;
+	Quat operator + (const float f0)const;
+	void operator += (const Quat &q);
+	void operator += (const float f0);
+	friend Quat operator + (const float f0, const Quat &t);
+	Quat operator - (const Quat &q)const;
+	Quat operator - (const float f0)const;
+	void operator -= (const Quat &q);
+	void operator -= (const float f0);
+	friend Quat operator - (const float f0, const Quat &q);
+	Quat operator * (const Quat &q)const;
+	Quat operator * (const float f)const;
+	void operator *= (const Quat &q);
+	void operator *= (const float f0);
+	void operator *= (const Matrix &m);
+	friend Quat operator * (const float f0, const Quat &q);
+	Quat operator / (const Quat &q)const;
+	Quat operator / (const float f0)const;
+	void operator /= (const Quat &q);
+	void operator /= (const float f0);
+	friend Quat operator / (const float f0, const Quat &q);
 
 	// unary
-	friend const Quat operator - (const Quat &q);
-	friend const Quat operator + (const Quat &q);
+	friend Quat operator - (const Quat &q);
+	friend Quat operator + (const Quat &q);
 
-	const Quat multByElement( const Quat &q );
-	const Quat getConj()const;
-	const Quat getT();
-	const Quat norm();
-	const Quat getNorm()const;
-	const Quat getInv()const;
+	Quat multByElement( const Quat &q ) const;
+	Quat getConj()const;
+	Quat getT() const;
+	Quat norm();
+	Quat getNorm()const;
+	Quat getInv()const;
 
-	const void conj();
-	const void T();
-	const void inv();
-	const void Lqvqc( const Vect &vIn, Vect &vOut );
-	const void Lqcvq( const Vect &vIn, Vect &vOut );
-	const void getAxis( Vect &v );
+	void conj();
+	void T();
+	void inv();
+	void Lqvqc( const Vect &vIn, Vect &vOut ) const;
+	void Lqcvq( const Vect &vIn, Vect &vOut ) const;
+	void getAxis( Vect &v ) const;
 
-	const float mag()const;
-	const float magSquared()const;
-	const float invMag()const;
-	const float dot( const Quat &q )const;
-	const float getAngle()const;
+	float mag()const;
+	float magSquared()const;
+	float invMag()const;
+	float dot( const Quat &q )const;
+	float getAngle()const;
 
-	const bool isEqual( const Quat &q, const float precision );
-	const bool isNegEqual( const Quat &q, const float precision );
-	const bool isEquivalent( const Quat &q, const float precision );
-	const bool isConjugateEqual( const Quat &q, const float precision );
-	const bool isIdentity( const float precision );
-	const bool isNormalized( const float precision );
-	const bool isZero( const float precision );
-	// do magic
+	bool isEqual( const Quat &q, const float precision ) const;
+	bool isNegEqual( const Quat &q, const float precision ) const;
+	bool isEquivalent( const Quat &q, const float precision ) const;
+	bool isConjugateEqual( const Quat &q, const float precision ) const;
+	bool isIdentity( const float precision ) const;
+	bool isNormalized( const float precision ) const;
+	bool isZero( const float precision ) const;
 
 private:
 	friend Matrix;
@@ -139,7 +140,5 @@ private:
 		};
 	};
 };
-
-#endif // #ifndef QUAT_H
 
 /**** END of Quat.h ********************************************************/
