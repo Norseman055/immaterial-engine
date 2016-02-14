@@ -1,32 +1,21 @@
-
 /*****************************************************************************/
 /*                                                                           */
 /* file: VectApp.h                                                           */
 /*                                                                           */
 /*****************************************************************************/
 
-#ifndef VectApp_H
-#define VectApp_H
+#pragma once
 
 #include "Vect.h"
 
-
-class VectApp
-{
-		
+class VectApp {
 public:
 
 	// lerp
-	static void Lerp( Vect &out, const Vect &a, const Vect &b,  const float t );
-	
+	static void Lerp( Vect &out, const Vect &a, const Vect &b, const float t );
+
 	// lerp array
-	static void LerpArray(Vect *out, const Vect *a, const Vect *b,   const float t, const int numVects );
-	  						  
-
+	static void LerpArray( Vect *out, const Vect *a, const Vect *b, const float t, const int numVects );
 };
-
-
-
-#endif 
 
 /**** END of VectApp.h *******************************************************/

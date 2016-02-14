@@ -94,8 +94,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Align16.h" />
-    <ClInclude Include="Constants.h" />
-    <ClInclude Include="Enum.h" />
+    <ClInclude Include="MathConstants.h" />
+    <ClInclude Include="MathEnum.h" />
     <ClInclude Include="MathApp.h" />
     <ClInclude Include="MathEngine.h" />
     <ClInclude Include="Matrix.h" />

@@ -1,9 +1,7 @@
-
 #include "OpenGL.h"
 #include "DEBUGGING.h"
 #include "Model.h"
 
-Model::Model()
-{
-	out("Model(): -----------------\n");
+Model::Model() : vao( 0 ), numTri( 0 ) {
+	out( "Model(): -----------------\n" );
 }

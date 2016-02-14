@@ -3,3 +3,6 @@
 *.bsc
 *.idb
 *.opensdf
+*.xml
+*.lastcodeanalysissucceeded
+CodeMaid.config

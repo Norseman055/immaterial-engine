@@ -1,40 +1,32 @@
-#ifndef GENERIC_OBJECT_H
-#define GENERIC_OBJECT_H
+#pragma once
 
-#include "GraphicsObject.h"
-#include "TextureNode.h"
-#include "ShaderTypes.h"
-#include "SphereObject.h"
+class SphereObject;
 
-class GenObject : public GraphicsObject
-{
+class GenObject : public GraphicsObject {
 public:
 	GenObject();
-	
+
 	// Generic object functions
-	void setStartPos( const Vect & v);
-	Vect getStartPos();
-	void setLightColor( const Vect & v);
-	void setLightPos( const Vect & v);
-	void setTextureName( TextureName inName );
-	void setTextureName( const char * const inName );
-	void setStockShaderMode ( ShaderType inVal );
-	void setOriginalSphere( Sphere &origSphere );
-	void setSphereObject ();
-	void setModel( Model * inModel );
+	Vect getStartPos() const;
+	void setStartPos( const Vect& );
+	void setLightColor( const Vect& );
+	void setLightPos( const Vect& );
+	void setTextureName( const TextureName );
+	void setTextureName( char* const );
+	void setStockShaderMode( const ShaderType );
+	void setOriginalSphere( const Sphere& );
+	void setSphereObject() const;
+	void setModel( Model* const );
 
 	// must define, base class has abstract methods
-	void transform( void );
-	void draw( void );
-	void setRenderState(void);
-	void checkCulling(void);
+	void transform( void ) override;
+	void draw( void ) override;
+	void setRenderState( void ) override;
+	void checkCulling( void ) override;
 
 private:
-
 	GLuint  modelVAO;
 	int		modelTri;
 
 	SphereObject *sphereObj;
 };
-
-#endif

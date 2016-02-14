@@ -1,8 +1,6 @@
-#ifndef SHADER_TYPES_H
-#define SHADER_TYPES_H
+#pragma once
 
-enum ShaderType
-{
+enum ShaderType {
 	Shader_Init,
 	Shader_Texture_NoLights = Shader_Init,
 	Shader_Texture_PointLights,
@@ -11,5 +9,3 @@ enum ShaderType
 	Shader_Wireframe,
 	Shader_End
 };
-
-#endif

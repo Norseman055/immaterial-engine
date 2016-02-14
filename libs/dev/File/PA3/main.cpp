@@ -8,17 +8,15 @@
 //---------------------------------------------------------------------------
 // MAIN METHOD:
 //---------------------------------------------------------------------------
-int main()
-{
+int main() {
 	UnitTest_platform_init();
 
-	const int numFailures = UnitTest_platform_runTests();
-	
+	const auto numFailures = UnitTest_platform_runTests();
+
 	UnitTest_platform_exit();
 
-   // cleanup: the delete test files
-   system("del *.bin");
-   
+	// cleanup: the delete test files
+	system( "del *.bin" );
 
-	return( numFailures );
+	return(numFailures);
 }

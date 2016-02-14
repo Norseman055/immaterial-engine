@@ -1,174 +1,110 @@
-
 #include "DEBUGGING.h"
 
 #include "NullObject.h"
-#include "PCSNode.h"
-#include "GraphicsObject.h"
 #include "GraphicsManager.h"
-#include "ChunkHeader.h"
-#include "eat.h"
-#include "PackageHeader.h"
 
 GraphicsObjMan::GraphicsObjMan()
-{
-   // Get Node 
-   PCSNode  *root = this->goTree.getRoot();
-   PCSNode  *cullRoot = this->goCull.getRoot();
-
-   // This should be the first time initializing it.
-   assert(root == 0 );
-
-   // Create a Dummy root object, it does nothing
-   // remember you need to remove this in the destructor
-   // gets tricky with singletons
-   NullObject *nodeRoot = new NullObject("Root");
-   NullObject *cullNode = new NullObject("CullingRoot");
-
-   // insert it into tree
-   this->goTree.insert( nodeRoot, root );
-   this->goCull.insert( cullNode, cullRoot );
-
-   this->debugOn = false;
+	: debugOn( false ) {
+	// insert roots into trees
+	this->goTree.insert( new NullObject( "Root" ), this->goTree.getRoot() );
+	this->goCull.insert( new NullObject( "CullingRoot" ), this->goCull.getRoot() );
 }
 
-void GraphicsObjMan::DeleteGraphicsObjects()
-{
-	GraphicsObjMan* goMan = privGetInstance();
-	goMan->goTree.removeDown(goMan->goTree.getRoot());
-	goMan->goCull.removeDown(goMan->goCull.getRoot());
+void GraphicsObjMan::DeleteGraphicsObjects() {
+	auto goMan = privGetInstance();
+	goMan->goTree.removeDown( goMan->goTree.getRoot() );
+	goMan->goCull.removeDown( goMan->goCull.getRoot() );
 }
 
-GraphicsObject * GraphicsObjMan::FindByLocation(Vect &inPos)
-{
-	GraphicsObjMan *pGOM = GraphicsObjMan::privGetInstance();
-	return pGOM->privFindAtLocation( (GraphicsObject *)pGOM->goTree.getRoot()->getChild(), inPos );
+GraphicsObject* GraphicsObjMan::FindByLocation( Vect &inPos ) {
+	auto pGOM = privGetInstance();
+	return pGOM->privFindAtLocation( static_cast< GraphicsObject * >(pGOM->goTree.getRoot()->getChild()), inPos );
 }
 
-GraphicsObject * GraphicsObjMan::privFindAtLocation( GraphicsObject *p, Vect &inPos )
-{
-	GraphicsObject * retObj = 0;
-	GraphicsObject * child = 0;
+GraphicsObject* GraphicsObjMan::privFindAtLocation( GraphicsObject* const p, Vect& inPos ) const {
+	GraphicsObject* retObj = nullptr;
+	GraphicsObject* child;
 
-	if(!(p->getStartPos().isEqual(inPos, 0.001f)))
-	{
-		if (p->getSibling() != 0)
-		{
-			child = (GraphicsObject *)p->getSibling();
-			while(child != 0 && retObj == 0)
-			{
-				retObj = privFindAtLocation(child, inPos);
-				child = (GraphicsObject *)child->getSibling();
+	if ( !(p->getStartPos().isEqual( inPos, 0.001f )) ) {
+		if ( p->getSibling() != nullptr ) {
+			child = static_cast< GraphicsObject * >(p->getSibling());
+			while ( child != nullptr && retObj == nullptr ) {
+				retObj = privFindAtLocation( child, inPos );
+				child = static_cast< GraphicsObject * >(child->getSibling());
 			}
 		}
-	}
-	else
-	{
+	} else {
 		retObj = p;
 	}
 
 	return retObj;
 }
 
-GraphicsObject * GraphicsObjMan::GetFirstObj()
-{
-	GraphicsObjMan *pGOM = GraphicsObjMan::privGetInstance();
-	
-	return (GraphicsObject *)pGOM->goTree.getRoot()->getChild();
+GraphicsObject* GraphicsObjMan::GetFirstObj() {
+	return static_cast< GraphicsObject * >(privGetInstance()->goTree.getRoot()->getChild());
 }
 
-void GraphicsObjMan::addObject(GraphicsObject *p)
-{
-	GraphicsObjMan *pGOM = GraphicsObjMan::privGetInstance();
+void GraphicsObjMan::AddObject( GraphicsObject* const p ) {
+	auto pGOM = privGetInstance();
+	auto root = pGOM->goTree.getRoot();
 
-	// Get Node 
-	PCSNode *root = pGOM->goTree.getRoot();
+	assert( root );
 
-	// This should NOT be the first time using the tree.
-	assert (root != 0);
-
-	// insert it into tree
-	pGOM->goTree.insert(p, root);
+	pGOM->goTree.insert( p, root );
 }
 
-void GraphicsObjMan::addDebugObject( GraphicsObject *p)
-{
-	GraphicsObjMan *pGOM = GraphicsObjMan::privGetInstance();
+void GraphicsObjMan::AddDebugObject( GraphicsObject* const p ) {
+	auto pGOM = privGetInstance();
+	auto root = pGOM->goCull.getRoot();
 
-	// get node
-	PCSNode *root = pGOM->goCull.getRoot();
+	assert( root );
 
-	// should not be first time using the tree.
-	assert (root != 0);
-
-	// insert it into tree
-	pGOM->goCull.insert(p, root);
+	pGOM->goCull.insert( p, root );
 }
 
-void GraphicsObjMan::drawObjects()
-{
-	GraphicsObjMan *pGOM = GraphicsObjMan::privGetInstance();
+void GraphicsObjMan::DrawObjects() {
+	auto pGOM = privGetInstance();
+	auto root = static_cast< GraphicsObject * >(pGOM->goTree.getRoot());
 
-	// Get Node 
-	GraphicsObject *root = (GraphicsObject *)pGOM->goTree.getRoot();
 	pGOM->privDrawObjectsDepthFirst( root );
-
-	if (pGOM->debugOn)
-	{
-		root = (GraphicsObject *)pGOM->goCull.getRoot();
+	if ( pGOM->debugOn ) {
+		root = static_cast< GraphicsObject * >(pGOM->goCull.getRoot());
 		pGOM->privDrawObjectsDepthFirst( root );
 	}
 }
 
-GraphicsObjMan * GraphicsObjMan::privGetInstance( void )
-{
-	// This is where its actually stored (BSS section)
+GraphicsObjMan* GraphicsObjMan::privGetInstance() {
 	static GraphicsObjMan gom;
 	return &gom;
 }
 
-void GraphicsObjMan::privDrawObjectsDepthFirst( GraphicsObject *node ) const
-{
-	GraphicsObject *child = 0;
+void GraphicsObjMan::privDrawObjectsDepthFirst( GraphicsObject* const node ) const {
+	GraphicsObject *child;
 
-   // --------- Do draw stuff here -----------------------
-   
-	//node->dumpNode();
 	node->transform();
 	node->checkCulling();
 	node->setRenderState();
 	node->draw();
-   
-   // --------- Do draw stuff here -----------------------
 
-	// iterate through all of the active children 
-	if (node->getChild() != 0)
-	{  
-		child =	(GraphicsObject *)node->getChild();
-		// make sure that allocation is not a child node 
-		while (child != 0)
-		{
+	if ( node->getChild() != nullptr ) {
+		child = static_cast< GraphicsObject * >(node->getChild());
+		while ( child != nullptr ) {
 			privDrawObjectsDepthFirst( child );
-			child = (GraphicsObject *)child->getSibling();
+			child = static_cast< GraphicsObject * >(child->getSibling());
 		}
 	}
 }
 
-void GraphicsObjMan::DebugSwitch()
-{
-	GraphicsObjMan *pGOM = GraphicsObjMan::privGetInstance();
-	if (pGOM->debugOn)
-	{
+void GraphicsObjMan::DebugSwitch() {
+	auto pGOM = privGetInstance();
+	if ( pGOM->debugOn ) {
 		pGOM->debugOn = false;
-	}
-	else
-	{
+	} else {
 		pGOM->debugOn = true;
 	}
 }
 
-PCSTree* GraphicsObjMan::getMainTree()
-{
-	GraphicsObjMan *pGOM = GraphicsObjMan::privGetInstance();
-
+PCSTree* GraphicsObjMan::GetMainTree() {
+	auto pGOM = privGetInstance();
 	return &pGOM->goTree;
 }

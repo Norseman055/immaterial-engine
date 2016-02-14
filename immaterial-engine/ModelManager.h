@@ -1,22 +1,8 @@
-#ifndef MODEL_MANAGER_H
-#define MODEL_MANAGER_H
+#pragma once
 
-#include "OpenGL.h"
 #include "ModelNode.h"
 
-// models used in my engine:
-/*
-	space_frigate
-	warbear_binary
-	typhoon (NOT WORKING)
-	buggy
-	astroboy
-	2BonePolySkinnedSkeleton
-
-*/
-
-struct MyVertex_stride
-{
+struct MyVertex_stride {
 	float x;
 	float y;
 	float z;
@@ -27,32 +13,28 @@ struct MyVertex_stride
 	float nz;
 };
 
-struct MyTriList
-{
+struct MyTriList {
 	unsigned short v1;
 	unsigned short v2;
 	unsigned short v3;
 };
 
-class ModelMan
-{
+class ModelMan {
 public:
 	// loads model from a formatted file
-	static void LoadModel( const char * const fileName );
-	static void LoadBufferedModel( const unsigned char * const modelBuff);
+	static void LoadModel( const char* const );
+	static void LoadBufferedModel( unsigned char* const );
 	static void DeleteModels();
 
 	// find a specified model based on known model name (ex. "pyramid", "cube", etc.)
-	static Model* Find( const char * const modelName );
+	static Model* Find( char* const );
 
 private:
 	// singleton
 	static ModelMan *privGetInstance();
 	ModelMan();
-	void privAddToFront( ModelNodeLink *node, ModelNodeLink*&head );
+	void privAddToFront( ModelNodeLink* const, ModelNodeLink*& ) const;
 
 private:
 	ModelNodeLink *active;
 };
-
-#endif

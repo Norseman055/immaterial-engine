@@ -1,16 +1,12 @@
-#ifndef SPHERE_MODEL_H
-#define SPHERE_MODEL_H
+#pragma once
 
-class SphereModel
-{
+#include "OpenGL.h"
+
+class SphereModel {
 public:
 	SphereModel();
-
-	void createVAO(void);
+	void createVAO( void );
 
 	// Temp for now
 	GLuint vao;
-
 };
-
-#endif

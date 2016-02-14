@@ -1,5 +1,4 @@
-#ifndef GRAPHICS_OBJECT_MANAGER_H
-#define GRAPHICS_OBJECT_MANAGER_H
+#pragma once
 
 #include "PCSTree.h"
 #include "MathEngine.h"
@@ -8,30 +7,28 @@
 class GraphicsObject;
 
 // Singleton
-class GraphicsObjMan
-{
+class GraphicsObjMan {
 public:
-	static void addObject( GraphicsObject *p);
-	static void addDebugObject( GraphicsObject *p);
-	static void drawObjects( void );
-	static GraphicsObject* FindByLocation( Vect &inStartPos );
+	static void AddObject( GraphicsObject* const );
+	static void AddDebugObject( GraphicsObject* const );
+	static void DrawObjects();
+	static GraphicsObject* FindByLocation( Vect& );
 	static GraphicsObject* GetFirstObj();
 	static void DebugSwitch();
-	static PCSTree *getMainTree();
+	static PCSTree *GetMainTree();
 	static void DeleteGraphicsObjects();
 
 private:
 
 	// Methods
 	GraphicsObjMan();
-	static GraphicsObjMan	*privGetInstance();
-	void privDrawObjectsDepthFirst( GraphicsObject *node ) const;
-	GraphicsObject* privFindAtLocation( GraphicsObject *node, Vect &inPos );
+	static GraphicsObjMan *privGetInstance();
+	void privDrawObjectsDepthFirst( GraphicsObject* const ) const;
+	GraphicsObject* privFindAtLocation( GraphicsObject* const, Vect& ) const;
 
 	// Data
-	class PCSTree goTree;
+	PCSTree goTree;
 	// Culling objects
-	class PCSTree goCull;
+	PCSTree goCull;
 	bool debugOn;
 };
-#endif

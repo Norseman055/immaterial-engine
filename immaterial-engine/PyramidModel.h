@@ -1,16 +1,12 @@
-#ifndef PYRAMID_MODEL_H
-#define PYRAMID_MODEL_H
+#pragma once
 
-class PyramidModel
-{
+#include "OpenGL.h"
+
+class PyramidModel {
 public:
-
 	PyramidModel();
-
-	void createVAO(void);
+	void createVAO( void );
 
 	// Temporary placement for now
 	GLuint				vao;
 };
-
-#endif

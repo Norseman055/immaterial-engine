@@ -1,100 +1,111 @@
-
-#ifndef CAMERA_OBJECT_H
-#define CAMERA_OBJECT_H
+#pragma once
 
 #include "MathEngine.h"
 #include "GraphicsObject.h"
-#include "BoundingSphere.h"
 #include "CameraModel.h"
 
- // now using CameraObjects instead of Camera's. should work the same.
-
-enum CameraName
-{
+enum CameraName {
 	CAMERA_CULLING,
 	CAMERA_OVERVIEW,
 	CAMERA_GENERIC,
 	NO_CAMERA
 };
 
-enum CullResult
-{
+enum CullResult {
 	CULL_INSIDE,
 	CULL_OUTSIDE
 };
 
-class CameraObject : public GraphicsObject
-{
+class CameraObject : public GraphicsObject {
 public:
-	CameraObject( CameraName name );
-	CameraObject();
+	CullResult CullTest( const Sphere& ) const;
 
-	void transform( void );
-	void draw( void );
-	void setRenderState( void );
-	void checkCulling(void);
+	void transform( void ) override;
+	void draw( void ) override;
+	void setRenderState( void ) override;
+	void checkCulling( void ) override;
 
-	    // Setup on single camera
-	void setPerspective(const float FieldOfView_Degs, const float AspectRatio, const float NearDist, const float FarDist);
-	void setViewport(const int inX, const int inY, const int width, const int height);
-	void setOrientAndPosition(const Vect &inUp, const Vect &inLookAt, const Vect &pos);
-	void setCameraModel(CameraModel * const inModel);
+	// Setup on single camera
+	void setPerspective( const float, const float, const float, const float );
+	void setViewport( const int, const int, const int, const int );
+	void setOrientAndPosition( const Vect&, const Vect&, const Vect& );
+	void setCameraModel( CameraModel* const );
 
-	 // update camera system
-	void updateCamera(void);
+	// update camera system
+	void updateCamera( void );
 
 	// Get the matrices for rendering
 	Matrix &getViewMatrix();
 	Matrix &getProjMatrix();
 
 	// accessors
-	void getPos( Vect &outPos) const;
-	void getDir( Vect &outDir ) const;
-	void getUp( Vect &outUp ) const;
-	void getLookAt( Vect &outLookAt ) const;
-	void getRight( Vect &outRight ) const;
+	void getPos( Vect& ) const;
+	void getDir( Vect& ) const;
+	void getUp( Vect& ) const;
+	void getLookAt( Vect& ) const;
+	void getRight( Vect& ) const;
 
 	CameraName getName() const;
 
-	void setPos( const Vect &inPos);
-	Vect getStartPos();		// have to include
-			
-	void getFieldOfView( float &Value) const;
-	void setFieldOfView( const float Value);
+	void setPos( const Vect& );
+	Vect getStartPos() override;
 
-	void getNearDist( float &Value) const;
-	void setNearDist( const float Value);
+	void getFieldOfView( float& ) const;
+	void setFieldOfView( const float );
 
+	void getNearDist( float& ) const;
+	void setNearDist( const float );
 
-	void getNearTopLeft(Vect &vOut) const;
-	void getNearTopRight(Vect &vOut) const;
-	void getNearBottomLeft(Vect &vOut) const;
-	void getNearBottomRight(Vect &vOut) const;	
-	void getFarTopLeft(Vect &vOut) const;
-	void getFarTopRight(Vect &vOut) const;
-	void getFarBottomLeft(Vect &vOut) const;
-	void getFarBottomRight(Vect &vOut) const;
+	void getNearTopLeft( Vect& ) const;
+	void getNearTopRight( Vect& ) const;
+	void getNearBottomLeft( Vect& ) const;
+	void getNearBottomRight( Vect& ) const;
+	void getFarTopLeft( Vect& ) const;
+	void getFarTopRight( Vect& ) const;
+	void getFarBottomLeft( Vect& ) const;
+	void getFarBottomRight( Vect& ) const;
 
-	CullResult CullTest( const Sphere &sphere );
+	explicit CameraObject( CameraName name );
+	CameraObject();
 
 private:  // methods
-	void privSetViewState( void );
-	void privCalcPlaneHeightWidth( void );
-	void privCalcFrustumVerts( void );
-	void privCalcFrustumCollisionNormals( void );
-	void privUpdateProjectionMatrix( void );
-	void privUpdateViewMatrix( void );
+	void privSetViewState() const;
+	void privCalcPlaneHeightWidth();
+	void privCalcFrustumVerts();
+	void privCalcFrustumCollisionNormals();
+	void privUpdateProjectionMatrix();
+	void privUpdateViewMatrix();
 
-private:  // data 
+private:  // data
 
-	CameraName name;
+	// Projection Matrix
+	Matrix projMatrix;
+	Matrix viewMatrix;
 
 	// camera unit vectors (up, dir, right)
 	Vect	vUp;
 	Vect	vDir;
 	Vect	vRight;
-	Vect	vPos;    
+	Vect	vPos;
 	Vect	vLookAt;
+
+	// world space coords for viewing frustum
+	Vect	nearTopLeft;
+	Vect	nearTopRight;
+	Vect	nearBottomLeft;
+	Vect	nearBottomRight;
+	Vect	farTopLeft;
+	Vect	farTopRight;
+	Vect	farBottomLeft;
+	Vect	farBottomRight;
+
+	// Normals of the frustum
+	Vect	frontNorm;
+	Vect	backNorm;
+	Vect	rightNorm;
+	Vect	leftNorm;
+	Vect	topNorm;
+	Vect	bottomNorm;
 
 	// Define the frustum inputs
 	float	nearDist;
@@ -114,29 +125,9 @@ private:  // data
 	int		viewport_width;
 	int		viewport_height;
 
-	// world space coords for viewing frustum
-	Vect	nearTopLeft;
-	Vect	nearTopRight;
-	Vect	nearBottomLeft;
-	Vect	nearBottomRight;	
-	Vect	farTopLeft;
-	Vect	farTopRight;
-	Vect	farBottomLeft;
-	Vect	farBottomRight;
-
-	// Normals of the frustum
-	Vect	frontNorm;
-	Vect	backNorm;
-	Vect	rightNorm;
-	Vect	leftNorm;
-	Vect	topNorm;
-	Vect	bottomNorm;
-
-	// Projection Matrix
-	Matrix projMatrix;
-	Matrix viewMatrix;
-
+	// model
 	CameraModel *model;
-};
 
-#endif
+	// name
+	CameraName name;
+};

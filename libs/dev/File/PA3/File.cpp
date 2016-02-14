@@ -1,30 +1,25 @@
-
-#include <assert.h>
 #include "File.h"
+#include <assert.h>
 
-#define UNUSED(x) x
+FileError File::open( FileHandle &fh, const char * const fileName, FileMode mode ) {
+	assert( fh );
+	assert( mode );
 
+	FileError fE;
 
-FileError File::open( FileHandle &fh, const char * const fileName, FileMode mode )
-{
-	assert(fh);
-	assert(mode);
-	FileError fE = (FileError)-1;
-
-	switch(mode)
-	{
+	switch ( mode ) {
 		case FILE_READ:
-			fh = CreateFile(fileName, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+			fh = CreateFile( fileName, GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr );
 			break;
 		case FILE_WRITE:
-			fh = CreateFile(fileName, GENERIC_WRITE, 0, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+			fh = CreateFile( fileName, GENERIC_WRITE, 0, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr );
 			break;
 		case FILE_READ_WRITE:
-			fh = CreateFile(fileName, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+			fh = CreateFile( fileName, GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr );
 			break;
 	}
 
-	if (fh != INVALID_HANDLE_VALUE)
+	if ( fh != INVALID_HANDLE_VALUE )
 		fE = FILE_SUCCESS;
 	else
 		fE = FILE_OPEN_FAIL;
@@ -32,36 +27,33 @@ FileError File::open( FileHandle &fh, const char * const fileName, FileMode mode
 	return fE;
 }
 
-FileError File::close( const FileHandle fh )
-{
-	
-	assert(fh);
-	FileError fE = (FileError)-1;
-	BOOL errorFlag = FALSE;
+FileError File::close( const FileHandle fh ) {
+	assert( fh );
 
-	errorFlag = CloseHandle(fh);
+	FileError fE;
 
-	if (errorFlag == TRUE)
+	auto errorFlag = CloseHandle( fh );
+
+	if ( errorFlag == TRUE )
 		fE = FILE_SUCCESS;
 	else
 		fE = FILE_CLOSE_FAIL;
-		
+
 	return fE;
 }
 
-FileError File::write( FileHandle fh, const void * const buffer, const size_t inSize )
-{
-	assert(fh);
-	FileError fE = (FileError)-1;
-	DWORD pointer;
-	BOOL errorFlag = FALSE;
+FileError File::write( FileHandle fh, const void * const buffer, const size_t inSize ) {
+	assert( fh );
 
-	if (buffer != NULL)
-	{
-		errorFlag = WriteFile(fh, buffer, inSize, &pointer, NULL);
+	FileError fE;
+	DWORD pointer;
+	auto errorFlag = FALSE;
+
+	if ( buffer != nullptr ) {
+		errorFlag = WriteFile( fh, buffer, inSize, &pointer, nullptr );
 	}
 
-	if (errorFlag == TRUE)
+	if ( errorFlag == TRUE )
 		fE = FILE_SUCCESS;
 	else
 		fE = FILE_WRITE_FAIL;
@@ -69,19 +61,18 @@ FileError File::write( FileHandle fh, const void * const buffer, const size_t in
 	return fE;
 }
 
-FileError File::read( FileHandle fh,  void * const buffer, const size_t inSize )
-{
-	assert(fh);
-	FileError fE = (FileError)-1;
-	DWORD pointer;
-	BOOL errorFlag = FALSE;
+FileError File::read( FileHandle fh, void * const buffer, const size_t inSize ) {
+	assert( fh );
 
-	if (buffer != NULL)
-	{
-		errorFlag = ReadFile(fh, buffer, inSize, &pointer, NULL);
+	FileError fE;
+	DWORD pointer;
+	auto errorFlag = FALSE;
+
+	if ( buffer != nullptr ) {
+		errorFlag = ReadFile( fh, buffer, inSize, &pointer, nullptr );
 	}
 
-	if (errorFlag == TRUE)
+	if ( errorFlag == TRUE )
 		fE = FILE_SUCCESS;
 	else
 		fE = FILE_READ_FAIL;
@@ -89,28 +80,27 @@ FileError File::read( FileHandle fh,  void * const buffer, const size_t inSize )
 	return fE;
 }
 
-FileError File::seek( FileHandle fh, FileSeek seek, int offset )
-{
-	assert(fh);
-	FileError fE = (FileError)-1;
+FileError File::seek( FileHandle fh, FileSeek seek, int offset ) {
+	assert( fh );
+
+	FileError fE;
 	DWORD errorFlag = NO_ERROR;
 
-	switch (seek)
-	{
+	switch ( seek ) {
 		case FILE_SEEK_BEGIN:
-			errorFlag = SetFilePointer(fh, offset, NULL, FILE_BEGIN);
+			errorFlag = SetFilePointer( fh, offset, nullptr, FILE_BEGIN );
 			break;
 		case FILE_SEEK_CURRENT:
-			errorFlag = SetFilePointer(fh, offset, NULL, FILE_CURRENT);
+			errorFlag = SetFilePointer( fh, offset, nullptr, FILE_CURRENT );
 			break;
 		case FILE_SEEK_END:
-			errorFlag = SetFilePointer(fh, offset, NULL, FILE_END);
+			errorFlag = SetFilePointer( fh, offset, nullptr, FILE_END );
 			break;
 		default:
 			break;
 	}
 
-	if (errorFlag == 0xffffffff && GetLastError() != NO_ERROR)
+	if ( errorFlag == 0xffffffff && GetLastError() != NO_ERROR )
 		fE = FILE_SEEK_FAIL;
 	else
 		fE = FILE_SUCCESS;
@@ -118,34 +108,32 @@ FileError File::seek( FileHandle fh, FileSeek seek, int offset )
 	return fE;
 }
 
-FileError File::tell( FileHandle fh, int &offset )
-{	
-	assert(fh);
-	FileError fE = (FileError)-1;
-	DWORD errorFlag = NO_ERROR;
+FileError File::tell( FileHandle fh, int &offset ) {
+	assert( fh );
 
-	errorFlag = SetFilePointer(fh, 0, NULL, FILE_CURRENT);
-	offset = SetFilePointer(fh, 0, NULL, FILE_CURRENT);
+	FileError fE;
 
-	if (errorFlag == 0xffffffff && GetLastError() != NO_ERROR)
+	auto errorFlag = SetFilePointer( fh, 0, nullptr, FILE_CURRENT );
+	offset = SetFilePointer( fh, 0, nullptr, FILE_CURRENT );
+
+	if ( errorFlag == 0xffffffff && GetLastError() != NO_ERROR )
 		fE = FILE_TELL_FAIL;
 	else
 		fE = FILE_SUCCESS;
-	
+
 	return fE;
 }
 
-FileError File::flush( FileHandle fh )
-{
-	assert(fh);
-	FileError fE = (FileError)-1;
-	DWORD errorFlag = FALSE;
+FileError File::flush( FileHandle fh ) {
+	assert( fh );
 
-	errorFlag = FlushFileBuffers(fh);
+	FileError fE;
 
-	if (errorFlag == FALSE)
+	auto errorFlag = FlushFileBuffers( fh );
+
+	if ( errorFlag == FALSE )
 		fE = FILE_FLUSH_FAIL;
-	else 
+	else
 		fE = FILE_SUCCESS;
 
 	return fE;

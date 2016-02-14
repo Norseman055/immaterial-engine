@@ -1,61 +1,44 @@
-#ifndef SPHERE_OBJECT_H
-#define SPHERE_OBJECT_H
+#pragma once
 
 #include "GraphicsObject.h"
-#include "TextureNode.h"
-#include "ShaderTypes.h"
-#include "BoundingSphere.h"
 
-enum SphereMove
-{
+enum SphereMove {
 	SphereMove_Y,
 	SphereMove_Z,
 	SphereMove_None
 };
 
-class SphereObject : public GraphicsObject
-{
+class SphereObject : public GraphicsObject {
 public:
 	SphereObject();
 
 	// for bounding volumes
 	void setPos( const Vect & v );
 	void setRad( const float radius );
-	
-	void setExtSphere( const Sphere &sphere );
-	void setExtMatrix( const Matrix &world );
 
-	void setGraphicsObjec( GraphicsObject *graphicsObject );
+	void setExtSphere( const Sphere& );
+	void setExtMatrix( const Matrix& );
 
 	// Specific to Sphere
-	void setStartPos( const Vect & v);
-	Vect getStartPos();
-	void setLightColor( const Vect & v);
-	void setLightPos( const Vect & v);
-	void setTextureName( TextureName inName );
-	void setStockShaderMode ( ShaderType inVal );
-	void setOriginalSphere( Sphere &origSphere );
-	void setSphereObject ();
-	Sphere getSphere();
+	void setStartPos( const Vect& );
+	Vect getStartPos() override;
+	void setLightColor( const Vect& );
+	void setLightPos( const Vect& );
+	void setTextureName( const TextureName );
+	void setStockShaderMode( const ShaderType );
+	Sphere getSphere() const;
 
 	// must define, base class has abstract methods
-	void transform( void );
-	void draw( void );
-	void setRenderState(void);
-	void checkCulling(void);
+	void transform( void ) override;
+	void draw( void ) override;
+	void setRenderState( void ) override;
+	void checkCulling( void ) override;
 
 private:
 	// internal variables for the instance
-	float	angle_y;
-	float	angle_z;
-
-	Vect color;
-	Sphere sphere;
-	
 	Matrix extWorld;
+	Vect color;
 	Sphere extSphere;
-
+	Sphere sphere;
 	SphereObject *cullingSphere;
 };
-
-#endif

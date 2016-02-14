@@ -1,54 +1,45 @@
-
 #include "AnimationManager.h"
-#include <assert.h>
-#include <Windows.h>
+#include "DEBUGGING.h"
 
-void AnimationMan::LoadAnimationBuffer(const unsigned char * const animBuff, const AnimFileHdr &aHdr )
-{
-	AnimationMan* aMan = privGetInstance();
+void AnimationMan::LoadAnimationBuffer( unsigned char* const animBuff, const AnimFileHdr& aHdr ) {
+	auto aMan = privGetInstance();
 
-	AnimNode *node = new AnimNode(aHdr.animName, aHdr.numBones);
-	node->numKeyframes = aHdr.numKeyframes;
+	auto node = new AnimNode( aHdr.animName, aHdr.numKeyframes, aHdr.numBones );
 
 	// set pointers to first keyframe data and bone data
-	KeyTimeHdr *KTHdr = (KeyTimeHdr *)animBuff;
-	Bone *ptr = KTHdr->bArray;
+	auto KTHdr = reinterpret_cast< KeyTimeHdr * >(animBuff);
+	auto ptr = KTHdr->bArray;
 
 	// now have an animNode with the proper data, now i need to create the frame buckets for the animation
-	Frame_Bucket *tmp = 0;
-	for (int i = 0; i < aHdr.numKeyframes; i++)	{
+	Frame_Bucket *tmp;
+	for ( auto i = 0; i < aHdr.numKeyframes; i++ ) {
 		// make new frame bucket, add data
 		tmp = new Frame_Bucket;
-		tmp->KeyTime = KTHdr->KeyTime * Time(TIME_NTSC_30_FRAME);
+		tmp->KeyTime = KTHdr->KeyTime * Time( TIME_NTSC_30_FRAME );
 
 		// copy bones
-		tmp->pBone = (Bone *)malloc(sizeof(Bone) * aHdr.numBones);
-		for (int j = 0; j < aHdr.numBones; j++)	{
+		tmp->pBone = new Bone[aHdr.numBones];
+		for ( auto j = 0; j < aHdr.numBones; j++ ) {
 			tmp->pBone[j] = ptr[j];
 		}
 
-		node->addBucket(tmp);
+		node->addBucket( tmp );
 
 		// advance pointers
-		KTHdr = (KeyTimeHdr*)((unsigned int)ptr + (sizeof(Bone) * aHdr.numBones));
+		KTHdr = reinterpret_cast< KeyTimeHdr* >(reinterpret_cast< unsigned int >( ptr ) +(sizeof( Bone ) * aHdr.numBones));
 		ptr = KTHdr->bArray;
 	}
 
-	aMan->privAddToFront(node, aMan->animList);
+	aMan->privAddToFront( node, aMan->animList );
 };
 
-void AnimationMan::privAddToFront( AnimNode * node, AnimNode *&head)
-{
-	assert (node != 0);
+void AnimationMan::privAddToFront( AnimNode* const node, AnimNode*& head ) const {
+	assert( node );
 
 	// empty list
-	if (head == 0)
-	{
+	if ( head == nullptr ) {
 		head = node;
-		node->next = 0;
-		node->prev = 0;
-	}
-	else	// non-empty list, add to front
+	} else	// non-empty list, add to front
 	{
 		node->next = head;
 		head->prev = node;
@@ -56,12 +47,10 @@ void AnimationMan::privAddToFront( AnimNode * node, AnimNode *&head)
 	}
 };
 
-AnimNode* AnimationMan::GetAnimation( const char * const inName )
-{
-	AnimationMan *aMan = privGetInstance();
-	AnimNode *walker = aMan->animList;
-	while (walker->next != 0)	{
-		if (strcmp(walker->getName(), inName) == 0)	{
+AnimNode* AnimationMan::GetAnimation( const char* const inName ) {
+	auto walker = privGetInstance()->animList;
+	while ( walker->next != nullptr ) {
+		if ( strcmp( walker->getName(), inName ) == 0 ) {
 			break;
 		}
 		walker = walker->next;
@@ -70,26 +59,22 @@ AnimNode* AnimationMan::GetAnimation( const char * const inName )
 	return walker;
 };
 
-AnimationMan* AnimationMan::privGetInstance()
-{
+AnimationMan* AnimationMan::privGetInstance() {
 	static AnimationMan aMan;
 	return &aMan;
 };
 
 AnimationMan::AnimationMan()
-{
-	this->animList = 0;
-};
+	: animList( nullptr ) { }
 
-void AnimationMan::DeleteAnimations()
-{
-	AnimationMan *aMan = privGetInstance();
-	AnimNode *walker = aMan->animList;
-	AnimNode *tmp = walker;
+void AnimationMan::DeleteAnimations() {
+	auto aMan = privGetInstance();
+	auto walker = aMan->animList;
+	auto tmp = walker;
 
-	while(walker != 0)	{
+	while ( walker != nullptr ) {
 		walker = walker->next;
-		tmp->~AnimNode();
+		delete tmp;
 		tmp = walker;
 	}
 }

@@ -1,5 +1,4 @@
-#ifndef OPEN_GL_H
-#define OPEN_GL_H
+#pragma once
 
 #include <GLTools.h>
 #include <GLBatch.h>
@@ -11,5 +10,3 @@
 // When enabling warning level 4, we get warning C4505: unreferenced local function has been removed
 // This pragma kills this needless warning
 #pragma warning(disable: 4505)
-
-#endif
