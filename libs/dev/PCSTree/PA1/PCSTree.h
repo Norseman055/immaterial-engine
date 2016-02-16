@@ -1,55 +1,53 @@
-#ifndef PCSTREE_H
-#define PCSTREE_H
+#pragma once
+
+#include <memory>
+
+using namespace std;
 
 // Simple data structure
-struct PCSTreeInfo
-{
-   int numNodes;
-   int maxNodeCount;
-   int numLevels;
-   int maxLevelCount;
+struct PCSTreeInfo {
+	int numNodes;
+	int maxNodeCount;
+	int numLevels;
+	int maxLevelCount;
 };
 
 // forward declare
 class PCSNode;
 
-// PCSTree class 
-class PCSTree
-{
+// PCSTree class
+class PCSTree {
 public:
-   // constructor
-   PCSTree();
+	// constructor
+	PCSTree();
 
-   // destructor
-   ~PCSTree();
+	// destructor
+	virtual ~PCSTree();
 
-   // get Root
-   PCSNode *getRoot( void ) const;
+	// get Root
+	weak_ptr<PCSNode> getRoot( void ) const;
 
-   // insert
-   void insert( PCSNode * const inNode, PCSNode * const parent );
+	// insert
+	void insert( const shared_ptr<PCSNode> inNode, const shared_ptr<PCSNode> parent );
 
-   // remove
-   void remove( PCSNode * const inNode );
+	// remove
+	void remove( const shared_ptr<PCSNode> inNode );
 
-   // get info
-   void getInfo( PCSTreeInfo &infoContainer );
-   void dumpTree( ) const;   
-   void goDown( const PCSNode * const root );
-   void removeDown( PCSNode * const root );
-   void checkLevels( const PCSNode * const root );
+	// get info
+	void getInfo( PCSTreeInfo &infoContainer );
+	void dumpTree() const;
+	void goDown( const shared_ptr<PCSNode> root );
+	void removeDown( shared_ptr<PCSNode> root );
+	void checkLevels( const shared_ptr<PCSNode> root );
 
 private:
-   // copy constructor 
-   PCSTree( PCSTree &in );
+	// copy constructor
+	PCSTree( PCSTree &in );
 
-   // assignment operator
-   PCSTree & operator = (const PCSTree &in);
+	// assignment operator
+	PCSTree & operator = (const PCSTree &in);
 
-   // Data
-   PCSTreeInfo info;
-   PCSNode     *root;
+	// Data
+	PCSTreeInfo info;
+	shared_ptr<PCSNode> root;
 };
-
-
-#endif

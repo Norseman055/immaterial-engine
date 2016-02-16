@@ -9,21 +9,21 @@
 
 //---------------------------------------------------------------------------
 // Test Files:
-// Single step throught, set break points, but do not modify it
+// Single step through, set break points, but do not modify it
 //---------------------------------------------------------------------------
 
 TEST( version, PCSNode_group)
 {
-   CHECK( PCSNODE_VERSION == 1.3 );
+   CHECK( PCSNODE_VERSION == 1.4 );
 }
 
 TEST( defaultConstructor, PCSNode_group)
 {
 	PCSNode node;
 
-   CHECK( node.getChild() == 0 );
-   CHECK( node.getParent() == 0 );
-   CHECK( node.getSibling() == 0 );
+   CHECK( node.getChild().lock() == nullptr );
+   CHECK( node.getParent().lock() == nullptr );
+   CHECK( node.getSibling().lock() == nullptr );
 
    char buff[16];
    PCSNodeReturnCode returnCode;
@@ -42,15 +42,15 @@ TEST( setChild, PCSNode_group)
    PCSNode nodeB;
 
    CHECK( &nodeA != &nodeB );
-   CHECK( nodeA.getChild() == 0 );
-   CHECK( nodeA.getParent() == 0 );
-   CHECK( nodeA.getSibling() == 0 );
+   CHECK( nodeA.getChild().lock() == nullptr );
+   CHECK( nodeA.getParent().lock() == nullptr );
+   CHECK( nodeA.getSibling().lock() == nullptr );
 
    nodeA.setChild( &nodeB );
 
-   CHECK( nodeA.getChild() == &nodeB );
-   CHECK( nodeA.getParent() == 0 );
-   CHECK( nodeA.getSibling() == 0 );
+   CHECK( nodeA.getChild().lock() == &nodeB );
+   CHECK( nodeA.getParent().lock() == nullptr );
+   CHECK( nodeA.getSibling().lock() == nullptr );
 
 }
 
@@ -61,17 +61,17 @@ TEST( getChild, PCSNode_group)
    PCSNode *nodeC;
 
    CHECK( &nodeA != &nodeB );
-   CHECK( nodeA.getChild() == 0 );
-   CHECK( nodeA.getParent() == 0 );
-   CHECK( nodeA.getSibling() == 0 );
+   CHECK( nodeA.getChild().lock() == nullptr );
+   CHECK( nodeA.getParent().lock() == nullptr );
+   CHECK( nodeA.getSibling().lock() == nullptr );
 
    nodeA.setChild( &nodeB );
-   nodeC = nodeA.getChild();
+   nodeC = nodeA.getChild().lock().get();
 
    CHECK( nodeC == &nodeB );
-   CHECK( nodeA.getChild() == &nodeB );
-   CHECK( nodeA.getParent() == 0 );
-   CHECK( nodeA.getSibling() == 0 );
+   CHECK( nodeA.getChild().lock() == &nodeB );
+   CHECK( nodeA.getParent().lock() == nullptr );
+   CHECK( nodeA.getSibling().lock() == nullptr );
 }
 
 TEST( setParent, PCSNode_group)
@@ -80,15 +80,15 @@ TEST( setParent, PCSNode_group)
    PCSNode nodeB;
 
    CHECK( &nodeA != &nodeB );
-   CHECK( nodeA.getChild() == 0 );
-   CHECK( nodeA.getParent() == 0 );
-   CHECK( nodeA.getSibling() == 0 );
+   CHECK( nodeA.getChild().lock() == nullptr );
+   CHECK( nodeA.getParent().lock() == nullptr );
+   CHECK( nodeA.getSibling().lock() == nullptr );
 
    nodeA.setParent( &nodeB );
 
-   CHECK( nodeA.getParent() == &nodeB );
-   CHECK( nodeA.getChild() == 0 );
-   CHECK( nodeA.getSibling() == 0 );
+   CHECK( nodeA.getParent().lock() == &nodeB );
+   CHECK( nodeA.getChild().lock() == nullptr );
+   CHECK( nodeA.getSibling().lock() == nullptr );
 
 }
 
@@ -99,17 +99,17 @@ TEST( getParent, PCSNode_group)
    PCSNode *nodeC;
 
    CHECK( &nodeA != &nodeB );
-   CHECK( nodeA.getChild() == 0 );
-   CHECK( nodeA.getParent() == 0 );
-   CHECK( nodeA.getSibling() == 0 );
+   CHECK( nodeA.getChild().lock() == nullptr );
+   CHECK( nodeA.getParent().lock() == nullptr );
+   CHECK( nodeA.getSibling().lock() == nullptr );
 
    nodeA.setParent( &nodeB );
-   nodeC = nodeA.getParent();
+   nodeC = nodeA.getParent().lock().get();
 
    CHECK( nodeC == &nodeB );
-   CHECK( nodeA.getParent() == &nodeB );
-   CHECK( nodeA.getChild() == 0 );
-   CHECK( nodeA.getSibling() == 0 );
+   CHECK( nodeA.getParent().lock() == &nodeB );
+   CHECK( nodeA.getChild().lock() == nullptr );
+   CHECK( nodeA.getSibling().lock() == nullptr );
 }
 
 TEST( setSibling, PCSNode_group)
@@ -118,15 +118,15 @@ TEST( setSibling, PCSNode_group)
    PCSNode nodeB;
 
    CHECK( &nodeA != &nodeB );
-   CHECK( nodeA.getChild() == 0 );
-   CHECK( nodeA.getParent() == 0 );
-   CHECK( nodeA.getSibling() == 0 );
+   CHECK( nodeA.getChild().lock() == nullptr );
+   CHECK( nodeA.getParent().lock() == nullptr );
+   CHECK( nodeA.getSibling().lock() == nullptr );
 
    nodeA.setSibling( &nodeB );
 
-   CHECK( nodeA.getSibling() == &nodeB );
-   CHECK( nodeA.getParent() == 0 );
-   CHECK( nodeA.getChild() == 0 );
+   CHECK( nodeA.getSibling().lock() == &nodeB );
+   CHECK( nodeA.getParent().lock() == nullptr );
+   CHECK( nodeA.getChild().lock() == nullptr );
 
 }
 
@@ -138,17 +138,17 @@ TEST( getSibling, PCSNode_group)
 
 
    CHECK( &nodeA != &nodeB );
-   CHECK( nodeA.getChild() == 0 );
-   CHECK( nodeA.getParent() == 0 );
-   CHECK( nodeA.getSibling() == 0 );
+   CHECK( nodeA.getChild().lock() == nullptr );
+   CHECK( nodeA.getParent().lock() == nullptr );
+   CHECK( nodeA.getSibling().lock() == nullptr );
 
    nodeA.setSibling( &nodeB );
-   nodeC = nodeA.getSibling();
+   nodeC = nodeA.getSibling().lock().get();
 
    CHECK( nodeC == &nodeB );
-   CHECK( nodeA.getSibling() == &nodeB );
-   CHECK( nodeA.getParent() == 0 );
-   CHECK( nodeA.getChild() == 0 );
+   CHECK( nodeA.getSibling().lock() == &nodeB );
+   CHECK( nodeA.getParent().lock() == nullptr );
+   CHECK( nodeA.getChild().lock() == nullptr );
 }
 
 
