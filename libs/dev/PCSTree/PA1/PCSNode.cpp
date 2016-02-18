@@ -14,29 +14,20 @@ PCSNode::PCSNode()
 
 // copy constructor
 PCSNode::PCSNode( const PCSNode &in )
-	:level( in.level ) {
-	this->parent = in.parent;
-	this->child = in.child;
-	this->sibling = in.sibling;
+	:parent( in.parent ), child( in.child ), sibling( in.sibling ), level( in.level ) {
 	memcpy( name, in.name, 16 );
 	name[15] = '\0';
 }
 
 // Specialize Constructor
-PCSNode::PCSNode( shared_ptr<PCSNode> const inParent, shared_ptr<PCSNode> const inChild, shared_ptr<PCSNode> const inSibling, const char* const inName ) {
-	parent = inParent;
-	child = inChild;
-	sibling = inSibling;
-	level = inSibling->level;
+PCSNode::PCSNode( PCSNode* const inParent, PCSNode* const inChild, PCSNode* const inSibling, const char* const inName )
+	: parent( inParent ), child( inChild ), sibling( inSibling ), level( inSibling->level ) {
 	memcpy( name, inName, 16 );
 	name[15] = '\0';
 }
 
 PCSNode::PCSNode( const char* const inName )
-	: level( 0 ) {
-	parent = nullptr;
-	child = nullptr;
-	sibling = nullptr;
+	: parent( nullptr ), child( nullptr ), sibling( nullptr ), level( 0 ) {
 	memcpy( name, inName, 16 );
 	name[15] = '\0';
 }
@@ -46,36 +37,24 @@ PCSNode::~PCSNode() { }
 
 // assignment operator
 PCSNode &PCSNode::operator = (const PCSNode &in) {
-	parent = in.parent;
-	child = in.child;
-	sibling = in.sibling;
-	level = in.level;
+	this->parent = in.parent;
+	this->child = in.child;
+	this->sibling = in.sibling;
+	this->level = in.level;
 	memcpy( name, in.name, 16 );
-	name[15] = '\0';
+	this->name[15] = '\0';
 	return *this;
 }
 
-void PCSNode::setParent( const PCSNode* const in ) {
-	this->parent = make_shared<PCSNode>( *in );
-}
-
-void PCSNode::setChild( const PCSNode* const in ) {
-	this->child = make_shared<PCSNode>( *in );
-}
-
-void PCSNode::setSibling( const PCSNode* const in ) {
-	this->sibling = make_shared<PCSNode>( *in );
-}
-
-void PCSNode::setParent( const shared_ptr<PCSNode> in ) {
+void PCSNode::setParent( PCSNode* const in ) {
 	this->parent = in;
 }
 
-void PCSNode::setChild( const shared_ptr<PCSNode> in ) {
+void PCSNode::setChild( PCSNode* const in ) {
 	this->child = in;
 }
 
-void PCSNode::setSibling( const shared_ptr<PCSNode> in ) {
+void PCSNode::setSibling( PCSNode* const in ) {
 	this->sibling = in;
 }
 
@@ -83,16 +62,16 @@ void PCSNode::setLevel( const int inLevel ) {
 	this->level = inLevel;
 }
 
-weak_ptr<PCSNode> PCSNode::getParent( void ) const {
-	return parent;
+PCSNode* PCSNode::getParent( void ) const {
+	return this->parent;
 }
 
-weak_ptr<PCSNode> PCSNode::getChild( void ) const {
-	return child;
+PCSNode* PCSNode::getChild( void ) const {
+	return this->child;
 }
 
-weak_ptr<PCSNode> PCSNode::getSibling( void ) const {
-	return sibling;
+PCSNode* PCSNode::getSibling( void ) const {
+	return this->sibling;
 }
 
 int PCSNode::getLevel( void ) const {
@@ -143,72 +122,72 @@ void PCSNode::dumpNode() const {
 	char childName[16];
 	char siblingName[16];
 
-	if ( parent )
-		this->parent->getName( parentName, 16 );
+	if ( this->getParent() )
+		this->getParent()->getName( parentName, 16 );
 	else
 		memcpy( parentName, "0", 2 );
 
-	if ( child )
-		this->child->getName( childName, 16 );
+	if ( this->getChild() )
+		this->getChild()->getName( childName, 16 );
 	else
 		memcpy( childName, "0", 2 );
 
-	if ( sibling )
-		this->sibling->getName( siblingName, 16 );
+	if ( this->getSibling() )
+		this->getSibling()->getName( siblingName, 16 );
 	else
 		memcpy( siblingName, "0", 2 );
 
 	printf( "\n" );
 	printf( "    Name: %s\n", this->name );
 	printf( " Address: 0x%p\n", this );
-	printf( "  Parent: %s (0x%p)\n", parentName, this->parent.get() );
-	printf( "   Child: %s (0x%p)\n", childName, this->child.get() );
-	printf( " Sibling: %s (0x%p)\n", siblingName, this->sibling.get() );
+	printf( "  Parent: %s (0x%p)\n", parentName, this->getParent() );
+	printf( "   Child: %s (0x%p)\n", childName, this->getChild() );
+	printf( " Sibling: %s (0x%p)\n", siblingName, this->getSibling() );
 }
 
 void PCSNode::dumpChildren() const {
-	if ( this->child ) {
-		child->dumpNode();
-		child->dumpSiblings();
+	if ( this->getChild() ) {
+		this->getChild()->dumpNode();
+		this->getChild()->dumpSiblings();
 	}
 }
 
 void PCSNode::dumpSiblings() const {
-	if ( this->sibling ) {
-		this->sibling->privDumpSibling();
+	if ( this->getSibling() ) {
+		this->getSibling()->privDumpSibling();
 	}
 }
 
 void PCSNode::privDumpSibling() const {
 	this->dumpNode();
-	if ( this->sibling ) {
-		this->sibling->privDumpSibling();
+	if ( this->getSibling() ) {
+		this->getSibling()->privDumpSibling();
 	}
 }
 
-void PCSNode::printDown( shared_ptr<PCSNode> root ) const {
-	root->dumpNode();
+void PCSNode::printDown( PCSNode* const _root ) const {
+	_root->dumpNode();
 
-	if ( this->child )		// if root has a child, go down again.
+	if ( _root->getChild() )		// if root has a child, go down again.
 	{
-		printDown( this->child );
+		printDown( _root->getChild() );
 	}
 
-	if ( this->sibling )		// now traverse siblings.
+	if ( _root->getSibling() )		// now traverse siblings.
 	{
-		printDown( this->sibling );
+		printDown( _root->getSibling() );
 	}
 }
 
 int PCSNode::getNumSiblings() const {
 	auto count = 1;
 
-	if ( this->parent && this->parent->child )	// if this is not the root node
+	if ( this->getParent() && this->getParent()->getChild() )	// if this is not the root node
 	{
-		auto walker = this->parent->child;	// go to first child on list
-		while ( walker->sibling )		// while there are siblings, count them
+		auto walker = this->getParent()->getChild();	// go to first child on list
+		while ( walker->getSibling() )		// while there are siblings, count them
 		{
-			walker = walker->sibling;
+			walker = walker->getSibling();
 			count++;
 		}
 	}
@@ -218,13 +197,13 @@ int PCSNode::getNumSiblings() const {
 
 int PCSNode::getNumChildren() const {
 	auto count = 0;
-	if ( this->child )	// if there are children, count them.
+	if ( this->getChild() )	// if there are children, count them.
 	{
-		auto node = this->child;
+		auto node = this->getChild();
 		count++;
 
-		while ( node->sibling ) {
-			node = node->sibling;
+		while ( node->getSibling() ) {
+			node = node->getSibling();
 			count++;
 		}
 	}

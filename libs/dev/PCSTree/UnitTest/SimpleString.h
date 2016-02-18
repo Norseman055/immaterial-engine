@@ -1,4 +1,3 @@
-
 ///////////////////////////////////////////////////////////////////////////////
 //
 // SIMPLESTRING.H
@@ -12,34 +11,28 @@
 #ifndef SIMPLE_STRING
 #define SIMPLE_STRING
 
-
-
-class SimpleString
-{
+class SimpleString {
 	friend bool	operator== (const SimpleString& left, const SimpleString& right);
 
 public:
-						SimpleString ();
-						SimpleString (const char *value);
-						SimpleString (const SimpleString& other);
-						~SimpleString ();
+	SimpleString();
+	SimpleString( const char *value );
+	SimpleString( const SimpleString& other );
+	~SimpleString();
 
 	SimpleString		operator= (const SimpleString& other);
 
-	char				*asCharString () const;
+	char				*asCharString() const;
 	int					size() const;
 
 private:
 	char				*buffer;
 };
 
-
-
-SimpleString StringFrom (bool value);
-SimpleString StringFrom (const char *value);
-SimpleString StringFrom (long value);
-SimpleString StringFrom (double value);
-SimpleString StringFrom (const SimpleString& other);
-
+SimpleString StringFrom( bool value );
+SimpleString StringFrom( const char *value );
+SimpleString StringFrom( long value );
+SimpleString StringFrom( double value );
+SimpleString StringFrom( const SimpleString& other );
 
 #endif

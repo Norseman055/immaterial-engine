@@ -1,9 +1,5 @@
 #pragma once
 
-#include <memory>
-
-using namespace std;
-
 // Simple data structure
 struct PCSTreeInfo {
 	int numNodes;
@@ -25,20 +21,20 @@ public:
 	virtual ~PCSTree();
 
 	// get Root
-	weak_ptr<PCSNode> getRoot( void ) const;
+	PCSNode* getRoot( void ) const;
 
 	// insert
-	void insert( const shared_ptr<PCSNode> inNode, const shared_ptr<PCSNode> parent );
+	void insert( PCSNode* const inNode, PCSNode* const parent );
 
 	// remove
-	void remove( const shared_ptr<PCSNode> inNode );
+	void remove( PCSNode* const inNode );
 
 	// get info
 	void getInfo( PCSTreeInfo &infoContainer );
 	void dumpTree() const;
-	void goDown( const shared_ptr<PCSNode> root );
-	void removeDown( shared_ptr<PCSNode> root );
-	void checkLevels( const shared_ptr<PCSNode> root );
+	void goDown( const PCSNode* root );
+	void removeDown( PCSNode* root );
+	void checkLevels( const PCSNode* root );
 
 private:
 	// copy constructor
@@ -49,5 +45,5 @@ private:
 
 	// Data
 	PCSTreeInfo info;
-	shared_ptr<PCSNode> root;
+	PCSNode* root;
 };

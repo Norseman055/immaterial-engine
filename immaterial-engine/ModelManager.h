@@ -1,6 +1,7 @@
 #pragma once
 
-#include "ModelNode.h"
+#include "Manager.h"
+#include "Model.h"
 
 struct MyVertex_stride {
 	float x;
@@ -19,22 +20,12 @@ struct MyTriList {
 	unsigned short v3;
 };
 
-class ModelMan {
+class ModelMan : public Manager<Model> {
 public:
 	// loads model from a formatted file
 	static void LoadModel( const char* const );
 	static void LoadBufferedModel( unsigned char* const );
-	static void DeleteModels();
 
 	// find a specified model based on known model name (ex. "pyramid", "cube", etc.)
 	static Model* Find( char* const );
-
-private:
-	// singleton
-	static ModelMan *privGetInstance();
-	ModelMan();
-	void privAddToFront( ModelNodeLink* const, ModelNodeLink*& ) const;
-
-private:
-	ModelNodeLink *active;
 };

@@ -1,5 +1,4 @@
-#ifndef PCSTREE_H
-#define PCSTREE_H
+#pragma once
 
 // Simple data structure
 struct PCSTreeInfo {
@@ -19,23 +18,23 @@ public:
 	PCSTree();
 
 	// destructor
-	~PCSTree();
+	virtual ~PCSTree();
 
 	// get Root
-	PCSNode *getRoot( void ) const;
+	PCSNode* getRoot( void ) const;
 
 	// insert
-	void insert( PCSNode * const inNode, PCSNode * const parent );
+	void insert( PCSNode* const inNode, PCSNode* const parent );
 
 	// remove
-	void remove( PCSNode * const inNode );
+	void remove( PCSNode* const inNode );
 
 	// get info
 	void getInfo( PCSTreeInfo &infoContainer );
 	void dumpTree() const;
-	void goDown( const PCSNode * const root );
-	void removeDown( PCSNode * const root );
-	void checkLevels( const PCSNode * const root );
+	void goDown( const PCSNode* root );
+	void removeDown( PCSNode* root );
+	void checkLevels( const PCSNode* root );
 
 private:
 	// copy constructor
@@ -46,7 +45,5 @@ private:
 
 	// Data
 	PCSTreeInfo info;
-	PCSNode     *root;
+	PCSNode* root;
 };
-
-#endif

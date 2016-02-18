@@ -4,32 +4,33 @@
 #include "PCSNode.h"
 
 // constructor
-PCSTree::PCSTree() {
+PCSTree::PCSTree()
+	:root( nullptr ) {
 	info.maxLevelCount = 0;
 	info.maxNodeCount = 0;
 	info.numLevels = 0;
 	info.numNodes = 0;
-	root = nullptr;
 };
 
 // destructor
-PCSTree::~PCSTree() { };
+PCSTree::~PCSTree() {
+};
 
 // get Root
-weak_ptr<PCSNode> PCSTree::getRoot( void ) const {
-	return root;
+PCSNode* PCSTree::getRoot( void ) const {
+	return this->root;
 }
 
 // insert
-void PCSTree::insert( shared_ptr<PCSNode> const inNode, shared_ptr<PCSNode> const parent ) {
+void PCSTree::insert( PCSNode* inNode, PCSNode* const parent ) {
 	if ( this->root )				// if tree has a root already
 	{
 		inNode->setParent( parent );		// set node's parent to specified parent.
 		inNode->setLevel( parent->getLevel() + 1 );
 
-		if ( !parent->getChild().expired() )			// if parent node has children, add it as first sibling on list.
+		if ( parent->getChild() )			// if parent node has children, add it as first sibling on list.
 		{	// store first sibling as tmp, add node as parent's child, adjust sibling list
-			auto child = parent->getChild().lock();
+			auto child = parent->getChild();
 			parent->setChild( inNode );
 			inNode->setSibling( child );
 		} else							// if that parent node has no children, make it a child.
@@ -52,30 +53,30 @@ void PCSTree::insert( shared_ptr<PCSNode> const inNode, shared_ptr<PCSNode> cons
 
 // Remove
 // super easy process. just remove its link from the parent and make sure siblings to left link to the right
-void PCSTree::remove( shared_ptr<PCSNode> const inNode ) {
+void PCSTree::remove( PCSNode* const inNode ) {
 	// make sure inNode is NOT the root. if it is the root, just zero out all its stats.
 	if ( inNode != root ) {
-		auto parent = inNode->getParent().lock();
-		auto parentChild = parent->getChild().lock();
+		auto parent = inNode->getParent();
+		auto parentChild = parent->getChild();
 
 		// check to see if inNode is NOT the only child.
-		if ( !inNode->getSibling().expired() || parentChild != inNode ) {
+		if ( inNode->getSibling() || parentChild != inNode ) {
 			if ( parentChild == inNode ) {
-				if ( !inNode->getSibling().expired() ) {
+				if ( inNode->getSibling() ) {
 					// first child
-					parent->setChild( inNode->getSibling().lock() );
+					parent->setChild( inNode->getSibling() );
 				} else {
 					// only child
 					parent->setChild( nullptr );
 				}
 			} else {
 				auto tmp = parentChild;					// create temp node to find previous child
-				while ( tmp->getSibling().lock() != inNode )
-					tmp = tmp->getSibling().lock();		// move temp node to position right before child
+				while ( tmp->getSibling() != inNode )
+					tmp = tmp->getSibling();		// move temp node to position right before child
 
-				if ( !inNode->getSibling().expired() )
+				if ( inNode->getSibling() )
 					// middle
-					tmp->setSibling( inNode->getSibling().lock() );	// link inNode's previous sibling to its next sibling.
+					tmp->setSibling( inNode->getSibling() );	// link inNode's previous sibling to its next sibling.
 				else
 					// youngest
 					tmp->setSibling( nullptr );		// set final sibling to null
@@ -89,8 +90,8 @@ void PCSTree::remove( shared_ptr<PCSNode> const inNode ) {
 		root = nullptr;
 
 	// set everything derived from inNode (children and their siblings, etc) to 0
-	if ( !inNode->getChild().expired() )
-		removeDown( inNode->getChild().lock() );
+	if ( inNode->getChild() )
+		removeDown( inNode->getChild() );
 
 	// clean up inNode links to 0
 	inNode->setChild( nullptr );
@@ -124,31 +125,31 @@ void PCSTree::dumpTree() const {
 }
 
 // this function is called just once to check the levels with getInfo().
-void PCSTree::goDown( const shared_ptr<PCSNode> _root ) {
-	if ( !_root->getChild().expired() )		// if root has a child, go down again.
+void PCSTree::goDown( const PCSNode* _root ) {
+	if ( _root->getChild() )		// if root has a child, go down again.
 	{
-		goDown( _root->getChild().lock() );
+		goDown( _root->getChild() );
 	}
 
 	checkLevels( _root );					// check levels for that tree
 
-	if ( !_root->getSibling().expired() )		// now traverse siblings.
+	if ( _root->getSibling() )		// now traverse siblings.
 	{
-		goDown( _root->getSibling().lock() );
+		goDown( _root->getSibling() );
 	}
 }
 
 // this deletes all children below a specified original root. basically the same as goDown, but calls remove function.
 // at its final iteration, it is always at the final sibling, so it zeros everything out.
-void PCSTree::removeDown( shared_ptr<PCSNode> const _root ) {
-	if ( !_root->getChild().expired() )		// if root has a child, go down again.
+void PCSTree::removeDown( PCSNode* const _root ) {
+	if ( _root->getChild() )		// if root has a child, go down again.
 	{
-		removeDown( _root->getChild().lock() );
+		removeDown( _root->getChild() );
 	}
 
-	if ( !_root->getSibling().expired() )		// now traverse siblings.
+	if ( _root->getSibling() )		// now traverse siblings.
 	{
-		removeDown( _root->getSibling().lock() );
+		removeDown( _root->getSibling() );
 	}
 
 	// zero out current node
@@ -161,7 +162,7 @@ void PCSTree::removeDown( shared_ptr<PCSNode> const _root ) {
 }
 
 // this is a function that just checks the number of levels away from the root any given node is.
-void PCSTree::checkLevels( const shared_ptr<PCSNode> inNode ) {
+void PCSTree::checkLevels( const PCSNode* inNode ) {
 	if ( inNode->getLevel() > info.maxLevelCount )		// if current level is greater than max, increase max
 		info.maxLevelCount = inNode->getLevel();
 

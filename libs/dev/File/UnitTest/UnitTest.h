@@ -214,7 +214,7 @@ private:
    { \
       /*lint -e( 506, 774 ) : Allow constant conditions. */ \
       if( !( condition ) ) \
-	        { \
+	  	        { \
          result.addFailure( \
             Failure( \
                this->getName(), \
@@ -225,7 +225,7 @@ private:
          ); \
          \
          return; \
-	        } \
+	  	        } \
    }
 
 /**
@@ -263,7 +263,7 @@ private:
    { \
       /*lint -e( 506, 774 ) : Allow constant conditions. */ \
       if( !( (expectedValue) == (actualValue) ) ) \
-	        { \
+	  	        { \
          result.addFailure( \
             Failure( \
                this->getName(), \
@@ -275,7 +275,7 @@ private:
          ); \
          \
          return; \
-	        } \
+	  	        } \
    }
 
 /**
@@ -315,7 +315,7 @@ private:
       const double dThreshold = (double)threshold; \
       \
       if( dThreshold < fabs( dExpected - dActual ) ) \
-	        { \
+	  	        { \
          result.addFailure( \
             Failure( \
                this->getName(), \
@@ -327,7 +327,7 @@ private:
          ); \
          \
          return; \
-	        } \
+	  	        } \
       \
       /*lint +e1924 */ \
    }

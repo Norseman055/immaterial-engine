@@ -5,12 +5,11 @@
 // WARNING CONFIGURATION:
 //---------------------------------------------------------------------------
 
-	// Allow conditional expressions that are constant.
-	#pragma warning( disable : 4127 )
+// Allow conditional expressions that are constant.
+#pragma warning( disable : 4127 )
 
-	// Allow unreferenced inlined functions.
-	#pragma warning( disable : 4514 )
-
+// Allow unreferenced inlined functions.
+#pragma warning( disable : 4514 )
 
 //---------------------------------------------------------------------------
 // HEADER FILES:
@@ -18,39 +17,37 @@
 
 #include <stddef.h>
 
-class SimpleString
-{
-	public:
-		// Creates an empty SimpleString. 
-		SimpleString();
-	
-		// Creates a string with the specified text. 
-		explicit SimpleString( const char* const text );
-	
-		// Creates a copy of the specified string. 
-		SimpleString( const SimpleString& );
-	
-		// Assigns the right-hand string to this SimpleString.
-		SimpleString& operator=( const SimpleString& rhs );
+class SimpleString {
+public:
+	// Creates an empty SimpleString.
+	SimpleString();
 
-		// destructor
-		~SimpleString();
+	// Creates a string with the specified text.
+	explicit SimpleString( const char* const text );
 
-		//@ returns a raw version of this SimpleString.
-		const char* asCharString() const;
-	
-		// return the length of this SimpleString.
-		size_t length() const;
-	
-		// return true if this SimpleString is equal to the right-hand side. 
-		bool operator==( const SimpleString& rhs ) const;
-		
-	
-		// return true if this SimpleString is NOT equal to the right-hand side. 
-		bool operator!=( const SimpleString& rhs ) const;
+	// Creates a copy of the specified string.
+	SimpleString( const SimpleString& );
 
-	private:
-		char* _pBuffer;
+	// Assigns the right-hand string to this SimpleString.
+	SimpleString& operator=(const SimpleString& rhs);
+
+	// destructor
+	~SimpleString();
+
+	//@ returns a raw version of this SimpleString.
+	const char* asCharString() const;
+
+	// return the length of this SimpleString.
+	size_t length() const;
+
+	// return true if this SimpleString is equal to the right-hand side.
+	bool operator==(const SimpleString& rhs) const;
+
+	// return true if this SimpleString is NOT equal to the right-hand side.
+	bool operator!=(const SimpleString& rhs) const;
+
+private:
+	char* _pBuffer;
 };
 
 //---------------------------------------------------------------------------
@@ -88,8 +85,7 @@ const SimpleString StringFrom( const SimpleString& );
 //---------------------------------------------------------------------------
 // CLASS DECLARATION:
 //---------------------------------------------------------------------------
-struct Failure
-{
+struct Failure {
 	SimpleString message;
 	SimpleString testName;
 	SimpleString fileName;
@@ -99,19 +95,19 @@ struct Failure
 	Failure* pNextFailure;
 
 	Failure(
-		const SimpleString& testName, 
-		const SimpleString& fileName, 
+		const SimpleString& testName,
+		const SimpleString& fileName,
 		const long          lineNumber,
 		const SimpleString& condition
-	);
+		);
 
 	Failure(
-		const SimpleString& testName, 
-		const SimpleString& fileName, 
+		const SimpleString& testName,
+		const SimpleString& fileName,
 		long                lineNumber,
 		const SimpleString& expected,
 		const SimpleString& actual
-	);
+		);
 
 	Failure( const Failure& );
 };
@@ -119,28 +115,25 @@ struct Failure
 //---------------------------------------------------------------------------
 // CLASS DECLARATION:
 //---------------------------------------------------------------------------
-class TestResult
-{
-	public:
-		TestResult(); 
-		~TestResult();
-		void addTest();
-		void addFailure( const Failure& failure );
-		void report() const;
-		int getFailureCount() const;
-	
-	private:
-		void reportGoodResult() const;
-		void reportFailures() const;
-		int _testCount;
-		int _failureCount;
-		Failure* _pFirstFailure;
-		Failure* _pLastFailure;
+class TestResult {
+public:
+	TestResult();
+	~TestResult();
+	void addTest();
+	void addFailure( const Failure& failure );
+	void report() const;
+	int getFailureCount() const;
+
+private:
+	void reportGoodResult() const;
+	void reportFailures() const;
+	int _testCount;
+	int _failureCount;
+	Failure* _pFirstFailure;
+	Failure* _pLastFailure;
 };
 
-
-	#include <math.h>   // for fabs()
-
+#include <math.h>   // for fabs()
 
 //---------------------------------------------------------------------------
 // TEST DECLARATION:
@@ -152,10 +145,10 @@ class TestResult
  * Defines a test that is ready for implementation.
  *
  *
- * @param testName  
+ * @param testName
  *        The name of this test.
  *
- * @param groupName 
+ * @param groupName
  *        The name of the <i>group</i> that distinguishes
  *        this test from other tests with the same testName.
  *
@@ -190,9 +183,7 @@ class TestResult
         void run(TestResult& result_); \
   } groupName##testName##_instance; \
   \
-  void groupName##testName##_Test::run( TestResult& result ) 
-
-
+  void groupName##testName##_Test::run( TestResult& result )
 
 //---------------------------------------------------------------------------
 // TEST FUNCTIONS:
@@ -204,7 +195,7 @@ class TestResult
  * Used in a #TEST to report failure when a condition evaluates to false.
  *
  *
- * @param condition 
+ * @param condition
  *        The condition that will generate a failure if it evaluates to false.
  *
  *
@@ -223,7 +214,7 @@ class TestResult
    { \
       /*lint -e( 506, 774 ) : Allow constant conditions. */ \
       if( !( condition ) ) \
-      { \
+	        { \
          result.addFailure( \
             Failure( \
                this->getName(), \
@@ -234,9 +225,8 @@ class TestResult
          ); \
          \
          return; \
-      } \
+	        } \
    }
-
 
 /**
  * @hideinitializer
@@ -273,7 +263,7 @@ class TestResult
    { \
       /*lint -e( 506, 774 ) : Allow constant conditions. */ \
       if( !( (expectedValue) == (actualValue) ) ) \
-      { \
+	        { \
          result.addFailure( \
             Failure( \
                this->getName(), \
@@ -285,21 +275,20 @@ class TestResult
          ); \
          \
          return; \
-      } \
+	        } \
    }
-
 
 /**
  * @hideinitializer
  *
- * Used in a #TEST to report failure if a value does not fall within 
+ * Used in a #TEST to report failure if a value does not fall within
  * the specified threshold of an expected value.
  *
  *
- * @param expectedValue 
+ * @param expectedValue
  *        A target floating point value you're expecting in your test.
  *
- * @param actualValue   
+ * @param actualValue
  *        The <i>actual</i> value your test ends up generating.
  *
  * @param threshold
@@ -326,7 +315,7 @@ class TestResult
       const double dThreshold = (double)threshold; \
       \
       if( dThreshold < fabs( dExpected - dActual ) ) \
-      { \
+	        { \
          result.addFailure( \
             Failure( \
                this->getName(), \
@@ -338,11 +327,10 @@ class TestResult
          ); \
          \
          return; \
-      } \
+	        } \
       \
       /*lint +e1924 */ \
    }
-
 
 /**
  * @hideinitializer
@@ -384,39 +372,34 @@ class TestResult
    \
    return
 
-
-
 //---------------------------------------------------------------------------
 // INTERNAL INTERFACE:
 //---------------------------------------------------------------------------
-class Test
-{
-	public:
-		explicit Test( const SimpleString& testName );
-		virtual ~Test();
-	
-	public:
-		virtual void run( TestResult& ) = 0;
-	
-	public:
-		void setNextTest( Test* const );
-		Test* getNextTest();
-	
-	protected:
-		const SimpleString& getName() const;
-	
-	private:
-		SimpleString _name;
-		Test* _pNextTest;
+class Test {
+public:
+	explicit Test( const SimpleString& testName );
+	virtual ~Test();
+
+public:
+	virtual void run( TestResult& ) = 0;
+
+public:
+	void setNextTest( Test* const );
+	Test* getNextTest();
+
+protected:
+	const SimpleString& getName() const;
+
+private:
+	SimpleString _name;
+	Test* _pNextTest;
 };
-
-
 
 //---------------------------------------------------------------------------
 // METHOD DECLARATIONS:
 //---------------------------------------------------------------------------
 
-// Inititializes the platform environment 
+// Inititializes the platform environment
 void UnitTest_platform_init( void );
 
 // Returns the number of failures that were encountered.
@@ -425,8 +408,7 @@ int UnitTest_platform_runTests();
 // Tears down the platform environment used
 void UnitTest_platform_exit( void );
 
-// Displays the specified text. 
+// Displays the specified text.
 void UnitTest_platform_report( const char* const pText );
 
-
-#endif   
+#endif

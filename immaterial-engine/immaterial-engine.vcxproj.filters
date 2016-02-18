@@ -121,6 +121,12 @@
     <Filter Include="_GLTools\lib">
       <UniqueIdentifier>{66be947d-b3d9-4f86-8ee1-52aa6e393945}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Generics">
+      <UniqueIdentifier>{7596ad05-e4eb-4c5b-adfe-e11a890b2706}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generics\Generic Headers">
+      <UniqueIdentifier>{dd62cbd2-5b4f-4809-84f8-61fd79fd63b0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libs\ReleaseLibs\File\include\File.h">
@@ -321,6 +327,12 @@
     <ClInclude Include="..\libs\ReleaseLibs\Math\include\MathEnum.h">
       <Filter>_Math\include</Filter>
     </ClInclude>
+    <ClInclude Include="Manager.h">
+      <Filter>Generics\Generic Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeLink.h">
+      <Filter>Generics\Generic Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\libs\ReleaseLibs\File\lib\FileDebug.lib">
@@ -438,13 +450,7 @@
     <ClCompile Include="SphereObject.cpp">
       <Filter>Graphics\Objects\Object Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>Models\Model Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ModelManager.cpp">
-      <Filter>Models\Model Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ModelNode.cpp">
       <Filter>Models\Model Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PyramidModel.cpp">

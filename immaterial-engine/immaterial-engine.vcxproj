@@ -135,10 +135,12 @@
     <ClInclude Include="GraphicsManager.h" />
     <ClInclude Include="GraphicsObject.h" />
     <ClInclude Include="GraphicsObjectFileHdr.h" />
+    <ClInclude Include="Manager.h" />
     <ClInclude Include="md5.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelManager.h" />
     <ClInclude Include="ModelNode.h" />
+    <ClInclude Include="NodeLink.h" />
     <ClInclude Include="NullObject.h" />
     <ClInclude Include="OpenGL.h" />
     <ClInclude Include="PackageHeader.h" />
@@ -256,9 +258,7 @@
     <ClCompile Include="GraphicsObject.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="md5.cpp" />
-    <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelManager.cpp" />
-    <ClCompile Include="ModelNode.cpp" />
     <ClCompile Include="NullObject.cpp" />
     <ClCompile Include="PyramidModel.cpp" />
     <ClCompile Include="PyramidObject.cpp" />

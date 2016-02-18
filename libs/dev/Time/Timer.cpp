@@ -9,37 +9,27 @@
 //---------------------------------------------------------------------------
 #include "Timer.h"
 
-
 //---------------------------------------------------------------------------
 // CONSTRUCTORS / DESTRUCTORS / ASSIGNMENT:
 //---------------------------------------------------------------------------
-Timer::Timer(): _ticMark( TIME_MAX )
-{ }
+Timer::Timer() : _ticMark( TIME_MAX ) { }
 
-
-Timer::~Timer()	
-{ }
-
+Timer::~Timer() { }
 
 //---------------------------------------------------------------------------
 // TIMING METHODS:
 //---------------------------------------------------------------------------
-void Timer::tic()
-{
+void Timer::tic() {
 	this->_ticMark = Timer::getSystemTime();
 }
 
-
-const Time Timer::toc() const
-{
+const Time Timer::toc() const {
 	Time elapsedTime;
 
 	// If tick has been called...
-	if ( Time(TIME_MAX) != this->_ticMark )
-	{
+	if ( Time( TIME_MAX ) != this->_ticMark ) {
 		elapsedTime = Timer::getSystemTime() - this->_ticMark;
 	}
 
-	return( elapsedTime );
+	return(elapsedTime);
 }
-

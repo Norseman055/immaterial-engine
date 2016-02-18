@@ -1,33 +1,16 @@
-#include <string.h>
+#include "ModelManager.h"
+#include "ModelNode.h"
 
 #include "DEBUGGING.h"
-#include "MathEngine.h"
+#include "OpenGL.h"
 #include "File.h"
 
-#include "ModelManager.h"
 #include "GraphicsObjectFileHdr.h"
 #include "md5.h"
 
+#include <string.h>
+
 void RitterSphere( Sphere &s, Vect *pt, int numPts );
-
-ModelMan::ModelMan()
-	: active( nullptr ) { }
-
-void ModelMan::DeleteModels() {
-	auto walker = privGetInstance()->active;
-	auto tmp = walker;
-	while ( walker != nullptr ) {
-		walker = walker->next;
-		delete tmp;
-		tmp = walker;
-	}
-};
-
-// singleton
-ModelMan* ModelMan::privGetInstance() {
-	static ModelMan modelMan;
-	return &modelMan;
-}
 
 void ModelMan::LoadModel( const char * const inFileName ) {
 	assert( inFileName );
@@ -167,9 +150,6 @@ void ModelMan::LoadModel( const char * const inFileName ) {
 	// glBufferData(type, size in bytes, data, usage)
 	glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof( MyTriList ) * modelHdr.numTriList, tlist, GL_STATIC_DRAW );
 
-	// Model loaded into GPU, VAO stored in myModel->vao. Generate model name by dropping extension.
-	auto pMMan = privGetInstance();
-
 	auto modName = new char[strlen( inFileName ) - 3];
 	memcpy( modName, inFileName, strlen( inFileName ) - 4 );
 	modName[strlen( inFileName ) - 4] = '\0';
@@ -179,19 +159,19 @@ void ModelMan::LoadModel( const char * const inFileName ) {
 	MD5Buffer( reinterpret_cast< unsigned char * >(modName), strlen( modName ), out );
 	auto hashID = out.dWord_0 ^ out.dWord_1 ^ out.dWord_2 ^ out.dWord_3;
 
-	auto pNode = new ModelNode;
-	pNode->set( modName, hashID, myModel );
-	pMMan->privAddToFront( pNode, pMMan->active );
+	auto pNode = new ModelNode( modName, hashID, myModel );
+	Add( pNode );
 
-	delete[]( modName );
-	delete[]( tlist );
-	delete[]( bound );
-	delete[]( pVerts );
+	delete[] modName;
+	delete myModel;
+	delete[] tlist;
+	delete[] bound;
+	delete[] pVerts;
 }
 
 void ModelMan::LoadBufferedModel( unsigned char * const modelBuff ) {
 	auto modelHdr = reinterpret_cast< gObjFileHdr * >(modelBuff);
-	auto vOffset = reinterpret_cast< MyVertex_stride * >(reinterpret_cast< unsigned int >( modelBuff ) +modelHdr->vertBufferOffset);
+	auto vOffset = reinterpret_cast< MyVertex_stride * >(reinterpret_cast< unsigned int >( modelBuff ) + modelHdr->vertBufferOffset);
 
 	// copy verts
 	auto pVerts = new MyVertex_stride[modelHdr->numVerts];
@@ -208,7 +188,7 @@ void ModelMan::LoadBufferedModel( unsigned char * const modelBuff ) {
 	}
 
 	// copy trilist
-	auto tOffset = reinterpret_cast< MyTriList * >(reinterpret_cast< unsigned int >( modelBuff ) +modelHdr->triListBufferOffset);
+	auto tOffset = reinterpret_cast< MyTriList * >(reinterpret_cast< unsigned int >( modelBuff ) + modelHdr->triListBufferOffset);
 	auto tlist = new MyTriList[modelHdr->numTriList];
 	for ( auto i = 0; i < modelHdr->numTriList; i++ ) {
 		tlist[i] = tOffset[i];
@@ -292,8 +272,6 @@ void ModelMan::LoadBufferedModel( unsigned char * const modelBuff ) {
 	glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof( MyTriList ) * modelHdr->numTriList, tlist, GL_STATIC_DRAW );
 
 	// Model loaded into GPU, VAO stored in myModel->vao. Generate model name by dropping extension.
-	auto pMMan = privGetInstance();
-
 	auto modName = new char[strlen( modelHdr->objName ) - 3];
 	memcpy( modName, modelHdr->objName, strlen( modelHdr->objName ) - 4 );
 	modName[strlen( modelHdr->objName ) - 4] = '\0';
@@ -303,21 +281,21 @@ void ModelMan::LoadBufferedModel( unsigned char * const modelBuff ) {
 	MD5Buffer( reinterpret_cast< unsigned char * >(modName), strlen( modName ), out );
 	auto hashID = out.dWord_0 ^ out.dWord_1 ^ out.dWord_2 ^ out.dWord_3;
 
-	auto pNode = new ModelNode;
-	pNode->set( modName, hashID, myModel );
-	pMMan->privAddToFront( pNode, pMMan->active );
+	auto pNode = new ModelNode( modName, hashID, myModel );
+	Add( pNode );
 
-	delete[]( modName );
-	delete[]( tlist );
-	delete[]( bound );
-	delete[]( pVerts );
+	delete[] modName;
+	delete myModel;
+	delete[] tlist;
+	delete[] bound;
+	delete[] pVerts;
 }
 
 Model* ModelMan::Find( char * const inModelName ) {
 	assert( inModelName );
 
-	auto walker = static_cast< ModelNode * >(privGetInstance()->active);
-	auto tmp = walker->storedModel;
+	auto walker = static_cast< ModelNode * >(GetObjectList()->getRoot());
+	auto tmp = walker->getData();
 
 	// hash inModelName, use the int to find the model
 	MD5Output out;
@@ -328,38 +306,23 @@ Model* ModelMan::Find( char * const inModelName ) {
 	if ( strlen( inModelName ) > 0 ) {
 		// find node
 		while ( walker != nullptr ) {
-			// i REALLY dislike strings, but for now it'll serve the purpose. maybe hash the object name and use that as a compare?
 			if ( hashID == walker->hashName ) {
 				break;
 			}
 
-			walker = static_cast< ModelNode * >(walker->next);
+			walker = static_cast< ModelNode * >(walker->getSibling());
 		}
 	} else {
 		// otherwise, return a dummy model (first one ever loaded)
-		while ( static_cast< ModelNode * >(walker->next) != nullptr ) {
-			walker = static_cast< ModelNode * >(walker->next);
+		while ( static_cast< ModelNode * >(walker->getSibling()) != nullptr ) {
+			walker = static_cast< ModelNode * >(walker->getSibling());
 		}
 	}
 
 	if ( walker != nullptr ) {
-		tmp = walker->storedModel;
+		tmp = walker->getData();
 	}
 
 	// return textureID stored in node, used by GPU
 	return tmp;
-}
-
-void ModelMan::privAddToFront( ModelNodeLink* const node, ModelNodeLink *& head ) const {
-	assert( node != nullptr );
-
-	// empty list
-	if ( head == nullptr ) {
-		head = node;
-	} else {
-		// non-empty list, add to front
-		node->next = head;
-		head->prev = node;
-		head = node;
-	}
 }

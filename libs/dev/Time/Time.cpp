@@ -6,30 +6,24 @@
 #include "Time.h"
 #include <limits>   // For numeric_limits< Time::Representation >.
 
-
 //---------------------------------------------------------------------------
 // FRIENDS:
 //---------------------------------------------------------------------------
-const Time operator*( const float ratio, const Time& rhs )
-{
+const Time operator*(const float ratio, const Time& rhs) {
 	return(
-		Time( static_cast< Time::Representation >( ratio * rhs._rawTime ) )
-  	);
+		Time( static_cast< Time::Representation >(ratio * rhs._rawTime) )
+		);
 }
 
-const Time operator*( const int ratio, const Time& rhs )
-{
-	return( Time( ratio * rhs._rawTime ) );
+const Time operator*(const int ratio, const Time& rhs) {
+	return(Time( ratio * rhs._rawTime ));
 }
-
-
 
 //---------------------------------------------------------------------------
 // CONSTRUCTORS:
 //---------------------------------------------------------------------------
 
-Time::Time( const Duration duration ): _rawTime( 0 )
-{
+Time::Time( const Duration duration ) : _rawTime( 0 ) {
 	// IMPORTANT: This is private information that is SUBJECT TO CHANGE!
 	//
 	// Currently: 1 second = 30000
@@ -40,8 +34,7 @@ Time::Time( const Duration duration ): _rawTime( 0 )
 	// At 32 bits, this gives us a range of roughly -20 to 20 hours.
 	const Time::Representation ONE_RAW_SECOND = 30000;
 
-	switch ( duration )
-	{
+	switch ( duration ) {
 		case TIME_ZERO:
 			this->_rawTime = 0;
 			break;
@@ -90,191 +83,138 @@ Time::Time( const Duration duration ): _rawTime( 0 )
 	}
 }
 
-
-
 //---------------------------------------------------------------------------
 // COMPARISONS:
 //---------------------------------------------------------------------------
-bool Time::operator==( const Time& rhs ) const
-{
-	return( this->_rawTime == rhs._rawTime );
+bool Time::operator==(const Time& rhs) const {
+	return(this->_rawTime == rhs._rawTime);
 }
 
-
-bool Time::operator!=( const Time& rhs ) const
-{
-	return( this->_rawTime != rhs._rawTime );
+bool Time::operator!=(const Time& rhs) const {
+	return(this->_rawTime != rhs._rawTime);
 }
 
-
-bool Time::operator<( const Time& rhs ) const
-{
-	return( this->_rawTime < rhs._rawTime );
+bool Time::operator<(const Time& rhs) const {
+	return(this->_rawTime < rhs._rawTime);
 }
 
-
-bool Time::operator<=( const Time& rhs ) const
-{
-	return( this->_rawTime <= rhs._rawTime );
+bool Time::operator<=(const Time& rhs) const {
+	return(this->_rawTime <= rhs._rawTime);
 }
 
-
-bool Time::operator>( const Time& rhs ) const
-{
-	return( this->_rawTime > rhs._rawTime );
+bool Time::operator>( const Time& rhs ) const {
+	return(this->_rawTime > rhs._rawTime);
 }
 
-
-bool Time::operator>=( const Time& rhs ) const
-{
-	return( this->_rawTime >= rhs._rawTime );
+bool Time::operator>=(const Time& rhs) const {
+	return(this->_rawTime >= rhs._rawTime);
 }
-
-
 
 //---------------------------------------------------------------------------
 // NEGATION / ADDITION / SUBTRACTION:
 //---------------------------------------------------------------------------
-const Time Time::operator-() const
-{
-	return( Time( -this->_rawTime ) );
+const Time Time::operator-() const {
+	return(Time( -this->_rawTime ));
 }
 
-
-const Time Time::operator+( const Time& rhs ) const
-{
+const Time Time::operator+(const Time& rhs) const {
 	// !!! FIXME: Overflow checks
-	return( Time( this->_rawTime + rhs._rawTime ) );
+	return(Time( this->_rawTime + rhs._rawTime ));
 }
 
-
-const Time Time::operator-( const Time& rhs ) const
-{
+const Time Time::operator-(const Time& rhs) const {
 	// !!! FIXME: Overflow checks
-	return( Time( this->_rawTime - rhs._rawTime ) );
+	return(Time( this->_rawTime - rhs._rawTime ));
 }
 
-
-Time& Time::operator+=( const Time& rhs )
-{
+Time& Time::operator+=(const Time& rhs) {
 	// !!! FIXME: Overflow checks
 	this->_rawTime += rhs._rawTime;
-	return( *this );
+	return(*this);
 }
 
-
-Time& Time::operator-=( const Time& rhs )
-{
+Time& Time::operator-=(const Time& rhs) {
 	// !!! FIXME: Overflow checks
 	this->_rawTime -= rhs._rawTime;
-	return( *this );
+	return(*this);
 }
-
-
 
 //---------------------------------------------------------------------------
 // MULTIPLICATION:
 //---------------------------------------------------------------------------
-const Time Time::operator*( const float ratio ) const
-{
+const Time Time::operator*(const float ratio) const {
 	// !!! FIXME: Overflow checks
 	return(
-		Time( static_cast< Representation >( ratio * this->_rawTime ) )
+		Time( static_cast< Representation >(ratio * this->_rawTime) )
 		);
 }
 
-
-const Time Time::operator*( const int ratio ) const
-{
+const Time Time::operator*(const int ratio) const {
 	// !!! FIXME: Overflow checks
-	return( Time( this->_rawTime * ratio ) );
+	return(Time( this->_rawTime * ratio ));
 }
 
-
-Time& Time::operator*=( const float ratio )
-{
+Time& Time::operator*=(const float ratio) {
 	// !!! FIXME: Overflow checks
-	this->_rawTime = static_cast< Representation>( ratio * this->_rawTime );
-	return( *this );
+	this->_rawTime = static_cast< Representation >(ratio * this->_rawTime);
+	return(*this);
 }
 
-
-Time& Time::operator*=( const int ratio )
-{
+Time& Time::operator*=(const int ratio) {
 	// !!! FIXME: Overflow checks
 	this->_rawTime *= ratio;
-	return( *this );
+	return(*this);
 }
-
-
 
 //---------------------------------------------------------------------------
 // DIVISION:
 //---------------------------------------------------------------------------
-float Time::operator/( const Time& denominator ) const
-{
+float Time::operator/(const Time& denominator) const {
 	// !!! FIXME: Divide by zero.
 	return(
-		static_cast< float >( this->_rawTime ) / denominator._rawTime
+		static_cast< float >(this->_rawTime) / denominator._rawTime
 		);
 }
 
-
-const Time Time::operator/( const float denominator ) const
-{
+const Time Time::operator/(const float denominator) const {
 	// !!! FIXME: Divide by zero.
 	return(
-		Time( static_cast< Representation >( this->_rawTime / denominator ) )
+		Time( static_cast< Representation >(this->_rawTime / denominator) )
 		);
 }
 
-
-const Time Time::operator/( const int denominator ) const
-{
+const Time Time::operator/(const int denominator) const {
 	// !!! FIXME: Divide by zero.
-	return( Time( this->_rawTime / denominator ) );
+	return(Time( this->_rawTime / denominator ));
 }
 
-
-Time& Time::operator/=( const float denominator )
-{
+Time& Time::operator/=(const float denominator) {
 	// !!! FIXME: Divide by zero.
-	this->_rawTime = 
-		static_cast< Representation>( this->_rawTime / denominator );
-	return( *this );
+	this->_rawTime =
+		static_cast< Representation >(this->_rawTime / denominator);
+	return(*this);
 }
 
-
-Time& Time::operator/=( const int denominator )
-{
+Time& Time::operator/=(const int denominator) {
 	// !!! FIXME: Divide by zero.
 	this->_rawTime /= denominator;
-	return( *this );
+	return(*this);
 }
-
-
 
 //---------------------------------------------------------------------------
 // DIVISION:
 //---------------------------------------------------------------------------
-int 	Time::quotient( const Time& numerator, const Time& denominator )
-{
+int 	Time::quotient( const Time& numerator, const Time& denominator ) {
 	// !!! FIXME: Divide by zero & check range
-	return(static_cast< int > (numerator._rawTime / denominator._rawTime ));
+	return(static_cast< int > (numerator._rawTime / denominator._rawTime));
 }
 
-
-const Time 	Time::remainder( const Time& numerator, const Time& denominator )
-{
+const Time 	Time::remainder( const Time& numerator, const Time& denominator ) {
 	// !!! FIXME: Divide by zero.
-	return( Time( numerator._rawTime % denominator._rawTime ) );
+	return(Time( numerator._rawTime % denominator._rawTime ));
 }
-
 
 //---------------------------------------------------------------------------
 // PRIVATE IMPLEMENTATION:
 //---------------------------------------------------------------------------
-Time::Time( const Time::Representation rawTime ): _rawTime( rawTime )
-{
-}
-
+Time::Time( const Time::Representation rawTime ) : _rawTime( rawTime ) { }

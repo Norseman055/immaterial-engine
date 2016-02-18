@@ -25,51 +25,51 @@ void ArchiveMan::LoadArchive( const char * fileName ) {
 
 		switch ( cHead.type ) {
 			case VERTS_TYPE:	{
-				auto buffer = new unsigned char[cHead.chunkSize];
+					auto buffer = new unsigned char[cHead.chunkSize];
 
-				ferror = File::read( fh, buffer, cHead.chunkSize );
-				assert( ferror == FILE_SUCCESS );
+					ferror = File::read( fh, buffer, cHead.chunkSize );
+					assert( ferror == FILE_SUCCESS );
 
-				ModelMan::LoadBufferedModel( buffer );
+					ModelMan::LoadBufferedModel( buffer );
 
-				delete[] buffer;
-				break;
-			}
+					delete[] buffer;
+					break;
+				}
 			case TEXTURE_TYPE:	{
-				tffInfo info;
-				ferror = File::read( fh, &info, sizeof( tffInfo ) );
-				assert( ferror == FILE_SUCCESS );
+					tffInfo info;
+					ferror = File::read( fh, &info, sizeof( tffInfo ) );
+					assert( ferror == FILE_SUCCESS );
 
-				auto texBuffer = new unsigned char[cHead.chunkSize - sizeof( tffInfo )];
+					auto texBuffer = new unsigned char[cHead.chunkSize - sizeof( tffInfo )];
 
-				ferror = File::read( fh, texBuffer, cHead.chunkSize - sizeof( tffInfo ) );
-				assert( ferror == FILE_SUCCESS );
+					ferror = File::read( fh, texBuffer, cHead.chunkSize - sizeof( tffInfo ) );
+					assert( ferror == FILE_SUCCESS );
 
-				TextureMan::LoadBufferedTexture( texBuffer, info );
+					TextureMan::LoadBufferedTexture( texBuffer, info );
 
-				delete[] texBuffer;
-				break;
-			}
+					delete[] texBuffer;
+					break;
+				}
 			case ANIM_TYPE:	{
-				AnimFileHdr aHdr;
-				ferror = File::read( fh, &aHdr, sizeof( AnimFileHdr ) );
-				assert( ferror == FILE_SUCCESS );
+					AnimFileHdr aHdr;
+					ferror = File::read( fh, &aHdr, sizeof( AnimFileHdr ) );
+					assert( ferror == FILE_SUCCESS );
 
-				auto animBuff = new unsigned char[cHead.chunkSize - sizeof( AnimFileHdr )];
+					auto animBuff = new unsigned char[cHead.chunkSize - sizeof( AnimFileHdr )];
 
-				ferror = File::read( fh, animBuff, cHead.chunkSize - sizeof( AnimFileHdr ) );
-				assert( ferror == FILE_SUCCESS );
+					ferror = File::read( fh, animBuff, cHead.chunkSize - sizeof( AnimFileHdr ) );
+					assert( ferror == FILE_SUCCESS );
 
-				AnimationMan::LoadAnimationBuffer( animBuff, aHdr );
+					AnimationMan::LoadAnimationBuffer( animBuff, aHdr );
 
-				delete[] animBuff;
-				break;
-			}
+					delete[] animBuff;
+					break;
+				}
 			default:	{
-				ferror = File::seek( fh, FILE_SEEK_CURRENT, cHead.chunkSize );
-				assert( ferror == FILE_SUCCESS );
-				break;
-			}
+					ferror = File::seek( fh, FILE_SEEK_CURRENT, cHead.chunkSize );
+					assert( ferror == FILE_SUCCESS );
+					break;
+				}
 		}
 	}
 

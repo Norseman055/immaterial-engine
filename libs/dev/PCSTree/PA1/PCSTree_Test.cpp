@@ -6,9846 +6,9652 @@
 #include "PCSTree.h"
 #include "PCSNode.h"
 
-
 //---------------------------------------------------------------------------
 // Test Files:
 // Single step throught, set break points, but do not modify it
 //---------------------------------------------------------------------------
 
-
-TEST( constructor, PCSTree_group)
-{
-   PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
-
-   tree.getInfo( info );
-   root = tree.getRoot();
-
-   CHECK( root == 0);
-   CHECK( info.maxNodeCount == 0);
-   CHECK( info.numLevels == 0);
-   CHECK( info.numNodes == 0 );
-
-}
-
-
-
-TEST( addNodeRoot, PCSTree_group)
-{
-   PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
-   PCSNode nodeRoot("Root");
-
-   CHECK( nodeRoot.getChild() == 0 );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-
-   root = tree.getRoot();
-   tree.insert( &nodeRoot, root );
-
-   CHECK( nodeRoot.getChild() == 0 );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-
-   root = tree.getRoot();
-   CHECK( root == &nodeRoot );
-
-   tree.getInfo( info );
-
-   CHECK( info.maxNodeCount == 1 );
-   CHECK( info.maxLevelCount == 1 );
-   CHECK( info.numLevels == 1 );
-   CHECK( info.numNodes == 1 );
-
-}
-
-
-TEST( addNodeRootA, PCSTree_group)
-{
+TEST( constructor, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   CHECK( nodeRoot.getChild() == 0 );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
+	tree.getInfo( info );
+	root = tree.getRoot();
 
-   root = tree.getRoot();
-   tree.insert( &nodeRoot, root );
-
-   CHECK( nodeRoot.getChild() == 0 );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-
-   root = tree.getRoot();
-   CHECK( root == &nodeRoot );
-
-   tree.getInfo( info );
-
-   CHECK( info.maxNodeCount == 1 );
-   CHECK( info.maxLevelCount == 1 );
-   CHECK( info.numLevels == 1 );
-   CHECK( info.numNodes == 1 );
-
-   tree.insert( &nodeA, &nodeRoot );
-
-   tree.getInfo( info );
-
-   CHECK( info.maxNodeCount == 2 );
-   CHECK( info.maxLevelCount == 2 );
-   CHECK( info.numLevels == 2 );
-   CHECK( info.numNodes == 2 );
-
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-
-   CHECK( nodeA.getChild() == 0 );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == 0 );
-
-
+	CHECK( root == 0 );
+	CHECK( info.maxNodeCount == 0 );
+	CHECK( info.numLevels == 0 );
+	CHECK( info.numNodes == 0 );
 }
 
-
-TEST( addNodeRootAD, PCSTree_group)
-{
+TEST( addNodeRoot, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeD("Node_D");
+	PCSTreeInfo info;
+	PCSNode  *root;
+	PCSNode nodeRoot( "Root" );
 
-   CHECK( nodeRoot.getChild() == 0 );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
+	CHECK( nodeRoot.getChild() == 0 );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   root = tree.getRoot();
-   tree.insert( &nodeRoot, root );
+	root = tree.getRoot();
+	tree.insert( &nodeRoot, root );
 
-   CHECK( nodeRoot.getChild() == 0 );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
+	CHECK( nodeRoot.getChild() == 0 );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   root = tree.getRoot();
-   CHECK( root == &nodeRoot );
+	root = tree.getRoot();
+	CHECK( root == &nodeRoot );
 
-   tree.getInfo( info );
+	tree.getInfo( info );
 
-   CHECK( info.maxNodeCount == 1 );
-   CHECK( info.maxLevelCount == 1 );
-   CHECK( info.numLevels == 1 );
-   CHECK( info.numNodes == 1 );
-
-   tree.insert( &nodeA, &nodeRoot );
-
-   tree.getInfo( info );
-
-   CHECK( info.maxNodeCount == 2 );
-   CHECK( info.maxLevelCount == 2 );
-   CHECK( info.numLevels == 2 );
-   CHECK( info.numNodes == 2 );
-
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-
-   CHECK( nodeA.getChild() == 0 );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == 0 );
-
-   tree.insert( &nodeD, &nodeA );
-
-   tree.getInfo( info );
-
-   CHECK( info.maxNodeCount == 3 );
-   CHECK( info.maxLevelCount == 3 );
-   CHECK( info.numLevels == 3 );
-   CHECK( info.numNodes == 3 );
-
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == 0 );
-
-   CHECK( nodeD.getChild() == 0 );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == 0 );
-
+	CHECK( info.maxNodeCount == 1 );
+	CHECK( info.maxLevelCount == 1 );
+	CHECK( info.numLevels == 1 );
+	CHECK( info.numNodes == 1 );
 }
 
-
-TEST( addNodeRootADF, PCSTree_group)
-{
+TEST( addNodeRootA, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeF("Node_F");
+	PCSTreeInfo info;
+	PCSNode  *root;
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
 
-   CHECK( nodeRoot.getChild() == 0 );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
+	CHECK( nodeRoot.getChild() == 0 );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   root = tree.getRoot();
-   tree.insert( &nodeRoot, root );
+	root = tree.getRoot();
+	tree.insert( &nodeRoot, root );
 
-   CHECK( nodeRoot.getChild() == 0 );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
+	CHECK( nodeRoot.getChild() == 0 );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   root = tree.getRoot();
-   CHECK( root == &nodeRoot );
+	root = tree.getRoot();
+	CHECK( root == &nodeRoot );
 
-   tree.getInfo( info );
+	tree.getInfo( info );
 
-   CHECK( info.maxNodeCount == 1 );
-   CHECK( info.maxLevelCount == 1 );
-   CHECK( info.numLevels == 1 );
-   CHECK( info.numNodes == 1 );
+	CHECK( info.maxNodeCount == 1 );
+	CHECK( info.maxLevelCount == 1 );
+	CHECK( info.numLevels == 1 );
+	CHECK( info.numNodes == 1 );
 
-   tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
 
-   tree.getInfo( info );
+	tree.getInfo( info );
 
-   CHECK( info.maxNodeCount == 2 );
-   CHECK( info.maxLevelCount == 2 );
-   CHECK( info.numLevels == 2 );
-   CHECK( info.numNodes == 2 );
+	CHECK( info.maxNodeCount == 2 );
+	CHECK( info.maxLevelCount == 2 );
+	CHECK( info.numLevels == 2 );
+	CHECK( info.numNodes == 2 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeA.getChild() == 0 );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == 0 );
-
-   tree.insert( &nodeD, &nodeA );
-
-   tree.getInfo( info );
-
-   CHECK( info.maxNodeCount == 3 );
-   CHECK( info.maxLevelCount == 3 );
-   CHECK( info.numLevels == 3 );
-   CHECK( info.numNodes == 3 );
-
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == 0 );
-
-   CHECK( nodeD.getChild() == 0 );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == 0 );
-
-   tree.insert( &nodeF, &nodeD );
-   tree.getInfo( info );
-
-   CHECK( info.maxNodeCount == 4 );
-   CHECK( info.maxLevelCount == 4 );
-   CHECK( info.numLevels == 4 );
-   CHECK( info.numNodes == 4 );
-
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == 0 );
-
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == 0 );
-
-   CHECK( nodeF.getChild() == 0 );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0 );
-
+	CHECK( nodeA.getChild() == 0 );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == 0 );
 }
 
-
-
-
-TEST( addNodeRootADFH, PCSTree_group)
-{
+TEST( addNodeRootAD, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeH("Node_H");
+	PCSTreeInfo info;
+	PCSNode  *root;
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeD( "Node_D" );
 
+	CHECK( nodeRoot.getChild() == 0 );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   root = tree.getRoot();
-   tree.insert( &nodeRoot, root );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeH, &nodeF );
+	root = tree.getRoot();
+	tree.insert( &nodeRoot, root );
 
-   tree.getInfo( info );
+	CHECK( nodeRoot.getChild() == 0 );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( info.maxNodeCount == 5 );
-   CHECK( info.maxLevelCount == 5 );
-   CHECK( info.numLevels == 5 );
-   CHECK( info.numNodes == 5 );
+	root = tree.getRoot();
+	CHECK( root == &nodeRoot );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
+	tree.getInfo( info );
 
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == 0 );
+	CHECK( info.maxNodeCount == 1 );
+	CHECK( info.maxLevelCount == 1 );
+	CHECK( info.numLevels == 1 );
+	CHECK( info.numNodes == 1 );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == 0 );
+	tree.insert( &nodeA, &nodeRoot );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0 );
+	tree.getInfo( info );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0 );
+	CHECK( info.maxNodeCount == 2 );
+	CHECK( info.maxLevelCount == 2 );
+	CHECK( info.numLevels == 2 );
+	CHECK( info.numNodes == 2 );
 
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
+
+	CHECK( nodeA.getChild() == 0 );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == 0 );
+
+	tree.insert( &nodeD, &nodeA );
+
+	tree.getInfo( info );
+
+	CHECK( info.maxNodeCount == 3 );
+	CHECK( info.maxLevelCount == 3 );
+	CHECK( info.numLevels == 3 );
+	CHECK( info.numNodes == 3 );
+
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
+
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == 0 );
+
+	CHECK( nodeD.getChild() == 0 );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == 0 );
 }
 
-
-
-TEST( addNodeRootAB, PCSTree_group)
-{
+TEST( addNodeRootADF, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
+	PCSTreeInfo info;
+	PCSNode  *root;
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeF( "Node_F" );
 
-   root = tree.getRoot();
-   tree.insert( &nodeRoot, root );
-   tree.insert( &nodeB, &nodeRoot );
+	CHECK( nodeRoot.getChild() == 0 );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   tree.getInfo( info );
+	root = tree.getRoot();
+	tree.insert( &nodeRoot, root );
 
-   CHECK( info.maxNodeCount == 2 );
-   CHECK( info.maxLevelCount == 2 );
-   CHECK( info.numLevels == 2 );
-   CHECK( info.numNodes == 2 );
+	CHECK( nodeRoot.getChild() == 0 );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeRoot.getChild() == &nodeB );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
+	root = tree.getRoot();
+	CHECK( root == &nodeRoot );
 
-   CHECK( nodeB.getChild() == 0 );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == 0 );
+	tree.getInfo( info );
 
-   tree.insert( &nodeA, &nodeRoot );
+	CHECK( info.maxNodeCount == 1 );
+	CHECK( info.maxLevelCount == 1 );
+	CHECK( info.numLevels == 1 );
+	CHECK( info.numNodes == 1 );
 
-   tree.getInfo( info );
+	tree.insert( &nodeA, &nodeRoot );
 
-   CHECK( info.maxNodeCount == 3 );
-   CHECK( info.maxLevelCount == 2 );
-   CHECK( info.numLevels == 2 );
-   CHECK( info.numNodes == 3 );
+	tree.getInfo( info );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
+	CHECK( info.maxNodeCount == 2 );
+	CHECK( info.maxLevelCount == 2 );
+	CHECK( info.numLevels == 2 );
+	CHECK( info.numNodes == 2 );
 
-   CHECK( nodeB.getChild() == 0 );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == 0 );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeA.getChild() == 0 );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeA.getChild() == 0 );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == 0 );
+
+	tree.insert( &nodeD, &nodeA );
+
+	tree.getInfo( info );
+
+	CHECK( info.maxNodeCount == 3 );
+	CHECK( info.maxLevelCount == 3 );
+	CHECK( info.numLevels == 3 );
+	CHECK( info.numNodes == 3 );
+
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
+
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == 0 );
+
+	CHECK( nodeD.getChild() == 0 );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == 0 );
+
+	tree.insert( &nodeF, &nodeD );
+	tree.getInfo( info );
+
+	CHECK( info.maxNodeCount == 4 );
+	CHECK( info.maxLevelCount == 4 );
+	CHECK( info.numLevels == 4 );
+	CHECK( info.numNodes == 4 );
+
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
+
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == 0 );
+
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == 0 );
+
+	CHECK( nodeF.getChild() == 0 );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 }
 
-
-TEST( addNodeRootABC, PCSTree_group)
-{
+TEST( addNodeRootADFH, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeH( "Node_H" );
 
+	root = tree.getRoot();
+	tree.insert( &nodeRoot, root );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeH, &nodeF );
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
+	tree.getInfo( info );
 
+	CHECK( info.maxNodeCount == 5 );
+	CHECK( info.maxLevelCount == 5 );
+	CHECK( info.numLevels == 5 );
+	CHECK( info.numNodes == 5 );
 
-   root = tree.getRoot();
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == 0 );
 
-   tree.insert( &nodeRoot, root );
-   tree.insert( &nodeC, &nodeRoot );
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == 0 );
 
-   tree.getInfo( info );
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( info.maxNodeCount == 2 );
-   CHECK( info.maxLevelCount == 2 );
-   CHECK( info.numLevels == 2 );
-   CHECK( info.numNodes == 2 );
-
-   CHECK( nodeRoot.getChild() == &nodeC );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-
-   CHECK( nodeC.getChild() == 0 );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0 );
-
-   tree.insert( &nodeB, &nodeRoot );
-
-   tree.getInfo( info );
-
-   CHECK( info.maxNodeCount == 3 );
-   CHECK( info.maxLevelCount == 2 );
-   CHECK( info.numLevels == 2 );
-   CHECK( info.numNodes == 3 );
-
-   CHECK( nodeRoot.getChild() == &nodeB );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-
-   CHECK( nodeB.getChild() == 0 );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
-
-   CHECK( nodeC.getChild() == 0 );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
-
-   tree.insert( &nodeA, &nodeRoot );
-
-   tree.getInfo( info );
-
-   CHECK( info.maxNodeCount == 4);
-   CHECK( info.maxLevelCount == 2 );
-   CHECK( info.numLevels == 2 );
-   CHECK( info.numNodes == 4 );
-
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == 0 );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
-
-   CHECK( nodeB.getChild() == 0 );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
-
-   CHECK( nodeC.getChild() == 0 );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 }
 
-
-
-TEST( addNodeRootABCDEI, PCSTree_group)
-{
+TEST( addNodeRootAB, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
+	root = tree.getRoot();
+	tree.insert( &nodeRoot, root );
+	tree.insert( &nodeB, &nodeRoot );
 
-   root = tree.getRoot();
+	tree.getInfo( info );
 
-   tree.insert( &nodeRoot, root );
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
+	CHECK( info.maxNodeCount == 2 );
+	CHECK( info.maxLevelCount == 2 );
+	CHECK( info.numLevels == 2 );
+	CHECK( info.numNodes == 2 );
 
-   tree.getInfo( info );
+	CHECK( nodeRoot.getChild() == &nodeB );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( info.maxNodeCount == 7);
-   CHECK( info.maxLevelCount == 3 );
-   CHECK( info.numLevels == 3 );
-   CHECK( info.numNodes == 7 );
+	CHECK( nodeB.getChild() == 0 );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == 0 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	tree.insert( &nodeA, &nodeRoot );
 
-   CHECK( nodeB.getChild() == 0 );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	tree.getInfo( info );
 
-   CHECK( nodeC.getChild() == 0 );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( info.maxNodeCount == 3 );
+	CHECK( info.maxLevelCount == 2 );
+	CHECK( info.numLevels == 2 );
+	CHECK( info.numNodes == 3 );
 
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeD.getChild() == 0 );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeB.getChild() == 0 );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == 0 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
-
-   CHECK( nodeI.getChild() == 0 );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
-
+	CHECK( nodeA.getChild() == 0 );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 }
 
-
-TEST( addNodeRootABCDEIKL, PCSTree_group)
-{
+TEST( addNodeRootABC, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
 
-   root = tree.getRoot();
+	root = tree.getRoot();
 
-   tree.insert( &nodeRoot, root );
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeRoot, root );
+	tree.insert( &nodeC, &nodeRoot );
 
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
+	tree.getInfo( info );
 
-   tree.getInfo( info );
+	CHECK( info.maxNodeCount == 2 );
+	CHECK( info.maxLevelCount == 2 );
+	CHECK( info.numLevels == 2 );
+	CHECK( info.numNodes == 2 );
 
-   CHECK( info.maxNodeCount == 9);
-   CHECK( info.maxLevelCount == 3 );
-   CHECK( info.numLevels == 3 );
-   CHECK( info.numNodes == 9 );
+	CHECK( nodeRoot.getChild() == &nodeC );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeC.getChild() == 0 );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	tree.insert( &nodeB, &nodeRoot );
 
-   CHECK( nodeC.getChild() == 0 );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	tree.getInfo( info );
 
+	CHECK( info.maxNodeCount == 3 );
+	CHECK( info.maxLevelCount == 2 );
+	CHECK( info.numLevels == 2 );
+	CHECK( info.numNodes == 3 );
 
-   CHECK( nodeD.getChild() == 0 );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeRoot.getChild() == &nodeB );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeB.getChild() == 0 );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeI.getChild() == 0 );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeC.getChild() == 0 );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	tree.insert( &nodeA, &nodeRoot );
 
-   CHECK( nodeL.getChild() == 0 );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	tree.getInfo( info );
+
+	CHECK( info.maxNodeCount == 4 );
+	CHECK( info.maxLevelCount == 2 );
+	CHECK( info.numLevels == 2 );
+	CHECK( info.numNodes == 4 );
+
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
+
+	CHECK( nodeA.getChild() == 0 );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
+
+	CHECK( nodeB.getChild() == 0 );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
+
+	CHECK( nodeC.getChild() == 0 );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 }
 
-
-TEST( addNodeRootABCDEIKLR, PCSTree_group)
-{
+TEST( addNodeRootABCDEI, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
 
-   root = tree.getRoot();
+	root = tree.getRoot();
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeRoot, root );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
+	tree.getInfo( info );
 
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
+	CHECK( info.maxNodeCount == 7 );
+	CHECK( info.maxLevelCount == 3 );
+	CHECK( info.numLevels == 3 );
+	CHECK( info.numNodes == 7 );
 
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   tree.insert( &nodeR, &nodeC );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   tree.getInfo( info );
+	CHECK( nodeB.getChild() == 0 );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( info.maxNodeCount == 10 );
-   CHECK( info.maxLevelCount == 3 );
-   CHECK( info.numLevels == 3 );
-   CHECK( info.numNodes == 10 );
+	CHECK( nodeC.getChild() == 0 );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeD.getChild() == 0 );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
-
-   CHECK( nodeD.getChild() == 0 );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
-
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
-
-   CHECK( nodeI.getChild() == 0 );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
-
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
-
-   CHECK( nodeL.getChild() == 0 );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
-
-   CHECK( nodeR.getChild() == 0 );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
-
+	CHECK( nodeI.getChild() == 0 );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 }
 
-
-TEST( addNodeRootABCDEIKLRFGJ, PCSTree_group)
-{
+TEST( addNodeRootABCDEIKL, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
 
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
+	root = tree.getRoot();
 
+	tree.insert( &nodeRoot, root );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
 
-   root = tree.getRoot();
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
 
-   tree.insert( &nodeRoot, root );
+	tree.getInfo( info );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
+	CHECK( info.maxNodeCount == 9 );
+	CHECK( info.maxLevelCount == 3 );
+	CHECK( info.numLevels == 3 );
+	CHECK( info.numNodes == 9 );
 
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   tree.getInfo( info );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( info.maxNodeCount == 13);
-   CHECK( info.maxLevelCount == 4 );
-   CHECK( info.numLevels == 4 );
-   CHECK( info.numNodes == 13 );
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeC.getChild() == 0 );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeD.getChild() == 0 );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeI.getChild() == 0 );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
-
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
-
-   CHECK( nodeL.getChild() == 0 );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
-
-   CHECK( nodeR.getChild() == 0 );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
-
-   CHECK( nodeF.getChild() == 0 );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
-
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
-
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
-
+	CHECK( nodeL.getChild() == 0 );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 }
 
-
-TEST( addNodeRootABCDEIKLRFGJMNOPQ, PCSTree_group)
-{
+TEST( addNodeRootABCDEIKLR, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
 
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
+	root = tree.getRoot();
 
-   root = tree.getRoot();
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
 
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
 
-   tree.getInfo( info );
+	tree.insert( &nodeR, &nodeC );
 
-   CHECK( info.maxNodeCount == 18 );
-   CHECK( info.maxLevelCount == 4 );
-   CHECK( info.numLevels == 4 );
-   CHECK( info.numNodes == 18 );
+	tree.getInfo( info );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( info.maxNodeCount == 10 );
+	CHECK( info.maxLevelCount == 3 );
+	CHECK( info.numLevels == 3 );
+	CHECK( info.numNodes == 10 );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeD.getChild() == 0 );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeI.getChild() == 0 );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeF.getChild() == 0 );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeL.getChild() == 0 );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
-
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
-
-
-
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
-
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
-
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
-
-   CHECK( nodeP.getChild() == 0 );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
-
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
-
-
+	CHECK( nodeR.getChild() == 0 );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 }
 
-
-TEST( addNodeRootABCDEIKLRFGJMNOPQHS, PCSTree_group)
-{
+TEST( addNodeRootABCDEIKLRFGJ, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
 
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   
-   root = tree.getRoot();
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
 
-   tree.insert( &nodeRoot, root );
+	root = tree.getRoot();
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
 
-   tree.getInfo( info );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
 
-   CHECK( info.maxNodeCount == 20 );
-   CHECK( info.maxLevelCount == 5 );
-   CHECK( info.numLevels == 5 );
-   CHECK( info.numNodes == 20 );
+	tree.getInfo( info );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( info.maxNodeCount == 13 );
+	CHECK( info.maxLevelCount == 4 );
+	CHECK( info.numLevels == 4 );
+	CHECK( info.numNodes == 13 );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeL.getChild() == 0 );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeR.getChild() == 0 );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeF.getChild() == 0 );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
-
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
-
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
-
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
-
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
-
-   CHECK( nodeS.getChild() == 0 );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 }
 
-
-
-TEST( addNodeRootABCDEIKLRFGJMNOPQHSTUVW, PCSTree_group)
-{
+TEST( addNodeRootABCDEIKLRFGJMNOPQ, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
 
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
 
+	root = tree.getRoot();
 
-   root = tree.getRoot();
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
 
+	tree.getInfo( info );
 
-   tree.getInfo( info );
+	CHECK( info.maxNodeCount == 18 );
+	CHECK( info.maxLevelCount == 4 );
+	CHECK( info.numLevels == 4 );
+	CHECK( info.numNodes == 18 );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeF.getChild() == 0 );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeP.getChild() == 0 );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
-
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
-
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
-
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 }
 
-
-TEST( fullTree_RemoveW, PCSTree_group)
-{
+TEST( addNodeRootABCDEIKLRFGJMNOPQHS, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
 
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
 
+	root = tree.getRoot();
 
-   root = tree.getRoot();
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
 
+	tree.getInfo( info );
 
-   tree.getInfo( info );
+	CHECK( info.maxNodeCount == 20 );
+	CHECK( info.maxLevelCount == 5 );
+	CHECK( info.numLevels == 5 );
+	CHECK( info.numNodes == 20 );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
-
-   // Remove W
-   tree.remove( &nodeW );
-
-   tree.getInfo( info );
-
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 23 );
-
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
-
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
-
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
-
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
-
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
-
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
-
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
-
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
-
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
-
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
-
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
-
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
-
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
-
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
-
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
-
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
-
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
-
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
-
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == 0 );
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == 0 );
-   CHECK( nodeW.getSibling() == 0);
-
+	CHECK( nodeS.getChild() == 0 );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 }
 
-
-
-TEST( fullTree_RemoveV, PCSTree_group)
-{
+TEST( addNodeRootABCDEIKLRFGJMNOPQHSTUVW, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
 
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
 
-   root = tree.getRoot();
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
 
-   tree.insert( &nodeRoot, root );
+	root = tree.getRoot();
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.insert( &nodeRoot, root );
 
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
 
-   tree.getInfo( info );
+	tree.getInfo( info );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-   // Remove V
-   tree.remove( &nodeV );
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 
-   tree.getInfo( info );
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 23 );
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
-
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
-
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
-
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
-
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
-
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
-
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
-
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
-
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
-
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
-
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
-
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
-
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
-
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
-
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
-
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
-
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
-
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeW);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == 0 );
-   CHECK( nodeV.getSibling() == 0 );
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
-
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 }
 
-TEST( fullTree_RemoveU, PCSTree_group)
-{
+TEST( fullTree_RemoveW, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
 
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
 
-   root = tree.getRoot();
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
 
-   tree.insert( &nodeRoot, root );
+	root = tree.getRoot();
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.insert( &nodeRoot, root );
 
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
 
-   tree.getInfo( info );
+	tree.getInfo( info );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-   // Remove U
-   tree.remove( &nodeU );
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 
-   tree.getInfo( info );
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 23 );
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	// Remove W
+	tree.remove( &nodeW );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	tree.getInfo( info );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 23 );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeV);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == 0 );
-   CHECK( nodeU.getSibling() == 0 );
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW );
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
+
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
+
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == 0 );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == 0 );
+	CHECK( nodeW.getSibling() == 0 );
 }
 
-
-TEST( fullTree_RemoveT, PCSTree_group)
-{
+TEST( fullTree_RemoveV, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
 
+	root = tree.getRoot();
 
-   root = tree.getRoot();
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.getInfo( info );
 
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
 
-   tree.getInfo( info );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
 
-   // Remove T
-   tree.remove( &nodeT );
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
 
-   tree.getInfo( info );
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 23 );
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	// Remove V
+	tree.remove( &nodeV );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	tree.getInfo( info );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 23 );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeU );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == 0 );
-   CHECK( nodeT.getSibling() == 0);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV );
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW );
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeW );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == 0 );
+	CHECK( nodeV.getSibling() == 0 );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 }
 
-
-TEST( fullTree_RemoveH, PCSTree_group)
-{
+TEST( fullTree_RemoveU, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
 
+	root = tree.getRoot();
 
-   root = tree.getRoot();
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.getInfo( info );
 
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
 
-   tree.getInfo( info );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
 
-   // Remove H
-   tree.remove( &nodeH );
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
 
-   tree.getInfo( info );
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 23 );
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	// Remove U
+	tree.remove( &nodeU );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	tree.getInfo( info );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 23 );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeF.getChild() == 0 );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == 0 );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-  
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeV );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == 0 );
+	CHECK( nodeU.getSibling() == 0 );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 }
 
-
-
-TEST( fullTree_RemoveQ, PCSTree_group)
-{
+TEST( fullTree_RemoveT, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
 
+	root = tree.getRoot();
 
-   root = tree.getRoot();
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.getInfo( info );
 
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
 
-   tree.getInfo( info );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
 
-   // Remove Q
-   tree.remove( &nodeQ );
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
 
-   tree.getInfo( info );
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 23 );
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	// Remove T
+	tree.remove( &nodeT );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	tree.getInfo( info );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 23 );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == 0);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == 0);
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-  
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == &nodeU );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == 0 );
+	CHECK( nodeT.getSibling() == 0 );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 }
 
-
-
-TEST( fullTree_RemoveO, PCSTree_group)
-{
+TEST( fullTree_RemoveH, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
 
+	root = tree.getRoot();
 
-   root = tree.getRoot();
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.getInfo( info );
 
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
 
-   tree.getInfo( info );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
 
-   // Remove O
-   tree.remove( &nodeO );
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
 
-   tree.getInfo( info );
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 23 );
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	// Remove H
+	tree.remove( &nodeH );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	tree.getInfo( info );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 23 );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeR.getChild() == &nodeP );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeF.getChild() == 0 );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == 0 );
-   CHECK( nodeO.getSibling() == 0 );
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR);
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-  
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == 0 );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 }
 
-TEST( fullTree_RemoveK, PCSTree_group)
-{
+TEST( fullTree_RemoveQ, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
 
+	root = tree.getRoot();
 
-   root = tree.getRoot();
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.getInfo( info );
 
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
 
-   tree.getInfo( info );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
 
-   // Remove K
-   tree.remove( &nodeK );
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
 
-   tree.getInfo( info );
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 23 );
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	// Remove Q
+	tree.remove( &nodeQ );
 
-   CHECK( nodeB.getChild() == &nodeL );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	tree.getInfo( info );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 23 );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() ==0 );
-   CHECK( nodeK.getSibling() == 0 );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR);
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-  
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == 0 );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == 0 );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 }
 
-
-TEST( fullTree_RemoveM, PCSTree_group)
-{
+TEST( fullTree_RemoveO, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
 
+	root = tree.getRoot();
 
-   root = tree.getRoot();
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.getInfo( info );
 
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
 
-   tree.getInfo( info );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
 
-   // Remove M
-   tree.remove( &nodeM );
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
 
-   tree.getInfo( info );
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 23 );
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	// Remove O
+	tree.remove( &nodeO );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	tree.getInfo( info );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 23 );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeN );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == 0);
-   CHECK( nodeM.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeP );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR);
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-  
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == 0 );
+	CHECK( nodeO.getSibling() == 0 );
 
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 }
 
-TEST( fullTree_RemoveN, PCSTree_group)
-{
+TEST( fullTree_RemoveK, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
 
+	root = tree.getRoot();
 
-   root = tree.getRoot();
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.getInfo( info );
 
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
 
-   tree.getInfo( info );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
 
-   // Remove N
-   tree.remove( &nodeN );
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
 
-   tree.getInfo( info );
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 23 );
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	// Remove K
+	tree.remove( &nodeK );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	tree.getInfo( info );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 23 );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeL );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == 0 );
+	CHECK( nodeK.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL);
-   CHECK( nodeM.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == 0 );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR);
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-  
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 }
 
-TEST( fullTree_RemoveJ, PCSTree_group)
-{
+TEST( fullTree_RemoveM, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
 
+	root = tree.getRoot();
 
-   root = tree.getRoot();
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.getInfo( info );
 
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
 
-   tree.getInfo( info );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
 
-   // Remove J
-   tree.remove( &nodeJ );
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
 
-   tree.getInfo( info );
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 23 );
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	// Remove M
+	tree.remove( &nodeM );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	tree.getInfo( info );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 23 );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == 0 );
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == 0 );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeN );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL);
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR);
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == 0 );
+	CHECK( nodeM.getSibling() == 0 );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-  
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 }
 
-
-
-TEST( fullTree_RemoveG, PCSTree_group)
-{
+TEST( fullTree_RemoveN, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
 
+	root = tree.getRoot();
 
-   root = tree.getRoot();
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.getInfo( info );
 
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
 
-   tree.getInfo( info );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
 
-   // Remove G
-   tree.remove( &nodeG );
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
 
-   tree.getInfo( info );
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 23 );
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	// Remove N
+	tree.remove( &nodeN );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	tree.getInfo( info );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 23 );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeI.getChild() == &nodeJ );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == 0 );
-   CHECK( nodeG.getSibling() == 0 );
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI);
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL);
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR);
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == 0 );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == 0 );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-  
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 }
 
-
-TEST( fullTree_RemoveE, PCSTree_group)
-{
+TEST( fullTree_RemoveJ, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
 
-   root = tree.getRoot();
+	root = tree.getRoot();
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
 
+	tree.getInfo( info );
 
-   tree.getInfo( info );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 
-   // Remove E
-   tree.remove( &nodeE );
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
 
-   tree.getInfo( info );
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 23 );
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	// Remove J
+	tree.remove( &nodeJ );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	tree.getInfo( info );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeI );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 23 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == 0 );
-   CHECK( nodeE.getSibling() == 0 );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI);
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI);
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL);
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR);
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == 0 );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-  
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
+
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 }
 
-
-TEST( fullTree_RemoveF, PCSTree_group)
-{
+TEST( fullTree_RemoveG, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
 
-   root = tree.getRoot();
+	root = tree.getRoot();
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
 
+	tree.getInfo( info );
 
-   tree.getInfo( info );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 
-   // Remove F
-   tree.remove( &nodeF );
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
 
-   tree.getInfo( info );
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 22 );
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	// Remove G
+	tree.remove( &nodeG );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	tree.getInfo( info );
 
-   CHECK( nodeD.getChild() == 0 );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 23 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeF.getChild() == 0 );
-   CHECK( nodeF.getParent() == 0 );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI);
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeI.getChild() == &nodeJ );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI);
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL);
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == 0 );
+	CHECK( nodeG.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR);
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == 0 );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-  
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
+
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 }
 
-
-
-
-TEST( fullTree_RemoveD, PCSTree_group)
-{
+TEST( fullTree_RemoveE, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
 
-   root = tree.getRoot();
+	root = tree.getRoot();
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
 
+	tree.getInfo( info );
 
-   tree.getInfo( info );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 
-   // Remove D
-   tree.remove( &nodeD );
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
 
-   tree.getInfo( info );
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 21 );
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeE );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	// Remove E
+	tree.remove( &nodeE );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	tree.getInfo( info );
 
-   CHECK( nodeD.getChild() == 0 );
-   CHECK( nodeD.getParent() == 0 );
-   CHECK( nodeD.getSibling() == 0 );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 23 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeI );
 
-   CHECK( nodeF.getChild() == 0 );
-   CHECK( nodeF.getParent() == 0 );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == 0 );
+	CHECK( nodeE.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI);
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI);
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL);
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR);
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == 0 );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-  
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
+
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 }
 
-
-
-TEST( fullTree_RemoveI, PCSTree_group)
-{
+TEST( fullTree_RemoveF, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
 
-   root = tree.getRoot();
+	root = tree.getRoot();
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
 
+	tree.getInfo( info );
 
-   tree.getInfo( info );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 
-   // Remove I
-   tree.remove( &nodeI );
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
 
-   tree.getInfo( info );
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 21 );
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	// Remove F
+	tree.remove( &nodeF );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	tree.getInfo( info );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 22 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == 0 );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeI.getChild() == 0 );
-   CHECK( nodeI.getParent() == 0 );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeD.getChild() == 0 );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == 0);
-   CHECK( nodeG.getSibling() == 0 );
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == 0);
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL);
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeF.getChild() == 0 );
+	CHECK( nodeF.getParent() == 0 );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR);
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-  
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
+
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == 0 );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 }
 
-
-TEST( fullTree_RemoveL, PCSTree_group)
-{
+TEST( fullTree_RemoveD, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
 
-   root = tree.getRoot();
+	root = tree.getRoot();
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
 
+	tree.getInfo( info );
 
-   tree.getInfo( info );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 
-   // Remove L
-   tree.remove( &nodeL );
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
 
-   tree.getInfo( info );
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 21 );
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	// Remove D
+	tree.remove( &nodeD );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	tree.getInfo( info );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 21 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeA.getChild() == &nodeE );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == 0 );
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeL.getChild() == 0 );
-   CHECK( nodeL.getParent() == 0 );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeD.getChild() == 0 );
+	CHECK( nodeD.getParent() == 0 );
+	CHECK( nodeD.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == 0 );
-   CHECK( nodeM.getSibling() == 0 );
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == 0 );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeF.getChild() == 0 );
+	CHECK( nodeF.getParent() == 0 );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
+
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
+
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == 0 );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 }
 
-
-TEST( fullTree_RemoveS, PCSTree_group)
-{
+TEST( fullTree_RemoveI, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
 
-   root = tree.getRoot();
+	root = tree.getRoot();
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
 
-   tree.getInfo( info );
+	tree.getInfo( info );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-   // Remove S
-   tree.remove( &nodeS );
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 
-     tree.getInfo( info );
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 5 );
-   CHECK( info.numNodes == 19 );
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	// Remove I
+	tree.remove( &nodeI );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	tree.getInfo( info );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 21 );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeI.getChild() == 0 );
+	CHECK( nodeI.getParent() == 0 );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == 0);
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == 0 );
+	CHECK( nodeG.getSibling() == 0 );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == 0 );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == 0 );
-   CHECK( nodeS.getParent() == 0 );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == 0 );
-   CHECK( nodeT.getSibling() == 0);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == 0);
-   CHECK( nodeU.getSibling() == 0);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == 0 );
-   CHECK( nodeV.getSibling() == 0);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == 0 );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
+
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
+
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
+
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 }
 
-
-TEST( fullTree_RemoveP, PCSTree_group)
-{
+TEST( fullTree_RemoveL, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
 
-   root = tree.getRoot();
+	root = tree.getRoot();
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
 
-   tree.getInfo( info );
+	tree.getInfo( info );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-   // Remove P
-   tree.remove( &nodeP );
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 
-   tree.getInfo( info );
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 5 );
-   CHECK( info.numNodes == 18 );
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	// Remove L
+	tree.remove( &nodeL );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	tree.getInfo( info );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 21 );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeL.getChild() == 0 );
+	CHECK( nodeL.getParent() == 0 );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeQ );
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == 0);
-   CHECK( nodeP.getParent() == 0 );
-   CHECK( nodeP.getSibling() == 0 );
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == 0 );
-   CHECK( nodeS.getParent() == 0 );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == 0 );
-   CHECK( nodeT.getSibling() == 0);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == 0);
-   CHECK( nodeU.getSibling() == 0);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == 0 );
-   CHECK( nodeV.getSibling() == 0);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == 0 );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == 0 );
+	CHECK( nodeM.getSibling() == 0 );
+
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == 0 );
+	CHECK( nodeN.getSibling() == 0 );
+
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
+
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 }
 
-
-TEST( fullTree_RemoveR, PCSTree_group)
-{
+TEST( fullTree_RemoveS, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
 
-   root = tree.getRoot();
+	root = tree.getRoot();
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
 
-   tree.getInfo( info );
+	tree.getInfo( info );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-   // Remove R
-   tree.remove( &nodeR );
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 
-   tree.getInfo( info );
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 5 );
-   CHECK( info.numNodes == 15 );
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 
-   CHECK( nodeC.getChild() == 0 );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	// Remove S
+	tree.remove( &nodeS );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	tree.getInfo( info );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 5 );
+	CHECK( info.numNodes == 19 );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeR.getChild() == 0 );
-   CHECK( nodeR.getParent() == 0 );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == 0 );
-   CHECK( nodeO.getSibling() == 0 );
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == 0);
-   CHECK( nodeP.getParent() == 0 );
-   CHECK( nodeP.getSibling() == 0 );
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == 0 );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == 0 );
-   CHECK( nodeS.getParent() == 0 );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == 0 );
-   CHECK( nodeT.getSibling() == 0);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == 0);
-   CHECK( nodeU.getSibling() == 0);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == 0 );
-   CHECK( nodeV.getSibling() == 0);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == 0 );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
+
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
+
+	CHECK( nodeP.getChild() == 0 );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == 0 );
+	CHECK( nodeS.getParent() == 0 );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == 0 );
+	CHECK( nodeT.getSibling() == 0 );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == 0 );
+	CHECK( nodeU.getSibling() == 0 );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == 0 );
+	CHECK( nodeV.getSibling() == 0 );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == 0 );
+	CHECK( nodeW.getSibling() == 0 );
 }
 
-TEST( fullTree_RemoveC, PCSTree_group)
-{
+TEST( fullTree_RemoveP, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
 
-   root = tree.getRoot();
+	root = tree.getRoot();
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
 
-   tree.getInfo( info );
+	tree.getInfo( info );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-   // Remove C
-   tree.remove( &nodeC );
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 
-   tree.getInfo( info );
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 5 );
-   CHECK( info.numNodes == 14 );
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == 0 );
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 
-   CHECK( nodeC.getChild() == 0 );
-   CHECK( nodeC.getParent() == 0 );
-   CHECK( nodeC.getSibling() == 0);
+	// Remove P
+	tree.remove( &nodeP );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	tree.getInfo( info );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 5 );
+	CHECK( info.numNodes == 18 );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeR.getChild() == 0 );
-   CHECK( nodeR.getParent() == 0 );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == 0 );
-   CHECK( nodeO.getSibling() == 0 );
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == 0);
-   CHECK( nodeP.getParent() == 0 );
-   CHECK( nodeP.getSibling() == 0 );
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == 0 );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == 0 );
-   CHECK( nodeS.getParent() == 0 );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == 0 );
-   CHECK( nodeT.getSibling() == 0);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == 0);
-   CHECK( nodeU.getSibling() == 0);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == 0 );
-   CHECK( nodeV.getSibling() == 0);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == 0 );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
+
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeQ );
+
+	CHECK( nodeP.getChild() == 0 );
+	CHECK( nodeP.getParent() == 0 );
+	CHECK( nodeP.getSibling() == 0 );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == 0 );
+	CHECK( nodeS.getParent() == 0 );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == 0 );
+	CHECK( nodeT.getSibling() == 0 );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == 0 );
+	CHECK( nodeU.getSibling() == 0 );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == 0 );
+	CHECK( nodeV.getSibling() == 0 );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == 0 );
+	CHECK( nodeW.getSibling() == 0 );
 }
 
-
-TEST( fullTree_RemoveB, PCSTree_group)
-{
+TEST( fullTree_RemoveR, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
 
-   root = tree.getRoot();
+	root = tree.getRoot();
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
 
-   tree.getInfo( info );
+	tree.getInfo( info );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-   // Remove B
-   tree.remove( &nodeB );
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 
-    tree.getInfo( info );
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 19 );
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeC );
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
 
-   CHECK( nodeB.getChild() == 0 );
-   CHECK( nodeB.getParent() == 0 );
-   CHECK( nodeB.getSibling() == 0 );
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	// Remove R
+	tree.remove( &nodeR );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	tree.getInfo( info );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 5 );
+	CHECK( info.numNodes == 15 );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == 0 );
-   CHECK( nodeK.getSibling() == 0 );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeL.getChild() == 0 );
-   CHECK( nodeL.getParent() == 0 );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeC.getChild() == 0 );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == 0 );
-   CHECK( nodeM.getSibling() == 0 );
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == 0 );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeR.getChild() == 0 );
+	CHECK( nodeR.getParent() == 0 );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
+
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == 0 );
+	CHECK( nodeO.getSibling() == 0 );
+
+	CHECK( nodeP.getChild() == 0 );
+	CHECK( nodeP.getParent() == 0 );
+	CHECK( nodeP.getSibling() == 0 );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == 0 );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == 0 );
+	CHECK( nodeS.getParent() == 0 );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == 0 );
+	CHECK( nodeT.getSibling() == 0 );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == 0 );
+	CHECK( nodeU.getSibling() == 0 );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == 0 );
+	CHECK( nodeV.getSibling() == 0 );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == 0 );
+	CHECK( nodeW.getSibling() == 0 );
 }
 
-
-
-TEST( fullTree_RemoveA, PCSTree_group)
-{
+TEST( fullTree_RemoveC, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
 
-   root = tree.getRoot();
+	root = tree.getRoot();
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
 
-   tree.getInfo( info );
+	tree.getInfo( info );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-   // Remove A
-   tree.remove( &nodeA );
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 
-   tree.getInfo( info );
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 16 );
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
 
-   CHECK( nodeRoot.getChild() == &nodeB );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == 0 );
-   CHECK( nodeA.getParent() == 0 );
-   CHECK( nodeA.getSibling() == 0 );
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	// Remove C
+	tree.remove( &nodeC );
 
-   CHECK( nodeD.getChild() == 0 );
-   CHECK( nodeD.getParent() == 0 );
-   CHECK( nodeD.getSibling() == 0 );
+	tree.getInfo( info );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == 0 );
-   CHECK( nodeE.getSibling() == 0 );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 5 );
+	CHECK( info.numNodes == 14 );
 
-   CHECK( nodeI.getChild() == 0 );
-   CHECK( nodeI.getParent() == 0 );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == 0 );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeC.getChild() == 0 );
+	CHECK( nodeC.getParent() == 0 );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == 0 );
-   CHECK( nodeF.getParent() == 0 );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == 0 );
-   CHECK( nodeG.getSibling() == 0 );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == 0 );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeR.getChild() == 0 );
+	CHECK( nodeR.getParent() == 0 );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == 0 );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
+
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
+
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == 0 );
+	CHECK( nodeO.getSibling() == 0 );
+
+	CHECK( nodeP.getChild() == 0 );
+	CHECK( nodeP.getParent() == 0 );
+	CHECK( nodeP.getSibling() == 0 );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == 0 );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == 0 );
+	CHECK( nodeS.getParent() == 0 );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == 0 );
+	CHECK( nodeT.getSibling() == 0 );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == 0 );
+	CHECK( nodeU.getSibling() == 0 );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == 0 );
+	CHECK( nodeV.getSibling() == 0 );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == 0 );
+	CHECK( nodeW.getSibling() == 0 );
 }
 
-
-TEST( fullTree_RemoveRoot, PCSTree_group)
-{
+TEST( fullTree_RemoveB, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
 
-   root = tree.getRoot();
+	root = tree.getRoot();
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
 
-   tree.getInfo( info );
+	tree.getInfo( info );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-   // RemoveROOT
-   tree.remove( &nodeRoot );
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 
-   tree.getInfo( info );
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 0 );
-   CHECK( info.numNodes == 0 );
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
 
-   CHECK( nodeRoot.getChild() == 0 );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == 0 );
-   CHECK( nodeA.getParent() == 0 );
-   CHECK( nodeA.getSibling() == 0 );
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
 
-   CHECK( nodeB.getChild() == 0);
-   CHECK( nodeB.getParent() == 0 );
-   CHECK( nodeB.getSibling() == 0 );
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 
-   CHECK( nodeC.getChild() == 0);
-   CHECK( nodeC.getParent() == 0 );
-   CHECK( nodeC.getSibling() == 0);
+	// Remove B
+	tree.remove( &nodeB );
 
-   CHECK( nodeD.getChild() == 0 );
-   CHECK( nodeD.getParent() == 0 );
-   CHECK( nodeD.getSibling() == 0 );
+	tree.getInfo( info );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == 0 );
-   CHECK( nodeE.getSibling() == 0 );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 19 );
 
-   CHECK( nodeI.getChild() == 0 );
-   CHECK( nodeI.getParent() == 0 );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == 0 );
-   CHECK( nodeK.getSibling() == 0 );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeC );
 
-   CHECK( nodeL.getChild() == 0);
-   CHECK( nodeL.getParent() == 0 );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeB.getChild() == 0 );
+	CHECK( nodeB.getParent() == 0 );
+	CHECK( nodeB.getSibling() == 0 );
 
-   CHECK( nodeR.getChild() == 0 );
-   CHECK( nodeR.getParent() == 0 );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == 0 );
-   CHECK( nodeF.getParent() == 0 );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == 0 );
-   CHECK( nodeG.getSibling() == 0 );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == 0 );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == 0 );
-   CHECK( nodeM.getSibling() == 0 );
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == 0 );
+	CHECK( nodeK.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == 0 );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeL.getChild() == 0 );
+	CHECK( nodeL.getParent() == 0 );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == 0 );
-   CHECK( nodeO.getSibling() == 0 );
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == 0 );
-   CHECK( nodeP.getParent() == 0);
-   CHECK( nodeP.getSibling() == 0 );
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == 0);
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == 0 );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == 0 );
-   CHECK( nodeS.getParent() == 0 );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == 0 );
-   CHECK( nodeT.getSibling() == 0);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == 0 );
-   CHECK( nodeU.getSibling() == 0);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == 0);
-   CHECK( nodeV.getSibling() == 0);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == 0 );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == 0 );
+	CHECK( nodeM.getSibling() == 0 );
+
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == 0 );
+	CHECK( nodeN.getSibling() == 0 );
+
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
+
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 }
 
-
-TEST( fullTree_dumpTree, PCSNode_group)
-{
+TEST( fullTree_RemoveA, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
 
-   root = tree.getRoot();
+	root = tree.getRoot();
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
 
-   tree.getInfo( info );
+	tree.getInfo( info );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-  
-    tree.dumpTree();
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
+
+	// Remove A
+	tree.remove( &nodeA );
+
+	tree.getInfo( info );
+
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 16 );
+
+	CHECK( nodeRoot.getChild() == &nodeB );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
+
+	CHECK( nodeA.getChild() == 0 );
+	CHECK( nodeA.getParent() == 0 );
+	CHECK( nodeA.getSibling() == 0 );
+
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
+
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
+
+	CHECK( nodeD.getChild() == 0 );
+	CHECK( nodeD.getParent() == 0 );
+	CHECK( nodeD.getSibling() == 0 );
+
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == 0 );
+	CHECK( nodeE.getSibling() == 0 );
+
+	CHECK( nodeI.getChild() == 0 );
+	CHECK( nodeI.getParent() == 0 );
+	CHECK( nodeI.getSibling() == 0 );
+
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
+
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
+
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
+
+	CHECK( nodeF.getChild() == 0 );
+	CHECK( nodeF.getParent() == 0 );
+	CHECK( nodeF.getSibling() == 0 );
+
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == 0 );
+	CHECK( nodeG.getSibling() == 0 );
+
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == 0 );
+	CHECK( nodeJ.getSibling() == 0 );
+
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
+
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
+
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
+
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == 0 );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 }
 
-
-TEST( fullTree_CheckLevel_C_children, PCSNode_group)
-{
+TEST( fullTree_RemoveRoot, PCSTree_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
 
-   root = tree.getRoot();
+	root = tree.getRoot();
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
 
-   tree.getInfo( info );
+	tree.getInfo( info );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-  
-   tree.remove( &nodeA );
-   tree.remove( &nodeB );
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 
-   tree.getInfo( info );
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 11 );
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
 
-   CHECK( nodeRoot.getChild() == &nodeC );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == 0 );
-   CHECK( nodeA.getParent() == 0 );
-   CHECK( nodeA.getSibling() == 0 );
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
 
-   CHECK( nodeB.getChild() == 0 );
-   CHECK( nodeB.getParent() == 0 );
-   CHECK( nodeB.getSibling() == 0 );
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	// RemoveROOT
+	tree.remove( &nodeRoot );
 
-   CHECK( nodeD.getChild() == 0);
-   CHECK( nodeD.getParent() == 0 );
-   CHECK( nodeD.getSibling() == 0 );
+	tree.getInfo( info );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == 0 );
-   CHECK( nodeE.getSibling() == 0 );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 0 );
+	CHECK( info.numNodes == 0 );
 
-   CHECK( nodeI.getChild() == 0 );
-   CHECK( nodeI.getParent() == 0 );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeRoot.getChild() == 0 );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == 0 );
-   CHECK( nodeK.getSibling() == 0 );
+	CHECK( nodeA.getChild() == 0 );
+	CHECK( nodeA.getParent() == 0 );
+	CHECK( nodeA.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == 0 );
-   CHECK( nodeL.getParent() == 0 );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeB.getChild() == 0 );
+	CHECK( nodeB.getParent() == 0 );
+	CHECK( nodeB.getSibling() == 0 );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeC.getChild() == 0 );
+	CHECK( nodeC.getParent() == 0 );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == 0 );
-   CHECK( nodeF.getParent() == 0 );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeD.getChild() == 0 );
+	CHECK( nodeD.getParent() == 0 );
+	CHECK( nodeD.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == 0 );
-   CHECK( nodeG.getSibling() == 0 );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == 0 );
+	CHECK( nodeE.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == 0 );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeI.getChild() == 0 );
+	CHECK( nodeI.getParent() == 0 );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == 0 );
-   CHECK( nodeM.getSibling() == 0 );
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == 0 );
+	CHECK( nodeK.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == 0 );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeL.getChild() == 0 );
+	CHECK( nodeL.getParent() == 0 );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeR.getChild() == 0 );
+	CHECK( nodeR.getParent() == 0 );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeF.getChild() == 0 );
+	CHECK( nodeF.getParent() == 0 );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == 0 );
+	CHECK( nodeG.getSibling() == 0 );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == 0 );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == 0 );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == 0 );
+	CHECK( nodeM.getSibling() == 0 );
 
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == 0 );
+	CHECK( nodeN.getSibling() == 0 );
 
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == 0 );
+	CHECK( nodeO.getSibling() == 0 );
+
+	CHECK( nodeP.getChild() == 0 );
+	CHECK( nodeP.getParent() == 0 );
+	CHECK( nodeP.getSibling() == 0 );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == 0 );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == 0 );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == 0 );
+	CHECK( nodeS.getParent() == 0 );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == 0 );
+	CHECK( nodeT.getSibling() == 0 );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == 0 );
+	CHECK( nodeU.getSibling() == 0 );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == 0 );
+	CHECK( nodeV.getSibling() == 0 );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == 0 );
+	CHECK( nodeW.getSibling() == 0 );
 }
 
-TEST( fullTree_CheckLevel_C_children_remove_TUVW, PCSNode_group)
-{
+TEST( fullTree_dumpTree, PCSNode_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
 
-   root = tree.getRoot();
+	root = tree.getRoot();
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
 
-   tree.getInfo( info );
+	tree.getInfo( info );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-  
-   tree.remove( &nodeA );
-   tree.remove( &nodeB );
-   tree.remove( &nodeT );
-   tree.remove( &nodeU );
-   tree.remove( &nodeV );
-   tree.remove( &nodeW );
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 
-   tree.getInfo( info );
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 5 );
-   CHECK( info.numNodes == 7 );
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
 
-   CHECK( nodeRoot.getChild() == &nodeC );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == 0 );
-   CHECK( nodeA.getParent() == 0 );
-   CHECK( nodeA.getSibling() == 0 );
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
 
-   CHECK( nodeB.getChild() == 0 );
-   CHECK( nodeB.getParent() == 0 );
-   CHECK( nodeB.getSibling() == 0 );
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
-
-   CHECK( nodeD.getChild() == 0);
-   CHECK( nodeD.getParent() == 0 );
-   CHECK( nodeD.getSibling() == 0 );
-
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == 0 );
-   CHECK( nodeE.getSibling() == 0 );
-
-   CHECK( nodeI.getChild() == 0 );
-   CHECK( nodeI.getParent() == 0 );
-   CHECK( nodeI.getSibling() == 0);
-
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == 0 );
-   CHECK( nodeK.getSibling() == 0 );
-
-   CHECK( nodeL.getChild() == 0 );
-   CHECK( nodeL.getParent() == 0 );
-   CHECK( nodeL.getSibling() == 0);
-
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
-
-   CHECK( nodeF.getChild() == 0 );
-   CHECK( nodeF.getParent() == 0 );
-   CHECK( nodeF.getSibling() == 0);
-
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == 0 );
-   CHECK( nodeG.getSibling() == 0 );
-
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == 0 );
-   CHECK( nodeJ.getSibling() == 0);
-
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == 0 );
-   CHECK( nodeM.getSibling() == 0 );
-
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == 0 );
-   CHECK( nodeN.getSibling() == 0);
-
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
-
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
-
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
-
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == 0 );
-   CHECK( nodeH.getSibling() == 0);
-
-   CHECK( nodeS.getChild() == 0 );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == 0);
-   CHECK( nodeT.getSibling() == 0);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() ==0 );
-   CHECK( nodeU.getSibling() == 0);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == 0 );
-   CHECK( nodeV.getSibling() == 0);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == 0);
-   CHECK( nodeW.getSibling() == 0);
-
+	tree.dumpTree();
 }
 
-
-TEST( fullTree_CheckLevel_C_children_remove_S, PCSNode_group)
-{
+TEST( fullTree_CheckLevel_C_children, PCSNode_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
 
-   root = tree.getRoot();
+	root = tree.getRoot();
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
 
-   tree.getInfo( info );
+	tree.getInfo( info );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-  
-   tree.remove( &nodeA );
-   tree.remove( &nodeB );
-   tree.remove( &nodeS );
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 
-   tree.getInfo( info );
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 4 );
-   CHECK( info.numNodes == 6 );
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
 
-   CHECK( nodeRoot.getChild() == &nodeC );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == 0 );
-   CHECK( nodeA.getParent() == 0 );
-   CHECK( nodeA.getSibling() == 0 );
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
 
-   CHECK( nodeB.getChild() == 0 );
-   CHECK( nodeB.getParent() == 0 );
-   CHECK( nodeB.getSibling() == 0 );
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	tree.remove( &nodeA );
+	tree.remove( &nodeB );
 
-   CHECK( nodeD.getChild() == 0);
-   CHECK( nodeD.getParent() == 0 );
-   CHECK( nodeD.getSibling() == 0 );
+	tree.getInfo( info );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == 0 );
-   CHECK( nodeE.getSibling() == 0 );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 11 );
 
-   CHECK( nodeI.getChild() == 0 );
-   CHECK( nodeI.getParent() == 0 );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeRoot.getChild() == &nodeC );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == 0 );
-   CHECK( nodeK.getSibling() == 0 );
+	CHECK( nodeA.getChild() == 0 );
+	CHECK( nodeA.getParent() == 0 );
+	CHECK( nodeA.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == 0 );
-   CHECK( nodeL.getParent() == 0 );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeB.getChild() == 0 );
+	CHECK( nodeB.getParent() == 0 );
+	CHECK( nodeB.getSibling() == 0 );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == 0 );
-   CHECK( nodeF.getParent() == 0 );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeD.getChild() == 0 );
+	CHECK( nodeD.getParent() == 0 );
+	CHECK( nodeD.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == 0 );
-   CHECK( nodeG.getSibling() == 0 );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == 0 );
+	CHECK( nodeE.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == 0 );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeI.getChild() == 0 );
+	CHECK( nodeI.getParent() == 0 );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == 0 );
-   CHECK( nodeM.getSibling() == 0 );
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == 0 );
+	CHECK( nodeK.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == 0 );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeL.getChild() == 0 );
+	CHECK( nodeL.getParent() == 0 );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == 0 );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeF.getChild() == 0 );
+	CHECK( nodeF.getParent() == 0 );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == 0 );
+	CHECK( nodeG.getSibling() == 0 );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == 0 );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == 0 );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == 0 );
-   CHECK( nodeS.getParent() == 0 );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == 0);
-   CHECK( nodeT.getSibling() == 0);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() ==0 );
-   CHECK( nodeU.getSibling() == 0);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == 0 );
-   CHECK( nodeV.getSibling() == 0);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == 0);
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == 0 );
+	CHECK( nodeM.getSibling() == 0 );
 
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == 0 );
+	CHECK( nodeN.getSibling() == 0 );
 
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
+
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == 0 );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 }
 
-
-TEST( fullTree_CheckLevel_C_children_remove_OPQ, PCSNode_group)
-{
+TEST( fullTree_CheckLevel_C_children_remove_TUVW, PCSNode_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
 
-   root = tree.getRoot();
+	root = tree.getRoot();
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
 
-   tree.getInfo( info );
+	tree.getInfo( info );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-  
-   tree.remove( &nodeA );
-   tree.remove( &nodeB );
-   tree.remove( &nodeO );
-   tree.remove( &nodeP );
-   tree.remove( &nodeQ );
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 
-   tree.getInfo( info );
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 3 );
-   CHECK( info.numNodes == 3 );
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
 
-   CHECK( nodeRoot.getChild() == &nodeC );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == 0 );
-   CHECK( nodeA.getParent() == 0 );
-   CHECK( nodeA.getSibling() == 0 );
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
 
-   CHECK( nodeB.getChild() == 0 );
-   CHECK( nodeB.getParent() == 0 );
-   CHECK( nodeB.getSibling() == 0 );
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	tree.remove( &nodeA );
+	tree.remove( &nodeB );
+	tree.remove( &nodeT );
+	tree.remove( &nodeU );
+	tree.remove( &nodeV );
+	tree.remove( &nodeW );
 
-   CHECK( nodeD.getChild() == 0);
-   CHECK( nodeD.getParent() == 0 );
-   CHECK( nodeD.getSibling() == 0 );
+	tree.getInfo( info );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == 0 );
-   CHECK( nodeE.getSibling() == 0 );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 5 );
+	CHECK( info.numNodes == 7 );
 
-   CHECK( nodeI.getChild() == 0 );
-   CHECK( nodeI.getParent() == 0 );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeRoot.getChild() == &nodeC );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == 0 );
-   CHECK( nodeK.getSibling() == 0 );
+	CHECK( nodeA.getChild() == 0 );
+	CHECK( nodeA.getParent() == 0 );
+	CHECK( nodeA.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == 0 );
-   CHECK( nodeL.getParent() == 0 );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeB.getChild() == 0 );
+	CHECK( nodeB.getParent() == 0 );
+	CHECK( nodeB.getSibling() == 0 );
 
-   CHECK( nodeR.getChild() == 0);
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == 0 );
-   CHECK( nodeF.getParent() == 0 );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeD.getChild() == 0 );
+	CHECK( nodeD.getParent() == 0 );
+	CHECK( nodeD.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == 0 );
-   CHECK( nodeG.getSibling() == 0 );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == 0 );
+	CHECK( nodeE.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == 0 );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeI.getChild() == 0 );
+	CHECK( nodeI.getParent() == 0 );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == 0 );
-   CHECK( nodeM.getSibling() == 0 );
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == 0 );
+	CHECK( nodeK.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == 0 );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeL.getChild() == 0 );
+	CHECK( nodeL.getParent() == 0 );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == 0);
-   CHECK( nodeO.getSibling() == 0 );
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == 0 );
-   CHECK( nodeP.getParent() == 0);
-   CHECK( nodeP.getSibling() == 0 );
+	CHECK( nodeF.getChild() == 0 );
+	CHECK( nodeF.getParent() == 0 );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == 0);
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == 0 );
+	CHECK( nodeG.getSibling() == 0 );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == 0 );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == 0 );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == 0 );
-   CHECK( nodeS.getParent() == 0 );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == 0);
-   CHECK( nodeT.getSibling() == 0);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() ==0 );
-   CHECK( nodeU.getSibling() == 0);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == 0 );
-   CHECK( nodeV.getSibling() == 0);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == 0);
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == 0 );
+	CHECK( nodeM.getSibling() == 0 );
 
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == 0 );
+	CHECK( nodeN.getSibling() == 0 );
 
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
+
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == 0 );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == 0 );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == 0 );
+	CHECK( nodeT.getSibling() == 0 );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == 0 );
+	CHECK( nodeU.getSibling() == 0 );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == 0 );
+	CHECK( nodeV.getSibling() == 0 );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == 0 );
+	CHECK( nodeW.getSibling() == 0 );
 }
 
-
-TEST( fullTree_CheckLevel_C_children_remove_R, PCSNode_group)
-{
+TEST( fullTree_CheckLevel_C_children_remove_S, PCSNode_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
 
-   root = tree.getRoot();
+	root = tree.getRoot();
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
 
-   tree.getInfo( info );
+	tree.getInfo( info );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-  
-   tree.remove( &nodeA );
-   tree.remove( &nodeB );
-   tree.remove( &nodeR );
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 
-   tree.getInfo( info );
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 2 );
-   CHECK( info.numNodes == 2 );
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
 
-   CHECK( nodeRoot.getChild() == &nodeC );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == 0 );
-   CHECK( nodeA.getParent() == 0 );
-   CHECK( nodeA.getSibling() == 0 );
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
 
-   CHECK( nodeB.getChild() == 0 );
-   CHECK( nodeB.getParent() == 0 );
-   CHECK( nodeB.getSibling() == 0 );
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 
-   CHECK( nodeC.getChild() == 0);
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	tree.remove( &nodeA );
+	tree.remove( &nodeB );
+	tree.remove( &nodeS );
 
-   CHECK( nodeD.getChild() == 0);
-   CHECK( nodeD.getParent() == 0 );
-   CHECK( nodeD.getSibling() == 0 );
+	tree.getInfo( info );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == 0 );
-   CHECK( nodeE.getSibling() == 0 );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 4 );
+	CHECK( info.numNodes == 6 );
 
-   CHECK( nodeI.getChild() == 0 );
-   CHECK( nodeI.getParent() == 0 );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeRoot.getChild() == &nodeC );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == 0 );
-   CHECK( nodeK.getSibling() == 0 );
+	CHECK( nodeA.getChild() == 0 );
+	CHECK( nodeA.getParent() == 0 );
+	CHECK( nodeA.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == 0 );
-   CHECK( nodeL.getParent() == 0 );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeB.getChild() == 0 );
+	CHECK( nodeB.getParent() == 0 );
+	CHECK( nodeB.getSibling() == 0 );
 
-   CHECK( nodeR.getChild() == 0);
-   CHECK( nodeR.getParent() == 0);
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == 0 );
-   CHECK( nodeF.getParent() == 0 );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeD.getChild() == 0 );
+	CHECK( nodeD.getParent() == 0 );
+	CHECK( nodeD.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == 0 );
-   CHECK( nodeG.getSibling() == 0 );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == 0 );
+	CHECK( nodeE.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == 0 );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeI.getChild() == 0 );
+	CHECK( nodeI.getParent() == 0 );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == 0 );
-   CHECK( nodeM.getSibling() == 0 );
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == 0 );
+	CHECK( nodeK.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == 0 );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeL.getChild() == 0 );
+	CHECK( nodeL.getParent() == 0 );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == 0);
-   CHECK( nodeO.getSibling() == 0 );
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == 0 );
-   CHECK( nodeP.getParent() == 0);
-   CHECK( nodeP.getSibling() == 0 );
+	CHECK( nodeF.getChild() == 0 );
+	CHECK( nodeF.getParent() == 0 );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == 0);
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == 0 );
+	CHECK( nodeG.getSibling() == 0 );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == 0 );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == 0 );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == 0 );
-   CHECK( nodeS.getParent() == 0 );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == 0);
-   CHECK( nodeT.getSibling() == 0);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() ==0 );
-   CHECK( nodeU.getSibling() == 0);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == 0 );
-   CHECK( nodeV.getSibling() == 0);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == 0);
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == 0 );
+	CHECK( nodeM.getSibling() == 0 );
+
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == 0 );
+	CHECK( nodeN.getSibling() == 0 );
+
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
+
+	CHECK( nodeP.getChild() == 0 );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == 0 );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == 0 );
+	CHECK( nodeS.getParent() == 0 );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == 0 );
+	CHECK( nodeT.getSibling() == 0 );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == 0 );
+	CHECK( nodeU.getSibling() == 0 );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == 0 );
+	CHECK( nodeV.getSibling() == 0 );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == 0 );
+	CHECK( nodeW.getSibling() == 0 );
 }
 
-
-
-TEST( fullTree_CheckLevel_C_children_remove_C, PCSNode_group)
-{
+TEST( fullTree_CheckLevel_C_children_remove_OPQ, PCSNode_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
 
-   root = tree.getRoot();
+	root = tree.getRoot();
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
 
-   tree.getInfo( info );
+	tree.getInfo( info );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-  
-   tree.remove( &nodeA );
-   tree.remove( &nodeB );
-   tree.remove( &nodeC );
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 
-   tree.getInfo( info );
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 1 );
-   CHECK( info.numNodes == 1 );
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
 
-   CHECK( nodeRoot.getChild() == 0 );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == 0 );
-   CHECK( nodeA.getParent() == 0 );
-   CHECK( nodeA.getSibling() == 0 );
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
 
-   CHECK( nodeB.getChild() == 0 );
-   CHECK( nodeB.getParent() == 0 );
-   CHECK( nodeB.getSibling() == 0 );
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 
-   CHECK( nodeC.getChild() == 0);
-   CHECK( nodeC.getParent() == 0 );
-   CHECK( nodeC.getSibling() == 0);
+	tree.remove( &nodeA );
+	tree.remove( &nodeB );
+	tree.remove( &nodeO );
+	tree.remove( &nodeP );
+	tree.remove( &nodeQ );
 
-   CHECK( nodeD.getChild() == 0);
-   CHECK( nodeD.getParent() == 0 );
-   CHECK( nodeD.getSibling() == 0 );
+	tree.getInfo( info );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == 0 );
-   CHECK( nodeE.getSibling() == 0 );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 3 );
+	CHECK( info.numNodes == 3 );
 
-   CHECK( nodeI.getChild() == 0 );
-   CHECK( nodeI.getParent() == 0 );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeRoot.getChild() == &nodeC );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == 0 );
-   CHECK( nodeK.getSibling() == 0 );
+	CHECK( nodeA.getChild() == 0 );
+	CHECK( nodeA.getParent() == 0 );
+	CHECK( nodeA.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == 0 );
-   CHECK( nodeL.getParent() == 0 );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeB.getChild() == 0 );
+	CHECK( nodeB.getParent() == 0 );
+	CHECK( nodeB.getSibling() == 0 );
 
-   CHECK( nodeR.getChild() == 0);
-   CHECK( nodeR.getParent() == 0);
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == 0 );
-   CHECK( nodeF.getParent() == 0 );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeD.getChild() == 0 );
+	CHECK( nodeD.getParent() == 0 );
+	CHECK( nodeD.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == 0 );
-   CHECK( nodeG.getSibling() == 0 );
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == 0 );
+	CHECK( nodeE.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == 0 );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeI.getChild() == 0 );
+	CHECK( nodeI.getParent() == 0 );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == 0 );
-   CHECK( nodeM.getSibling() == 0 );
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == 0 );
+	CHECK( nodeK.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == 0 );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeL.getChild() == 0 );
+	CHECK( nodeL.getParent() == 0 );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == 0);
-   CHECK( nodeO.getSibling() == 0 );
+	CHECK( nodeR.getChild() == 0 );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == 0 );
-   CHECK( nodeP.getParent() == 0);
-   CHECK( nodeP.getSibling() == 0 );
+	CHECK( nodeF.getChild() == 0 );
+	CHECK( nodeF.getParent() == 0 );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == 0);
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == 0 );
+	CHECK( nodeG.getSibling() == 0 );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == 0 );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == 0 );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == 0 );
-   CHECK( nodeS.getParent() == 0 );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == 0);
-   CHECK( nodeT.getSibling() == 0);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() ==0 );
-   CHECK( nodeU.getSibling() == 0);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == 0 );
-   CHECK( nodeV.getSibling() == 0);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == 0);
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == 0 );
+	CHECK( nodeM.getSibling() == 0 );
+
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == 0 );
+	CHECK( nodeN.getSibling() == 0 );
+
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == 0 );
+	CHECK( nodeO.getSibling() == 0 );
+
+	CHECK( nodeP.getChild() == 0 );
+	CHECK( nodeP.getParent() == 0 );
+	CHECK( nodeP.getSibling() == 0 );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == 0 );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == 0 );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == 0 );
+	CHECK( nodeS.getParent() == 0 );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == 0 );
+	CHECK( nodeT.getSibling() == 0 );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == 0 );
+	CHECK( nodeU.getSibling() == 0 );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == 0 );
+	CHECK( nodeV.getSibling() == 0 );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == 0 );
+	CHECK( nodeW.getSibling() == 0 );
 }
 
-
-TEST( fullTree_CheckLevel_C_children_remove_root, PCSNode_group)
-{
+TEST( fullTree_CheckLevel_C_children_remove_R, PCSNode_group ) {
 	PCSTree tree;
-   PCSTreeInfo info;
-   PCSNode  *root;
+	PCSTreeInfo info;
+	PCSNode  *root;
 
-   PCSNode nodeRoot("Root");
-   PCSNode nodeA("Node_A");
-   PCSNode nodeB("Node_B");
-   PCSNode nodeC("Node_C");
-   PCSNode nodeD("Node_D");
-   PCSNode nodeE("Node_E");
-   PCSNode nodeI("Node_I");
-   PCSNode nodeK("Node_K");
-   PCSNode nodeL("Node_L");
-   PCSNode nodeR("Node_R");
-   PCSNode nodeF("Node_F");
-   PCSNode nodeG("Node_G");
-   PCSNode nodeJ("Node_J");
-   PCSNode nodeM("Node_M");
-   PCSNode nodeN("Node_N");
-   PCSNode nodeO("Node_O");
-   PCSNode nodeP("Node_P");
-   PCSNode nodeQ("Node_Q");
-   PCSNode nodeH("Node_H");
-   PCSNode nodeS("Node_S");
-   PCSNode nodeT("Node_T");
-   PCSNode nodeU("Node_U");
-   PCSNode nodeV("Node_V");
-   PCSNode nodeW("Node_W");
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
 
-   root = tree.getRoot();
+	root = tree.getRoot();
 
-   tree.insert( &nodeRoot, root );
+	tree.insert( &nodeRoot, root );
 
-   tree.insert( &nodeC, &nodeRoot );
-   tree.insert( &nodeB, &nodeRoot );
-   tree.insert( &nodeA, &nodeRoot );
-   tree.insert( &nodeI, &nodeA );
-   tree.insert( &nodeE, &nodeA );
-   tree.insert( &nodeD, &nodeA );
-   tree.insert( &nodeL, &nodeB );
-   tree.insert( &nodeK, &nodeB );
-   tree.insert( &nodeR, &nodeC );
-   tree.insert( &nodeF, &nodeD );
-   tree.insert( &nodeJ, &nodeI );
-   tree.insert( &nodeG, &nodeI );
-   tree.insert( &nodeN, &nodeL );
-   tree.insert( &nodeM, &nodeL );
-   tree.insert( &nodeQ, &nodeR );
-   tree.insert( &nodeP, &nodeR );
-   tree.insert( &nodeO, &nodeR );
-   tree.insert( &nodeH, &nodeF );
-   tree.insert( &nodeS, &nodeP );
-   tree.insert( &nodeW, &nodeS );
-   tree.insert( &nodeV, &nodeS );
-   tree.insert( &nodeU, &nodeS );
-   tree.insert( &nodeT, &nodeS );
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
 
-   tree.getInfo( info );
+	tree.getInfo( info );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 6 );
-   CHECK( info.numNodes == 24 );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
 
-   CHECK( nodeRoot.getChild() == &nodeA );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == &nodeD );
-   CHECK( nodeA.getParent() == &nodeRoot );
-   CHECK( nodeA.getSibling() == &nodeB );
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeB.getChild() == &nodeK );
-   CHECK( nodeB.getParent() == &nodeRoot );
-   CHECK( nodeB.getSibling() == &nodeC );
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
 
-   CHECK( nodeC.getChild() == &nodeR );
-   CHECK( nodeC.getParent() == &nodeRoot );
-   CHECK( nodeC.getSibling() == 0);
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
 
-   CHECK( nodeD.getChild() == &nodeF );
-   CHECK( nodeD.getParent() == &nodeA );
-   CHECK( nodeD.getSibling() == &nodeE );
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == &nodeA );
-   CHECK( nodeE.getSibling() == &nodeI );
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
 
-   CHECK( nodeI.getChild() == &nodeG );
-   CHECK( nodeI.getParent() == &nodeA );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == &nodeB );
-   CHECK( nodeK.getSibling() == &nodeL );
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == &nodeM );
-   CHECK( nodeL.getParent() == &nodeB );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
 
-   CHECK( nodeR.getChild() == &nodeO );
-   CHECK( nodeR.getParent() == &nodeC );
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == &nodeH );
-   CHECK( nodeF.getParent() == &nodeD );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == &nodeI );
-   CHECK( nodeG.getSibling() == &nodeJ );
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == &nodeI );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == &nodeL );
-   CHECK( nodeM.getSibling() == &nodeN);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == &nodeL );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == &nodeR );
-   CHECK( nodeO.getSibling() == &nodeP );
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == &nodeS );
-   CHECK( nodeP.getParent() == &nodeR );
-   CHECK( nodeP.getSibling() == &nodeQ );
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == &nodeR );
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == &nodeF );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == &nodeT );
-   CHECK( nodeS.getParent() == &nodeP );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == &nodeS );
-   CHECK( nodeT.getSibling() == &nodeU);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() == &nodeS );
-   CHECK( nodeU.getSibling() == &nodeV);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == &nodeS );
-   CHECK( nodeV.getSibling() == &nodeW);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == &nodeS );
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
 
-  
-   tree.remove( &nodeRoot );
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
 
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
 
-   tree.getInfo( info );
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
 
-   CHECK( info.maxNodeCount == 24 );
-   CHECK( info.maxLevelCount == 6 );
-   CHECK( info.numLevels == 0 );
-   CHECK( info.numNodes == 0 );
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
 
-   CHECK( nodeRoot.getChild() == 0 );
-   CHECK( nodeRoot.getParent() == 0 );
-   CHECK( nodeRoot.getSibling() == 0 );
-   
-   CHECK( nodeA.getChild() == 0 );
-   CHECK( nodeA.getParent() == 0 );
-   CHECK( nodeA.getSibling() == 0 );
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
 
-   CHECK( nodeB.getChild() == 0 );
-   CHECK( nodeB.getParent() == 0 );
-   CHECK( nodeB.getSibling() == 0 );
+	tree.remove( &nodeA );
+	tree.remove( &nodeB );
+	tree.remove( &nodeR );
 
-   CHECK( nodeC.getChild() == 0);
-   CHECK( nodeC.getParent() == 0 );
-   CHECK( nodeC.getSibling() == 0);
+	tree.getInfo( info );
 
-   CHECK( nodeD.getChild() == 0);
-   CHECK( nodeD.getParent() == 0 );
-   CHECK( nodeD.getSibling() == 0 );
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 2 );
+	CHECK( info.numNodes == 2 );
 
-   CHECK( nodeE.getChild() == 0 );
-   CHECK( nodeE.getParent() == 0 );
-   CHECK( nodeE.getSibling() == 0 );
+	CHECK( nodeRoot.getChild() == &nodeC );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
 
-   CHECK( nodeI.getChild() == 0 );
-   CHECK( nodeI.getParent() == 0 );
-   CHECK( nodeI.getSibling() == 0);
+	CHECK( nodeA.getChild() == 0 );
+	CHECK( nodeA.getParent() == 0 );
+	CHECK( nodeA.getSibling() == 0 );
 
-   CHECK( nodeK.getChild() == 0 );
-   CHECK( nodeK.getParent() == 0 );
-   CHECK( nodeK.getSibling() == 0 );
+	CHECK( nodeB.getChild() == 0 );
+	CHECK( nodeB.getParent() == 0 );
+	CHECK( nodeB.getSibling() == 0 );
 
-   CHECK( nodeL.getChild() == 0 );
-   CHECK( nodeL.getParent() == 0 );
-   CHECK( nodeL.getSibling() == 0);
+	CHECK( nodeC.getChild() == 0 );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
 
-   CHECK( nodeR.getChild() == 0);
-   CHECK( nodeR.getParent() == 0);
-   CHECK( nodeR.getSibling() == 0);
+	CHECK( nodeD.getChild() == 0 );
+	CHECK( nodeD.getParent() == 0 );
+	CHECK( nodeD.getSibling() == 0 );
 
-   CHECK( nodeF.getChild() == 0 );
-   CHECK( nodeF.getParent() == 0 );
-   CHECK( nodeF.getSibling() == 0);
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == 0 );
+	CHECK( nodeE.getSibling() == 0 );
 
-   CHECK( nodeG.getChild() == 0 );
-   CHECK( nodeG.getParent() == 0 );
-   CHECK( nodeG.getSibling() == 0 );
+	CHECK( nodeI.getChild() == 0 );
+	CHECK( nodeI.getParent() == 0 );
+	CHECK( nodeI.getSibling() == 0 );
 
-   CHECK( nodeJ.getChild() == 0 );
-   CHECK( nodeJ.getParent() == 0 );
-   CHECK( nodeJ.getSibling() == 0);
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == 0 );
+	CHECK( nodeK.getSibling() == 0 );
 
-   CHECK( nodeM.getChild() == 0 );
-   CHECK( nodeM.getParent() == 0 );
-   CHECK( nodeM.getSibling() == 0 );
+	CHECK( nodeL.getChild() == 0 );
+	CHECK( nodeL.getParent() == 0 );
+	CHECK( nodeL.getSibling() == 0 );
 
-   CHECK( nodeN.getChild() == 0 );
-   CHECK( nodeN.getParent() == 0 );
-   CHECK( nodeN.getSibling() == 0);
+	CHECK( nodeR.getChild() == 0 );
+	CHECK( nodeR.getParent() == 0 );
+	CHECK( nodeR.getSibling() == 0 );
 
-   CHECK( nodeO.getChild() == 0 );
-   CHECK( nodeO.getParent() == 0);
-   CHECK( nodeO.getSibling() == 0 );
+	CHECK( nodeF.getChild() == 0 );
+	CHECK( nodeF.getParent() == 0 );
+	CHECK( nodeF.getSibling() == 0 );
 
-   CHECK( nodeP.getChild() == 0 );
-   CHECK( nodeP.getParent() == 0);
-   CHECK( nodeP.getSibling() == 0 );
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == 0 );
+	CHECK( nodeG.getSibling() == 0 );
 
-   CHECK( nodeQ.getChild() == 0 );
-   CHECK( nodeQ.getParent() == 0);
-   CHECK( nodeQ.getSibling() == 0);
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == 0 );
+	CHECK( nodeJ.getSibling() == 0 );
 
-   CHECK( nodeH.getChild() == 0 );
-   CHECK( nodeH.getParent() == 0 );
-   CHECK( nodeH.getSibling() == 0);
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == 0 );
+	CHECK( nodeM.getSibling() == 0 );
 
-   CHECK( nodeS.getChild() == 0 );
-   CHECK( nodeS.getParent() == 0 );
-   CHECK( nodeS.getSibling() == 0);
-   
-   CHECK( nodeT.getChild() == 0 );
-   CHECK( nodeT.getParent() == 0);
-   CHECK( nodeT.getSibling() == 0);
-   
-   CHECK( nodeU.getChild() == 0 );
-   CHECK( nodeU.getParent() ==0 );
-   CHECK( nodeU.getSibling() == 0);
-   
-   CHECK( nodeV.getChild() == 0 );
-   CHECK( nodeV.getParent() == 0 );
-   CHECK( nodeV.getSibling() == 0);
-   
-   CHECK( nodeW.getChild() == 0 );
-   CHECK( nodeW.getParent() == 0);
-   CHECK( nodeW.getSibling() == 0);
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == 0 );
+	CHECK( nodeN.getSibling() == 0 );
+
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == 0 );
+	CHECK( nodeO.getSibling() == 0 );
+
+	CHECK( nodeP.getChild() == 0 );
+	CHECK( nodeP.getParent() == 0 );
+	CHECK( nodeP.getSibling() == 0 );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == 0 );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == 0 );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == 0 );
+	CHECK( nodeS.getParent() == 0 );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == 0 );
+	CHECK( nodeT.getSibling() == 0 );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == 0 );
+	CHECK( nodeU.getSibling() == 0 );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == 0 );
+	CHECK( nodeV.getSibling() == 0 );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == 0 );
+	CHECK( nodeW.getSibling() == 0 );
+}
+
+TEST( fullTree_CheckLevel_C_children_remove_C, PCSNode_group ) {
+	PCSTree tree;
+	PCSTreeInfo info;
+	PCSNode  *root;
+
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
+
+	root = tree.getRoot();
+
+	tree.insert( &nodeRoot, root );
+
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
+
+	tree.getInfo( info );
+
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
+
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
+
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
+
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
+
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
+
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
+
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
+
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
+
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
+
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
+
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
+
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
+
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
+
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
+
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
+
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
+
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
+
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
+
+	tree.remove( &nodeA );
+	tree.remove( &nodeB );
+	tree.remove( &nodeC );
+
+	tree.getInfo( info );
+
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 1 );
+	CHECK( info.numNodes == 1 );
+
+	CHECK( nodeRoot.getChild() == 0 );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
+
+	CHECK( nodeA.getChild() == 0 );
+	CHECK( nodeA.getParent() == 0 );
+	CHECK( nodeA.getSibling() == 0 );
+
+	CHECK( nodeB.getChild() == 0 );
+	CHECK( nodeB.getParent() == 0 );
+	CHECK( nodeB.getSibling() == 0 );
+
+	CHECK( nodeC.getChild() == 0 );
+	CHECK( nodeC.getParent() == 0 );
+	CHECK( nodeC.getSibling() == 0 );
+
+	CHECK( nodeD.getChild() == 0 );
+	CHECK( nodeD.getParent() == 0 );
+	CHECK( nodeD.getSibling() == 0 );
+
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == 0 );
+	CHECK( nodeE.getSibling() == 0 );
+
+	CHECK( nodeI.getChild() == 0 );
+	CHECK( nodeI.getParent() == 0 );
+	CHECK( nodeI.getSibling() == 0 );
+
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == 0 );
+	CHECK( nodeK.getSibling() == 0 );
+
+	CHECK( nodeL.getChild() == 0 );
+	CHECK( nodeL.getParent() == 0 );
+	CHECK( nodeL.getSibling() == 0 );
+
+	CHECK( nodeR.getChild() == 0 );
+	CHECK( nodeR.getParent() == 0 );
+	CHECK( nodeR.getSibling() == 0 );
+
+	CHECK( nodeF.getChild() == 0 );
+	CHECK( nodeF.getParent() == 0 );
+	CHECK( nodeF.getSibling() == 0 );
+
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == 0 );
+	CHECK( nodeG.getSibling() == 0 );
+
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == 0 );
+	CHECK( nodeJ.getSibling() == 0 );
+
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == 0 );
+	CHECK( nodeM.getSibling() == 0 );
+
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == 0 );
+	CHECK( nodeN.getSibling() == 0 );
+
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == 0 );
+	CHECK( nodeO.getSibling() == 0 );
+
+	CHECK( nodeP.getChild() == 0 );
+	CHECK( nodeP.getParent() == 0 );
+	CHECK( nodeP.getSibling() == 0 );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == 0 );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == 0 );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == 0 );
+	CHECK( nodeS.getParent() == 0 );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == 0 );
+	CHECK( nodeT.getSibling() == 0 );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == 0 );
+	CHECK( nodeU.getSibling() == 0 );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == 0 );
+	CHECK( nodeV.getSibling() == 0 );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == 0 );
+	CHECK( nodeW.getSibling() == 0 );
+}
+
+TEST( fullTree_CheckLevel_C_children_remove_root, PCSNode_group ) {
+	PCSTree tree;
+	PCSTreeInfo info;
+	PCSNode  *root;
+
+	PCSNode nodeRoot( "Root" );
+	PCSNode nodeA( "Node_A" );
+	PCSNode nodeB( "Node_B" );
+	PCSNode nodeC( "Node_C" );
+	PCSNode nodeD( "Node_D" );
+	PCSNode nodeE( "Node_E" );
+	PCSNode nodeI( "Node_I" );
+	PCSNode nodeK( "Node_K" );
+	PCSNode nodeL( "Node_L" );
+	PCSNode nodeR( "Node_R" );
+	PCSNode nodeF( "Node_F" );
+	PCSNode nodeG( "Node_G" );
+	PCSNode nodeJ( "Node_J" );
+	PCSNode nodeM( "Node_M" );
+	PCSNode nodeN( "Node_N" );
+	PCSNode nodeO( "Node_O" );
+	PCSNode nodeP( "Node_P" );
+	PCSNode nodeQ( "Node_Q" );
+	PCSNode nodeH( "Node_H" );
+	PCSNode nodeS( "Node_S" );
+	PCSNode nodeT( "Node_T" );
+	PCSNode nodeU( "Node_U" );
+	PCSNode nodeV( "Node_V" );
+	PCSNode nodeW( "Node_W" );
+
+	root = tree.getRoot();
+
+	tree.insert( &nodeRoot, root );
+
+	tree.insert( &nodeC, &nodeRoot );
+	tree.insert( &nodeB, &nodeRoot );
+	tree.insert( &nodeA, &nodeRoot );
+	tree.insert( &nodeI, &nodeA );
+	tree.insert( &nodeE, &nodeA );
+	tree.insert( &nodeD, &nodeA );
+	tree.insert( &nodeL, &nodeB );
+	tree.insert( &nodeK, &nodeB );
+	tree.insert( &nodeR, &nodeC );
+	tree.insert( &nodeF, &nodeD );
+	tree.insert( &nodeJ, &nodeI );
+	tree.insert( &nodeG, &nodeI );
+	tree.insert( &nodeN, &nodeL );
+	tree.insert( &nodeM, &nodeL );
+	tree.insert( &nodeQ, &nodeR );
+	tree.insert( &nodeP, &nodeR );
+	tree.insert( &nodeO, &nodeR );
+	tree.insert( &nodeH, &nodeF );
+	tree.insert( &nodeS, &nodeP );
+	tree.insert( &nodeW, &nodeS );
+	tree.insert( &nodeV, &nodeS );
+	tree.insert( &nodeU, &nodeS );
+	tree.insert( &nodeT, &nodeS );
+
+	tree.getInfo( info );
+
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 6 );
+	CHECK( info.numNodes == 24 );
+
+	CHECK( nodeRoot.getChild() == &nodeA );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
+
+	CHECK( nodeA.getChild() == &nodeD );
+	CHECK( nodeA.getParent() == &nodeRoot );
+	CHECK( nodeA.getSibling() == &nodeB );
+
+	CHECK( nodeB.getChild() == &nodeK );
+	CHECK( nodeB.getParent() == &nodeRoot );
+	CHECK( nodeB.getSibling() == &nodeC );
+
+	CHECK( nodeC.getChild() == &nodeR );
+	CHECK( nodeC.getParent() == &nodeRoot );
+	CHECK( nodeC.getSibling() == 0 );
+
+	CHECK( nodeD.getChild() == &nodeF );
+	CHECK( nodeD.getParent() == &nodeA );
+	CHECK( nodeD.getSibling() == &nodeE );
+
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == &nodeA );
+	CHECK( nodeE.getSibling() == &nodeI );
+
+	CHECK( nodeI.getChild() == &nodeG );
+	CHECK( nodeI.getParent() == &nodeA );
+	CHECK( nodeI.getSibling() == 0 );
+
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == &nodeB );
+	CHECK( nodeK.getSibling() == &nodeL );
+
+	CHECK( nodeL.getChild() == &nodeM );
+	CHECK( nodeL.getParent() == &nodeB );
+	CHECK( nodeL.getSibling() == 0 );
+
+	CHECK( nodeR.getChild() == &nodeO );
+	CHECK( nodeR.getParent() == &nodeC );
+	CHECK( nodeR.getSibling() == 0 );
+
+	CHECK( nodeF.getChild() == &nodeH );
+	CHECK( nodeF.getParent() == &nodeD );
+	CHECK( nodeF.getSibling() == 0 );
+
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == &nodeI );
+	CHECK( nodeG.getSibling() == &nodeJ );
+
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == &nodeI );
+	CHECK( nodeJ.getSibling() == 0 );
+
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == &nodeL );
+	CHECK( nodeM.getSibling() == &nodeN );
+
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == &nodeL );
+	CHECK( nodeN.getSibling() == 0 );
+
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == &nodeR );
+	CHECK( nodeO.getSibling() == &nodeP );
+
+	CHECK( nodeP.getChild() == &nodeS );
+	CHECK( nodeP.getParent() == &nodeR );
+	CHECK( nodeP.getSibling() == &nodeQ );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == &nodeR );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == &nodeF );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == &nodeT );
+	CHECK( nodeS.getParent() == &nodeP );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == &nodeS );
+	CHECK( nodeT.getSibling() == &nodeU );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == &nodeS );
+	CHECK( nodeU.getSibling() == &nodeV );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == &nodeS );
+	CHECK( nodeV.getSibling() == &nodeW );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == &nodeS );
+	CHECK( nodeW.getSibling() == 0 );
+
+	tree.remove( &nodeRoot );
+
+	tree.getInfo( info );
+
+	CHECK( info.maxNodeCount == 24 );
+	CHECK( info.maxLevelCount == 6 );
+	CHECK( info.numLevels == 0 );
+	CHECK( info.numNodes == 0 );
+
+	CHECK( nodeRoot.getChild() == 0 );
+	CHECK( nodeRoot.getParent() == 0 );
+	CHECK( nodeRoot.getSibling() == 0 );
+
+	CHECK( nodeA.getChild() == 0 );
+	CHECK( nodeA.getParent() == 0 );
+	CHECK( nodeA.getSibling() == 0 );
+
+	CHECK( nodeB.getChild() == 0 );
+	CHECK( nodeB.getParent() == 0 );
+	CHECK( nodeB.getSibling() == 0 );
+
+	CHECK( nodeC.getChild() == 0 );
+	CHECK( nodeC.getParent() == 0 );
+	CHECK( nodeC.getSibling() == 0 );
+
+	CHECK( nodeD.getChild() == 0 );
+	CHECK( nodeD.getParent() == 0 );
+	CHECK( nodeD.getSibling() == 0 );
+
+	CHECK( nodeE.getChild() == 0 );
+	CHECK( nodeE.getParent() == 0 );
+	CHECK( nodeE.getSibling() == 0 );
+
+	CHECK( nodeI.getChild() == 0 );
+	CHECK( nodeI.getParent() == 0 );
+	CHECK( nodeI.getSibling() == 0 );
+
+	CHECK( nodeK.getChild() == 0 );
+	CHECK( nodeK.getParent() == 0 );
+	CHECK( nodeK.getSibling() == 0 );
+
+	CHECK( nodeL.getChild() == 0 );
+	CHECK( nodeL.getParent() == 0 );
+	CHECK( nodeL.getSibling() == 0 );
+
+	CHECK( nodeR.getChild() == 0 );
+	CHECK( nodeR.getParent() == 0 );
+	CHECK( nodeR.getSibling() == 0 );
+
+	CHECK( nodeF.getChild() == 0 );
+	CHECK( nodeF.getParent() == 0 );
+	CHECK( nodeF.getSibling() == 0 );
+
+	CHECK( nodeG.getChild() == 0 );
+	CHECK( nodeG.getParent() == 0 );
+	CHECK( nodeG.getSibling() == 0 );
+
+	CHECK( nodeJ.getChild() == 0 );
+	CHECK( nodeJ.getParent() == 0 );
+	CHECK( nodeJ.getSibling() == 0 );
+
+	CHECK( nodeM.getChild() == 0 );
+	CHECK( nodeM.getParent() == 0 );
+	CHECK( nodeM.getSibling() == 0 );
+
+	CHECK( nodeN.getChild() == 0 );
+	CHECK( nodeN.getParent() == 0 );
+	CHECK( nodeN.getSibling() == 0 );
+
+	CHECK( nodeO.getChild() == 0 );
+	CHECK( nodeO.getParent() == 0 );
+	CHECK( nodeO.getSibling() == 0 );
+
+	CHECK( nodeP.getChild() == 0 );
+	CHECK( nodeP.getParent() == 0 );
+	CHECK( nodeP.getSibling() == 0 );
+
+	CHECK( nodeQ.getChild() == 0 );
+	CHECK( nodeQ.getParent() == 0 );
+	CHECK( nodeQ.getSibling() == 0 );
+
+	CHECK( nodeH.getChild() == 0 );
+	CHECK( nodeH.getParent() == 0 );
+	CHECK( nodeH.getSibling() == 0 );
+
+	CHECK( nodeS.getChild() == 0 );
+	CHECK( nodeS.getParent() == 0 );
+	CHECK( nodeS.getSibling() == 0 );
+
+	CHECK( nodeT.getChild() == 0 );
+	CHECK( nodeT.getParent() == 0 );
+	CHECK( nodeT.getSibling() == 0 );
+
+	CHECK( nodeU.getChild() == 0 );
+	CHECK( nodeU.getParent() == 0 );
+	CHECK( nodeU.getSibling() == 0 );
+
+	CHECK( nodeV.getChild() == 0 );
+	CHECK( nodeV.getParent() == 0 );
+	CHECK( nodeV.getSibling() == 0 );
+
+	CHECK( nodeW.getChild() == 0 );
+	CHECK( nodeW.getParent() == 0 );
+	CHECK( nodeW.getSibling() == 0 );
 }
