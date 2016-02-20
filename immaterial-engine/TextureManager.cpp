@@ -5,16 +5,16 @@
 #include "TGAHeader.h"
 #include "md5.h"
 
-TextureMan::TextureMan()
+TextureManager::TextureManager()
 	: active( nullptr ) { }
 
 // singleton
-TextureMan* TextureMan::privGetInstance() {
-	static TextureMan textMan;
+TextureManager* TextureManager::privGetInstance() {
+	static TextureManager textMan;
 	return &textMan;
 }
 
-void TextureMan::AddTexture( char * const inAssetName, const TextureName inName ) {
+void TextureManager::AddTexture( char * const inAssetName, const TextureName inName ) {
 	GLuint textureID;
 	auto pTextureID = &textureID;
 
@@ -33,7 +33,7 @@ void TextureMan::AddTexture( char * const inAssetName, const TextureName inName 
 }
 
 // for use when loading textures from .ctf (converted TGA file)
-bool TextureMan::LoadTexture( char * const fileName, char * const textID ) {
+bool TextureManager::LoadTexture( char * const fileName, char * const textID ) {
 	GLuint textureID;
 	auto pTextureID = &textureID;
 
@@ -57,7 +57,7 @@ bool TextureMan::LoadTexture( char * const fileName, char * const textID ) {
 	return true;
 }
 
-bool TextureMan::LoadBufferedTexture( unsigned char * const textBuff, tffInfo & inHdr ) {
+bool TextureManager::LoadBufferedTexture( unsigned char * const textBuff, tffInfo & inHdr ) {
 	GLuint textureID;
 	auto pTextureID = &textureID;
 
@@ -80,7 +80,7 @@ bool TextureMan::LoadBufferedTexture( unsigned char * const textBuff, tffInfo & 
 	return true;
 }
 
-GLuint TextureMan::Find( const GLuint inName ) {
+GLuint TextureManager::Find( const GLuint inName ) {
 	// get instance
 	auto pTextMan = privGetInstance();
 
@@ -111,7 +111,7 @@ GLuint TextureMan::Find( const GLuint inName ) {
 	return walker->textureID;
 }
 
-void TextureMan::DeleteTextures() {
+void TextureManager::DeleteTextures() {
 	// delete textures from GPU
 	auto walker = static_cast< TextureNode * >(privGetInstance()->active);
 	auto tmp = walker;
@@ -123,7 +123,7 @@ void TextureMan::DeleteTextures() {
 	}
 }
 
-void TextureMan::privAddToFront( TextureNodeLink *node, TextureNodeLink *&head ) const {
+void TextureManager::privAddToFront( TextureNodeLink *node, TextureNodeLink *&head ) const {
 	assert( node );
 
 	// empty list
@@ -137,14 +137,14 @@ void TextureMan::privAddToFront( TextureNodeLink *node, TextureNodeLink *&head )
 	}
 }
 
-void TextureMan::privLoadTexture( char * const inAssetName, GLuint *&textureID ) const {
+void TextureManager::privLoadTexture( char * const inAssetName, GLuint *&textureID ) const {
 	// get handle to texture, bind it, then load it.
 	glGenTextures( 1, textureID );
 	glBindTexture( GL_TEXTURE_2D, *textureID );
 	this->privLoadTGATexture( inAssetName, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE );
 }
 
-void TextureMan::privLoadMyTexture( unsigned char * const tgaData, GLuint *&textureID ) const {
+void TextureManager::privLoadMyTexture( unsigned char * const tgaData, GLuint *&textureID ) const {
 	// get handle to texture, bind it, then load it.
 	glGenTextures( 1, textureID );
 	glBindTexture( GL_TEXTURE_2D, *textureID );
@@ -152,7 +152,7 @@ void TextureMan::privLoadMyTexture( unsigned char * const tgaData, GLuint *&text
 }
 
 // Load a TGA as a 2D Texture. Completely initialize the state
-bool TextureMan::privLoadTGATexture( char * const szFileName, GLenum minFilter, GLenum magFilter, GLenum wrapMode ) const {
+bool TextureManager::privLoadTGATexture( char * const szFileName, GLenum minFilter, GLenum magFilter, GLenum wrapMode ) const {
 	GLbyte *pBits;
 	int nWidth, nHeight, nComponents;
 	GLenum eFormat;
@@ -181,7 +181,7 @@ bool TextureMan::privLoadTGATexture( char * const szFileName, GLenum minFilter, 
 	return true;
 }
 
-bool TextureMan::privLoadMyTGATexture( unsigned char * const tgaData, GLenum minFilter, GLenum magFilter, GLenum wrapMode ) const {
+bool TextureManager::privLoadMyTGATexture( unsigned char * const tgaData, GLenum minFilter, GLenum magFilter, GLenum wrapMode ) const {
 	// my TGA Function
 	GLbyte *pBits;
 	int nWidth, nHeight, nComponents;

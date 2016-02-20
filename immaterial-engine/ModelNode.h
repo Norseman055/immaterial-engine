@@ -23,6 +23,6 @@ public:
 	// name of model from file
 	char modelName[MODEL_NAME_SIZE];
 
-	// hashed model name
+	// hashed model name for faster compare
 	GLuint hashName;
 };

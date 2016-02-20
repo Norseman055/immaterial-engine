@@ -73,11 +73,11 @@ void LoadContent() {
 	ModelMan::LoadModel( "torus.cdm" );
 
 	// Load textures
-	TextureMan::AddTexture( "NULL.tga", NOT_INITIALIZED );
-	TextureMan::AddTexture( "Rocks.tga", ROCKS );
-	TextureMan::AddTexture( "Stone.tga", STONES );
-	TextureMan::AddTexture( "RedBrick.tga", RED_BRICK );
-	TextureMan::AddTexture( "Duckweed.tga", DUCKWEED );
+	TextureManager::AddTexture( "NULL.tga", NOT_INITIALIZED );
+	TextureManager::AddTexture( "Rocks.tga", ROCKS );
+	TextureManager::AddTexture( "Stone.tga", STONES );
+	TextureManager::AddTexture( "RedBrick.tga", RED_BRICK );
+	TextureManager::AddTexture( "Duckweed.tga", DUCKWEED );
 };
 
 void GameLoop() {

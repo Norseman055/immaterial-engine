@@ -80,7 +80,7 @@ void SphereObject::transform() {
 
 void SphereObject::setRenderState() {
 	// Bind the texture
-	GLuint textureID = TextureMan::Find( this->Texture );
+	GLuint textureID = TextureManager::Find( this->Texture );
 	assert( textureID != -1 );
 	glBindTexture( GL_TEXTURE_2D, textureID );
 

@@ -99,7 +99,7 @@ void GenObject::transform() {
 
 void GenObject::setRenderState() {
 	// Bind the texture
-	auto textureID = TextureMan::Find( this->Texture );
+	auto textureID = TextureManager::Find( this->Texture );
 	assert( textureID != -1 );
 	glBindTexture( GL_TEXTURE_2D, textureID );
 

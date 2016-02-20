@@ -3,7 +3,7 @@
 #include "TextureNode.h"
 #include "GraphicsObjectFileHdr.h"
 
-class TextureMan {
+class TextureManager {
 public:
 	static void AddTexture( char * const, const TextureName );
 	static bool LoadTexture( char * const, char * const );
@@ -13,8 +13,8 @@ public:
 
 private:
 	// singleton
-	static TextureMan *privGetInstance();
-	TextureMan();
+	static TextureManager *privGetInstance();
+	TextureManager();
 
 	void privLoadTexture( char * const inAssetName, GLuint *&textureID ) const;
 	void privLoadMyTexture( unsigned char * const tgaData, GLuint *&textureID ) const;

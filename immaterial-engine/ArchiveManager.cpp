@@ -45,7 +45,7 @@ void ArchiveMan::LoadArchive( const char * fileName ) {
 					ferror = File::read( fh, texBuffer, cHead.chunkSize - sizeof( tffInfo ) );
 					assert( ferror == FILE_SUCCESS );
 
-					TextureMan::LoadBufferedTexture( texBuffer, info );
+					TextureManager::LoadBufferedTexture( texBuffer, info );
 
 					delete[] texBuffer;
 					break;

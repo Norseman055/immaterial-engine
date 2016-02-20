@@ -124,9 +124,6 @@
     <Filter Include="Generics">
       <UniqueIdentifier>{7596ad05-e4eb-4c5b-adfe-e11a890b2706}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Generics\Generic Headers">
-      <UniqueIdentifier>{dd62cbd2-5b4f-4809-84f8-61fd79fd63b0}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libs\ReleaseLibs\File\include\File.h">
@@ -328,10 +325,10 @@
       <Filter>_Math\include</Filter>
     </ClInclude>
     <ClInclude Include="Manager.h">
-      <Filter>Generics\Generic Headers</Filter>
+      <Filter>Generics</Filter>
     </ClInclude>
     <ClInclude Include="NodeLink.h">
-      <Filter>Generics\Generic Headers</Filter>
+      <Filter>Generics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
