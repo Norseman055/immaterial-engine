@@ -16,9 +16,7 @@ public:
 private:
 	AnimControllerMan();
 	static AnimControllerMan* privGetInstance();
-	void privAddToFront( AnimController *inNode, AnimController* &head );
-	const void privWalkAnimNode( GraphicsObject *node );
-	const void setBonePose( GraphicsObject *node );
+	void privAddToFront( AnimController *inNode, AnimController* &head ) const;
 
 	// data
 	int currIndex;

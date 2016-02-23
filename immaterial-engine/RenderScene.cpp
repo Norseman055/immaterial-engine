@@ -13,7 +13,7 @@ void RenderScene() {
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT );
 
 	// Our new camera, make sure everything is consistent
-	CameraMan::GetCurrCamera()->updateCamera();
+	CameraManager::GetCurrentCamera()->updateCamera();
 
 	// Process & Draw the objects
 	GraphicsObjMan::DrawObjects();

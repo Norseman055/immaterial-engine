@@ -15,13 +15,11 @@ public:
 	// for bounding volumes
 	void setPos( const Vect & v );
 	void setRad( const float radius );
-
 	void setExtSphere( const Sphere& );
 	void setExtMatrix( const Matrix& );
 
 	// Specific to Sphere
 	void setStartPos( const Vect& );
-	Vect getStartPos() override;
 	void setLightColor( const Vect& );
 	void setLightPos( const Vect& );
 	void setTextureName( const TextureName );
@@ -29,6 +27,7 @@ public:
 	Sphere getSphere() const;
 
 	// must define, base class has abstract methods
+	Vect getStartPos() override;
 	void transform( void ) override;
 	void draw( void ) override;
 	void setRenderState( void ) override;

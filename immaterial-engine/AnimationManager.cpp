@@ -26,7 +26,7 @@ void AnimationMan::LoadAnimationBuffer( unsigned char* const animBuff, const Ani
 		node->addBucket( tmp );
 
 		// advance pointers
-		KTHdr = reinterpret_cast< KeyTimeHdr* >(reinterpret_cast< unsigned int >( ptr ) +(sizeof( Bone ) * aHdr.numBones));
+		KTHdr = reinterpret_cast< KeyTimeHdr* >(reinterpret_cast< unsigned int >( ptr ) +sizeof( Bone ) * aHdr.numBones);
 		ptr = KTHdr->bArray;
 	}
 

@@ -1,40 +1,30 @@
-#include "OpenGL.h"
+#include "CameraManager.h"
+
+#include "GraphicsManager.h"
 #include "DEBUGGING.h"
 
-#include "CameraManager.h"
-#include "GraphicsManager.h"
-
-CameraMan::CameraMan()
-	: active( nullptr ), currCamera( nullptr ), camState( ORBIT ) { }
-
-// singleton
-CameraMan* CameraMan::privGetInstance() {
-	static CameraMan cameraMan;
-	return &cameraMan;
-}
-
-void CameraMan::LoadCameras() {
+void CameraManager::LoadCameras() {
 	// Create camera0 (watches objects)
-	auto cam0 = new CameraObject( CAMERA_CULLING );
+	auto cam0 = new Camera( CAMERA_CULLING );
 
 	cam0->setViewport( 0, 0, GAME_WIDTH, GAME_HEIGHT );
 	cam0->setPerspective( 35.0f, float( GAME_WIDTH ) / float( GAME_HEIGHT ), 1.0f, 10000.0f );
 	cam0->setOrientAndPosition( Vect( 0.0f, 1.0f, 0.0f ), Vect( 0.0f, 0.0f, 10.0f ), Vect( 180.0f, 0.0f, 2000.0f ) );
 	cam0->updateCamera();
 
-	AddCamera( cam0 );
+	Add( new CameraNode( cam0 ) );
 	GraphicsObjMan::AddDebugObject( cam0 );
 
 	// create overview camera (watches camera0)
-	auto cam1 = new CameraObject( CAMERA_OVERVIEW );
+	auto cam1 = new Camera( CAMERA_OVERVIEW );
 
 	cam1->setViewport( 0, 0, GAME_WIDTH, GAME_HEIGHT );
 	cam1->setPerspective( 35.0f, float( GAME_WIDTH ) / float( GAME_HEIGHT ), 1.0f, 10000.0f );
 	cam1->setOrientAndPosition( Vect( 0.0f, 0.0f, 1.0f ), Vect( 0.0f, 0.0f, 4.0f ), Vect( 500.0f, 0.0f, 4.0f ) );
 
-	AddCamera( cam1 );
+	Add( new CameraNode( cam1 ) );
 
-	SetCurrCamera( cam0 );
+	SetCurrentCamera( cam0 );
 
 	// create the camera model
 	auto myCameraModel = new CameraModel;
@@ -43,135 +33,85 @@ void CameraMan::LoadCameras() {
 	cam0->setCameraModel( myCameraModel );
 }
 
-void CameraMan::AddCamera( CameraObject* const inCamera ) {
-	// get instance
-	auto cMan = privGetInstance();
-
-	// create a camera node
-	auto node = new CameraNode;
-	node->set( inCamera );
-
-	// add to front of manager list
-	cMan->privAddToFront( node, cMan->active );
-}
-
-void CameraMan::RemoveCamera() {
-	// get instance
-	auto cMan = privGetInstance();
-
+void CameraManager::RemoveCurrentCamera() {
 	// remove current camera from the list
-	auto walker = static_cast< CameraNode * >(cMan->active);
-	auto tmp = cMan->NextCamera();
+	auto walker = static_cast< CameraNode * >(GetObjectList()->getRoot()->getChild());
+	auto tmp = GetNextCamera();
 
 	// do not remove the culling camera. i want that one at all times.
-	if ( cMan->currCamera->getName() != CAMERA_CULLING ) {
+	auto currCamera = GetCurrentCamera();
+	if ( currCamera->getName() != CAMERA_CULLING ) {
 		while ( walker != nullptr ) {
-			if ( walker->myCamera == cMan->currCamera ) {
-				cMan->privRemoveFromList( walker, cMan->active );
-				cMan->SetCurrCamera( tmp );
+			if ( walker->getData() == currCamera ) {
+				Remove( walker );
+				SetCurrentCamera( tmp );
 			}
-			walker = static_cast< CameraNode * >(walker->next);
+			walker = static_cast< CameraNode * >(walker->getSibling());
 		}
 	}
 }
 
-void CameraMan::DeleteCameras() {
-	auto walker = static_cast< CameraNode * >(privGetInstance()->active);
-	auto tmp = walker;
-	while ( walker != nullptr ) {
-		walker = static_cast< CameraNode* >(walker->next);
-		delete tmp;
-		tmp = walker;
-	}
+void CameraManager::SetCurrentCamera( Camera* const inCam ) {
+	privGetInstance()->currentCamera = inCam;
 }
 
-void CameraMan::SetCurrCamera( CameraObject* const inCam ) {
-	privGetInstance()->currCamera = inCam;
-}
-
-void CameraMan::SwitchState() {
+void CameraManager::SwitchState() {
 	auto cMan = privGetInstance();
 
-	if ( cMan->camState == ORBIT ) {
-		cMan->camState = ROTATE;
+	if ( cMan->cameraState == ORBIT ) {
+		cMan->cameraState = ROTATE;
 	} else {
-		cMan->camState = ORBIT;
+		cMan->cameraState = ORBIT;
 	}
 
 	out( "Camera view state changed.\n" );
 }
 
-CameraObject* CameraMan::Find( const CameraName inName ) {
+Camera* CameraManager::Find( const CameraName inName ) {
 	// find the camera node
-	auto walker = static_cast< CameraNode * >(privGetInstance()->active);
+	auto walker = static_cast< CameraNode * >(GetObjectList()->getRoot()->getChild());
 
 	while ( walker != nullptr ) {
-		if ( walker->myCamera->getName() == inName ) {
+		if ( walker->getData()->getName() == inName ) {
 			break;
 		}
-		walker = static_cast< CameraNode * >(walker->next);
+		walker = static_cast< CameraNode * >(walker->getSibling());
 	}
 
 	if ( walker == nullptr ) {
-		walker = static_cast< CameraNode * >(privGetInstance()->active);
+		walker = static_cast< CameraNode * >(GetObjectList()->getRoot()->getChild());
 	}
 
-	return walker->myCamera;
+	return walker->getData();
 }
 
-CameraObject* CameraMan::GetCurrCamera() {
-	return privGetInstance()->currCamera;
+Camera* CameraManager::GetCurrentCamera() {
+	return privGetInstance()->currentCamera;
 }
 
-CameraObject* CameraMan::NextCamera() {
-	auto cMan = CameraMan::privGetInstance();
+Camera* CameraManager::GetNextCamera() {
+	auto cMan = privGetInstance();
 
 	// return next camera in list
-	auto walker = reinterpret_cast< CameraNode* >(cMan->currCamera);
+	auto walker = reinterpret_cast< CameraNode* >(cMan->currentCamera);
 
-	if ( walker->next != nullptr ) {
-		walker = static_cast< CameraNode* >(walker->next);
+	if ( walker->getSibling() != nullptr ) {
+		walker = static_cast< CameraNode* >(walker->getSibling());
 	} else {
-		walker = static_cast< CameraNode* >(cMan->active);
+		walker = static_cast< CameraNode* >(GetObjectList()->getRoot()->getChild());
 	}
 
-	return walker->myCamera;
+	return walker->getData();
 }
 
-CameraState CameraMan::GetState() {
-	return privGetInstance()->camState;
+CameraState CameraManager::GetState() {
+	return privGetInstance()->cameraState;
 }
 
-void CameraMan::privAddToFront( CameraNodeLink* const node, CameraNodeLink*& head ) const {
-	assert( node != nullptr );
-
-	if ( head == nullptr ) {
-		head = node;
-	} else {
-		node->next = head;
-		head->prev = node;
-		head = node;
-	}
+CameraManager* CameraManager::privGetInstance() {
+	static CameraManager instance;
+	return &instance;
 }
 
-void CameraMan::privRemoveFromList( CameraNodeLink* const node, CameraNodeLink *&head ) const {
-	assert( node != nullptr );
-
-	if ( node->prev == nullptr ) {
-		if ( node->next == nullptr ) {
-			// only in list
-			head = nullptr;
-		} else {
-			// first in list
-			node->next->prev = nullptr;
-			head = node->next;
-		}
-	} else if ( node->next == nullptr ) {
-		// last on list
-		node->prev->next = nullptr;
-	} else {
-		// middle of list
-		node->next->prev = node->prev;
-		node->prev->next = node->next;
-	}
-}
+CameraManager::CameraManager()
+	: currentCamera( nullptr ), cameraState( ORBIT ) { }

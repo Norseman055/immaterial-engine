@@ -167,8 +167,8 @@ PyramidObject* AnimController::getSkeleton() const {
 AnimController::AnimController( AnimNode *inBucket, PyramidObject *inRoot )
 	: index( -1 ), pMode( Loop ), animBucket( inBucket ), skeletonRoot( inRoot ), next( nullptr ), prev( nullptr ) {
 	setSkeletonController();
-	this->result = new Frame_Bucket;
-	this->result->pBone = new Bone;
+	this->result = new Frame_Bucket();
+	this->result->pBone = new Bone();
 }
 
 void AnimController::setSkeletonController() const {

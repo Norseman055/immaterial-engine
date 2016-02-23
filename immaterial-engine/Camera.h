@@ -1,6 +1,5 @@
 #pragma once
 
-#include "MathEngine.h"
 #include "GraphicsObject.h"
 #include "CameraModel.h"
 
@@ -16,7 +15,7 @@ enum CullResult {
 	CULL_OUTSIDE
 };
 
-class CameraObject : public GraphicsObject {
+class Camera : public GraphicsObject {
 public:
 	CullResult CullTest( const Sphere& ) const;
 
@@ -65,8 +64,8 @@ public:
 	void getFarBottomLeft( Vect& ) const;
 	void getFarBottomRight( Vect& ) const;
 
-	explicit CameraObject( CameraName name );
-	CameraObject();
+	explicit Camera( CameraName name );
+	Camera();
 
 private:  // methods
 	void privSetViewState() const;

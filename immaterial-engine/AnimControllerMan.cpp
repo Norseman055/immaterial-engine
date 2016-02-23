@@ -11,8 +11,7 @@ void AnimControllerMan::AddController( AnimController* const inControl ) {
 }
 
 void AnimControllerMan::DeleteControllers() {
-	auto acMan = privGetInstance();
-	auto walker = acMan->controlList;
+	auto walker = privGetInstance()->controlList;
 	auto tmp = walker;
 	while ( walker != nullptr ) {
 		walker = walker->next;
@@ -22,9 +21,7 @@ void AnimControllerMan::DeleteControllers() {
 }
 
 void AnimControllerMan::ProcessAnimation( Time &tCurr ) {
-	auto acMan = privGetInstance();
-
-	auto walker = acMan->controlList;
+	auto walker = privGetInstance()->controlList;
 	while ( walker != nullptr ) {
 		walker->processAnimation( tCurr );
 		walker = walker->next;
@@ -32,17 +29,16 @@ void AnimControllerMan::ProcessAnimation( Time &tCurr ) {
 }
 
 void AnimControllerMan::SetAnimationPose( Time &tCurr ) {
-	auto acMan = privGetInstance();
 	ProcessAnimation( tCurr );
 
-	auto walker = acMan->controlList;
+	auto walker = privGetInstance()->controlList;
 	while ( walker != nullptr ) {
 		walker->walkAnimNode();
 		walker = walker->next;
 	}
 }
 
-void AnimControllerMan::privAddToFront( AnimController *node, AnimController *& head ) {
+void AnimControllerMan::privAddToFront( AnimController *node, AnimController *& head ) const {
 	assert( node != nullptr );
 
 	if ( head == nullptr ) {

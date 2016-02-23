@@ -30,7 +30,7 @@ void ArchiveMan::LoadArchive( const char * fileName ) {
 					ferror = File::read( fh, buffer, cHead.chunkSize );
 					assert( ferror == FILE_SUCCESS );
 
-					ModelMan::LoadBufferedModel( buffer );
+					ModelManager::LoadBufferedModel( buffer );
 
 					delete[] buffer;
 					break;

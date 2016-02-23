@@ -127,7 +127,7 @@
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="CameraModel.h" />
     <ClInclude Include="CameraNode.h" />
-    <ClInclude Include="CameraObject.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="ChunkHeader.h" />
     <ClInclude Include="DEBUGGING.h" />
     <ClInclude Include="GenericObject.h" />
@@ -151,6 +151,7 @@
     <ClInclude Include="ShaderTypes.h" />
     <ClInclude Include="SphereModel.h" />
     <ClInclude Include="SphereObject.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="TextureNode.h" />
     <ClInclude Include="TGAHeader.h" />
@@ -249,8 +250,7 @@
     <ClCompile Include="ArchiveManager.cpp" />
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="CameraModel.cpp" />
-    <ClCompile Include="CameraNode.cpp" />
-    <ClCompile Include="CameraObject.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="FindVolume.cpp" />
     <ClCompile Include="GenericObject.cpp" />
     <ClCompile Include="GlobalState.cpp" />
@@ -267,7 +267,6 @@
     <ClCompile Include="SphereModel.cpp" />
     <ClCompile Include="SphereObject.cpp" />
     <ClCompile Include="TextureManager.cpp" />
-    <ClCompile Include="TextureNode.cpp" />
     <ClCompile Include="TGAHeader.cpp" />
     <ClCompile Include="UserInterface.cpp" />
   </ItemGroup>

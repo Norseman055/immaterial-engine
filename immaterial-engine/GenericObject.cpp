@@ -68,7 +68,7 @@ void GenObject::setStockShaderMode( const ShaderType inVal ) {
 };
 
 void GenObject::checkCulling() {
-	auto tmp = CameraMan::Find( CAMERA_CULLING );
+	auto tmp = CameraManager::Find( CAMERA_CULLING );
 	if ( tmp != nullptr ) {
 		if ( tmp->CullTest( this->sphereObj->getSphere() ) == CULL_INSIDE )
 			this->sphereObj->setLightColor( Vect( 0.0f, 1.0f, 0.0f, 0.0f ) );
@@ -94,16 +94,16 @@ void GenObject::transform() {
 	// Create the ModelView ( LocalToWorld * View)
 	// Some pipelines have the project concatenated, others don't
 	// Best to keep the separated, you can always join them with a quick multiply
-	this->ModelView = this->World * CameraMan::GetCurrCamera()->getViewMatrix();
+	this->ModelView = this->World * CameraManager::GetCurrentCamera()->getViewMatrix();
 };
 
 void GenObject::setRenderState() {
 	// Bind the texture
-	auto textureID = TextureManager::Find( this->Texture );
+	auto textureID = TextureManager::GetTextureID( this->Texture );
 	assert( textureID != -1 );
 	glBindTexture( GL_TEXTURE_2D, textureID );
 
-	auto cam = CameraMan::GetCurrCamera();
+	auto cam = CameraManager::GetCurrentCamera();
 	auto mvp = this->ModelView * cam->getProjMatrix();
 
 	// set the shader

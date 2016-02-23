@@ -95,20 +95,20 @@ static unsigned char PADDING[64] = {
    (a) += (b); \
   }
 #define GG(a, b, c, d, x, s, ac) \
-				  {(a) += G ((b), (c), (d)) + (x) + (UINT4)(ac); \
+					  {(a) += G ((b), (c), (d)) + (x) + (UINT4)(ac); \
    (a) = ROTATE_LEFT ((a), (s)); \
    (a) += (b); \
-				  }
+					  }
 #define HH(a, b, c, d, x, s, ac) \
-				  {(a) += H ((b), (c), (d)) + (x) + (UINT4)(ac); \
+					  {(a) += H ((b), (c), (d)) + (x) + (UINT4)(ac); \
    (a) = ROTATE_LEFT ((a), (s)); \
    (a) += (b); \
-				  }
+					  }
 #define II(a, b, c, d, x, s, ac) \
-				  {(a) += I ((b), (c), (d)) + (x) + (UINT4)(ac); \
+					  {(a) += I ((b), (c), (d)) + (x) + (UINT4)(ac); \
    (a) = ROTATE_LEFT ((a), (s)); \
    (a) += (b); \
-				  }
+					  }
 
 void MD5Init( MD5_CTX *mdContext ) {
 	mdContext->i[0] = mdContext->i[1] = static_cast< UINT4 >(0);

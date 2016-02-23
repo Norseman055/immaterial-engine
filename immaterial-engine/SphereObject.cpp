@@ -75,16 +75,16 @@ void SphereObject::transform() {
 	// Now apply the extern object so it moves and rotates the same
 	this->World = MapSphere * this->extWorld;
 
-	this->ModelView = this->World * CameraMan::GetCurrCamera()->getViewMatrix();
+	this->ModelView = this->World * CameraManager::GetCurrentCamera()->getViewMatrix();
 };
 
 void SphereObject::setRenderState() {
 	// Bind the texture
-	GLuint textureID = TextureManager::Find( this->Texture );
+	GLuint textureID = TextureManager::GetTextureID( this->Texture );
 	assert( textureID != -1 );
 	glBindTexture( GL_TEXTURE_2D, textureID );
 
-	CameraObject *cam = CameraMan::GetCurrCamera();
+	Camera *cam = CameraManager::GetCurrentCamera();
 	Matrix mvp = this->ModelView * cam->getProjMatrix();
 
 	// set the shader
@@ -98,6 +98,6 @@ void SphereObject::setRenderState() {
 };
 
 void SphereObject::draw() {
-	glBindVertexArray( ModelMan::Find( "sphere" )->vao );
+	glBindVertexArray( ModelManager::Find( "sphere" )->vao );
 	glDrawElements( GL_TRIANGLES, 200 * 3, GL_UNSIGNED_SHORT, 0 );
 };

@@ -1,18 +1,13 @@
 #include "ModelManager.h"
-#include "ModelNode.h"
 
-#include "DEBUGGING.h"
-#include "OpenGL.h"
 #include "File.h"
 
 #include "GraphicsObjectFileHdr.h"
 #include "md5.h"
 
-#include <string.h>
-
 void RitterSphere( Sphere &s, Vect *pt, int numPts );
 
-void ModelMan::LoadModel( const char * const inFileName ) {
+void ModelManager::LoadModel( const char * const inFileName ) {
 	assert( inFileName );
 
 	FileHandle fh;
@@ -118,7 +113,7 @@ void ModelMan::LoadModel( const char * const inFileName ) {
 	delete[] pVerts;
 }
 
-void ModelMan::LoadBufferedModel( unsigned char * const modelBuff ) {
+void ModelManager::LoadBufferedModel( unsigned char * const modelBuff ) {
 	assert( modelBuff );
 
 	// DELETE ME
@@ -131,7 +126,7 @@ void ModelMan::LoadBufferedModel( unsigned char * const modelBuff ) {
 	Model* myModel;
 
 	auto modelHdr = reinterpret_cast< gObjFileHdr * >(modelBuff);
-	auto vOffset = reinterpret_cast< MyVertex_stride * >(reinterpret_cast< unsigned int >( modelBuff ) + modelHdr->vertBufferOffset);
+	auto vOffset = reinterpret_cast< MyVertex_stride * >(reinterpret_cast< unsigned int >( modelBuff ) +modelHdr->vertBufferOffset);
 
 	// copy verts
 	pVerts = new MyVertex_stride[modelHdr->numVerts];
@@ -150,7 +145,7 @@ void ModelMan::LoadBufferedModel( unsigned char * const modelBuff ) {
 	}
 
 	// copy trilist
-	auto tOffset = reinterpret_cast< MyTriList * >(reinterpret_cast< unsigned int >( modelBuff ) + modelHdr->triListBufferOffset);
+	auto tOffset = reinterpret_cast< MyTriList * >(reinterpret_cast< unsigned int >( modelBuff ) +modelHdr->triListBufferOffset);
 	tlist = new MyTriList[modelHdr->numTriList];
 
 	for ( auto i = 0; i < modelHdr->numTriList; i++ ) {
@@ -210,7 +205,7 @@ void ModelMan::LoadBufferedModel( unsigned char * const modelBuff ) {
 	delete[] pVerts;
 }
 
-Model* ModelMan::Find( char * const inModelName ) {
+Model* ModelManager::Find( char * const inModelName ) {
 	assert( inModelName );
 
 	auto walker = static_cast< ModelNode * >(GetObjectList()->getRoot());

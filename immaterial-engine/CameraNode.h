@@ -1,20 +1,10 @@
 #pragma once
 
-class CameraObject;
+#include "Camera.h"
+#include "NodeLink.h"
 
-class CameraNodeLink {
+class CameraNode : public NodeLink<Camera> {
 public:
-	CameraNodeLink()
-		: next( nullptr ), prev( nullptr ) { }
-
-	CameraNodeLink *next;
-	CameraNodeLink *prev;
-};
-
-class CameraNode : public CameraNodeLink {
-public:
-	CameraNode();
-	void set( CameraObject* const );
-
-	CameraObject *myCamera;
+	CameraNode( Camera* const inCamera )
+		: NodeLink( inCamera ) { }
 };

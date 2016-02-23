@@ -2,6 +2,7 @@
 #include "UserInterface.h"
 #include "CameraManager.h"
 #include "GraphicsManager.h"
+#include "CameraNode.h"
 
 // -------------------------------------------------------------------------
 // Window has changed size, or has just been created. In either case, we need
@@ -20,7 +21,7 @@ void KeyboardKeys( unsigned char key, int x, int y ) {
 	// space bar
 	if ( key == 0x20 ) {
 		// swap camera to next camera in group
-		CameraMan::SetCurrCamera( CameraMan::NextCamera() );
+		CameraManager::SetCurrentCamera( CameraManager::GetNextCamera() );
 	}
 
 	// ************************ DEBUGGING FUNCTIONS ******************************
@@ -29,7 +30,7 @@ void KeyboardKeys( unsigned char key, int x, int y ) {
 	}
 
 	// ************************ MOVEMENT FUNCTIONS *******************************
-	auto myCamera = CameraMan::GetCurrCamera();
+	auto myCamera = CameraManager::GetCurrentCamera();
 	Vect Pos, Right, Dir, Up, LookAt;
 	myCamera->getPos( Pos );
 	myCamera->getRight( Right );
@@ -85,30 +86,30 @@ void KeyboardKeys( unsigned char key, int x, int y ) {
 	// "F" key (add camera)
 	if ( key == 0x46 || key == 0x66 ) {
 		// adds another camera to the camera manager, sets it as the current camera
-		auto cam = new CameraObject();
+		auto cam = new Camera();
 
 		cam->setViewport( 0, 0, GAME_WIDTH, GAME_HEIGHT );
 		cam->setPerspective( 35.0f, float( GAME_WIDTH ) / float( GAME_HEIGHT ), 1.0f, 250.0f );
 		cam->setOrientAndPosition( Vect( 0.0f, 1.0f, 0.0f ), Vect( 0.0f, 0.0f, 0.0f ), Vect( 0.0f, 0.0f, 100.0f ) );
 
-		CameraMan::AddCamera( cam );
-		CameraMan::SetCurrCamera( cam );
+		CameraManager::Add( new CameraNode( cam ) );
+		CameraManager::SetCurrentCamera( cam );
 	}
 
 	// "R" key (remove camera)
 	if ( key == 0x52 || key == 0x72 ) {
-		CameraMan::RemoveCamera();
+		CameraManager::RemoveCurrentCamera();
 	}
 
 	// "T" key (toggle camera movement mode)
 	if ( key == 0x54 || key == 0x74 ) {
-		CameraMan::SwitchState();
+		CameraManager::SwitchState();
 	}
 
 	// "G" key (focus camera to a Game object)
 	if ( key == 0x47 || key == 0x67 ) {
 		// camera takes its current look-at, finds an object in the game object manager with the same startPos as the lookat.
-		auto cam = CameraMan::GetCurrCamera();
+		auto cam = CameraManager::GetCurrentCamera();
 		Vect lookAt, upDir, camPos;
 		cam->getLookAt( lookAt );
 		cam->getUp( upDir );
@@ -118,7 +119,7 @@ void KeyboardKeys( unsigned char key, int x, int y ) {
 
 		if ( p == GraphicsObjMan::GetFirstObj() ) {
 			// if its already getting the first object
-			if ( p->getSibling() != 0 ) {
+			if ( p->getSibling() != nullptr ) {
 				// it then goes to the next object in the graphicsManager and grabs its startPos, and multiplies it by the objects localToWorld matrix.
 				p = static_cast< GraphicsObject * >(p->getSibling());
 			}
@@ -142,7 +143,7 @@ void SpecialKeys( int key, int _x, int _y ) {
 	UNUSED( _y );
 
 	// ************************** CAMERA ROTATION FUNCTIONS ********************
-	auto myCamera = CameraMan::GetCurrCamera();
+	auto myCamera = CameraManager::GetCurrentCamera();
 
 	auto vert_angle = 0.0f;
 	auto horz_angle = 0.0f;
@@ -150,28 +151,28 @@ void SpecialKeys( int key, int _x, int _y ) {
 	auto tilt_angle = 0.0f;
 
 	if ( key == GLUT_KEY_UP ) {
-		if ( CameraMan::GetState() == ORBIT ) {
+		if ( CameraManager::GetState() == ORBIT ) {
 			vert_angle = 0.1f;
 		} else {
 			tilt_angle = 0.01f;
 		}
 	}
 	if ( key == GLUT_KEY_DOWN ) {
-		if ( CameraMan::GetState() == ORBIT ) {
+		if ( CameraManager::GetState() == ORBIT ) {
 			vert_angle = -0.1f;
 		} else {
 			tilt_angle = -0.01f;
 		}
 	}
 	if ( key == GLUT_KEY_LEFT ) {
-		if ( CameraMan::GetState() == ORBIT ) {
+		if ( CameraManager::GetState() == ORBIT ) {
 			horz_angle = 0.1f;
 		} else {
 			pan_angle = 0.01f;
 		}
 	}
 	if ( key == GLUT_KEY_RIGHT ) {
-		if ( CameraMan::GetState() == ORBIT ) {
+		if ( CameraManager::GetState() == ORBIT ) {
 			horz_angle = -0.1f;
 		} else {
 			pan_angle = -0.01f;

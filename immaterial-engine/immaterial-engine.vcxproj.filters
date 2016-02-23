@@ -195,16 +195,7 @@
     <ClInclude Include="PackageHeader.h">
       <Filter>Archiver\Archiver Headers</Filter>
     </ClInclude>
-    <ClInclude Include="CameraManager.h">
-      <Filter>Camera\Camera Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraModel.h">
-      <Filter>Camera\Camera Headers</Filter>
-    </ClInclude>
     <ClInclude Include="CameraNode.h">
-      <Filter>Camera\Camera Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraObject.h">
       <Filter>Camera\Camera Headers</Filter>
     </ClInclude>
     <ClInclude Include="GraphicsManager.h">
@@ -255,9 +246,6 @@
     <ClInclude Include="Model.h">
       <Filter>Models\Model Headers</Filter>
     </ClInclude>
-    <ClInclude Include="ModelManager.h">
-      <Filter>Models\Model Headers</Filter>
-    </ClInclude>
     <ClInclude Include="ModelNode.h">
       <Filter>Models\Model Headers</Filter>
     </ClInclude>
@@ -266,9 +254,6 @@
     </ClInclude>
     <ClInclude Include="SphereModel.h">
       <Filter>Models\Model Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureManager.h">
-      <Filter>Textures\Texture Headers</Filter>
     </ClInclude>
     <ClInclude Include="TextureNode.h">
       <Filter>Textures\Texture Headers</Filter>
@@ -329,6 +314,24 @@
     </ClInclude>
     <ClInclude Include="NodeLink.h">
       <Filter>Generics</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraModel.h">
+      <Filter>Models\Model Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelManager.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraManager.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Textures\Texture Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureManager.h">
+      <Filter>Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Camera\Camera Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -417,18 +420,6 @@
     <ClCompile Include="md5.cpp">
       <Filter>Archiver\Archiver Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CameraManager.cpp">
-      <Filter>Camera\Camera Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraModel.cpp">
-      <Filter>Camera\Camera Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraNode.cpp">
-      <Filter>Camera\Camera Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraObject.cpp">
-      <Filter>Camera\Camera Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GraphicsManager.cpp">
       <Filter>Graphics\Graphics Source Files</Filter>
     </ClCompile>
@@ -446,9 +437,6 @@
     </ClCompile>
     <ClCompile Include="SphereObject.cpp">
       <Filter>Graphics\Objects\Object Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ModelManager.cpp">
-      <Filter>Models\Model Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PyramidModel.cpp">
       <Filter>Models\Model Source Files</Filter>
@@ -474,14 +462,23 @@
     <ClCompile Include="UserInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TextureManager.cpp">
-      <Filter>Textures\Texture Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureNode.cpp">
-      <Filter>Textures\Texture Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TGAHeader.cpp">
       <Filter>Textures\Texture Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraModel.cpp">
+      <Filter>Models\Model Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelManager.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraManager.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureManager.cpp">
+      <Filter>Textures</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Camera\Camera Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

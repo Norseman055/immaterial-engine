@@ -6,9 +6,8 @@
 
 class Model : public Align16 {
 public:
-	Model() 
-		: vao( 0 ), numTri( 0 ) 
-	{
+	Model()
+		: vao( 0 ), numTri( 0 ) {
 		out( "Model(): -----------------\n" );
 	}
 

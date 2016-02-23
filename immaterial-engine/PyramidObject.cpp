@@ -1,7 +1,6 @@
 #include "DEBUGGING.h"
 #include "PyramidObject.h"
 #include "CameraManager.h"
-#include "CameraObject.h"
 #include "GraphicsManager.h"
 #include "AnimController.h"
 
@@ -86,7 +85,7 @@ void PyramidObject::setController( AnimController* const inController ) {
 }
 
 void PyramidObject::checkCulling() {
-	auto tmp = CameraMan::Find( CAMERA_CULLING );
+	auto tmp = CameraManager::Find( CAMERA_CULLING );
 	if ( tmp->CullTest( this->origSphere ) == CULL_INSIDE ) {
 		this->sphereObj->setLightColor( Vect( 1.0f, 1.0f, 1.0f, 1.0f ) );
 	} else {
@@ -133,16 +132,16 @@ void PyramidObject::transform() {
 	this->sphereObj->setExtMatrix( this->World );
 
 	// Create the ModelView ( LocalToWorld * View)
-	this->ModelView = this->BoneOrientation * CameraMan::GetCurrCamera()->getViewMatrix();
+	this->ModelView = this->BoneOrientation * CameraManager::GetCurrentCamera()->getViewMatrix();
 };
 
 void PyramidObject::setRenderState() {
 	// Bind the texture
-	auto textureID = TextureManager::Find( this->Texture );
+	auto textureID = TextureManager::GetTextureID( this->Texture );
 	assert( textureID != -1 );
 	glBindTexture( GL_TEXTURE_2D, textureID );
 
-	auto cam = CameraMan::GetCurrCamera();
+	auto cam = CameraManager::GetCurrentCamera();
 	auto mvp = this->ModelView * cam->getProjMatrix();
 
 	// set the shader

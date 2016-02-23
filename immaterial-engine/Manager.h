@@ -13,27 +13,28 @@ public:
 	static PCSTree* GetObjectList();
 	static void Cleanup();
 
-private:
-	static Manager* privGetInstance();
-	// Do not give default constructor as public! Keep it secret, keep it safe.
+protected:
 	Manager() {
 		active = new PCSTree;
 	}
-	
+
+private:
+	static Manager* privGetInstance();
+
 	// members
 	PCSTree *active;
 };
 
 template <typename T>
-void Manager<T>::Add(NodeLink<T>* const node) {
+void Manager<T>::Add( NodeLink<T>* const node ) {
 	Manager<T>* man = privGetInstance();
-	
+
 	NodeLink<T>* root = static_cast< NodeLink<T>* >(man->active->getRoot());
 	man->active->insert( node, root );
 }
 
 template <typename T>
-void Manager<T>::Remove(NodeLink<T>* const node) {
+void Manager<T>::Remove( NodeLink<T>* const node ) {
 	Manager<T>* man = privGetInstance();
 
 	man->active->remove( node );

@@ -2,13 +2,13 @@
 
 #include "OpenGL.h"
 
-class CameraObject;
+class Camera;
 
 class CameraModel {
 public:
 	CameraModel();
 
-	void createVAO( CameraObject* const );
+	void createVAO( Camera* const );
 	void update();
 
 	GLuint vao;

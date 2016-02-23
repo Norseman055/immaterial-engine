@@ -1,33 +1,34 @@
 #pragma once
 
 #include "CameraNode.h"
-#include "CameraObject.h"
+#include "Manager.h"
 
 enum CameraState {
 	ORBIT,
 	ROTATE
 };
 
-class CameraMan {
+class CameraManager : public Manager<Camera> {
 public:
+	// Functions
 	static void LoadCameras();
-	static void AddCamera( CameraObject* const );
-	static void RemoveCamera();
-	static void DeleteCameras();
-	static void SetCurrCamera( CameraObject* const );
-	static void SwitchState();
-	static CameraObject* Find( const CameraName );
-	static CameraObject* GetCurrCamera();
-	static CameraObject* NextCamera();
+
+	static Camera* GetCurrentCamera();
+	static void SetCurrentCamera( Camera* const );
+	static void RemoveCurrentCamera();
+
 	static CameraState GetState();
+	static void SwitchState();
+
+	static Camera* Find( const CameraName );
+	static Camera* GetNextCamera();
 
 private:
-	static CameraMan* privGetInstance();
-	CameraMan();
-	void privAddToFront( CameraNodeLink* const, CameraNodeLink*& ) const;
-	void privRemoveFromList( CameraNodeLink* const, CameraNodeLink*& ) const;
+	// Functions
+	static CameraManager* privGetInstance();
+	CameraManager();
 
-	CameraNodeLink *active;
-	CameraObject *currCamera;
-	CameraState camState;
+	// Data
+	Camera *currentCamera;
+	CameraState cameraState;
 };

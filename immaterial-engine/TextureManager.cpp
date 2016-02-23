@@ -1,12 +1,10 @@
-#include "DEBUGGING.h"
-
 #include "TextureManager.h"
-#include "GraphicsObjectFileHdr.h"
+
+#include "DEBUGGING.h"
 #include "TGAHeader.h"
 #include "md5.h"
 
-TextureManager::TextureManager()
-	: active( nullptr ) { }
+TextureManager::TextureManager() { }
 
 // singleton
 TextureManager* TextureManager::privGetInstance() {
@@ -18,18 +16,9 @@ void TextureManager::AddTexture( char * const inAssetName, const TextureName inN
 	GLuint textureID;
 	auto pTextureID = &textureID;
 
-	// get instance
-	auto pTextMan = privGetInstance();
-
-	// load texture to gpu, get ID from gpu
-	pTextMan->privLoadTexture( inAssetName, pTextureID );
-
-	// make a new node, set its values
-	auto pNode = new TextureNode;
-	pNode->set( inAssetName, inName, textureID, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE );
-
-	// add said node to front of active texture list
-	pTextMan->privAddToFront( pNode, pTextMan->active );
+	// load texture to gpu, get ID from gpu, add to list
+	privGetInstance()->privLoadTexture( inAssetName, pTextureID );
+	Add( new TextureNode( inAssetName, new Texture( inName, textureID, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE ) ) );
 }
 
 // for use when loading textures from .ctf (converted TGA file)
@@ -37,23 +26,18 @@ bool TextureManager::LoadTexture( char * const fileName, char * const textID ) {
 	GLuint textureID;
 	auto pTextureID = &textureID;
 
-	// get instance
-	auto pTextMan = privGetInstance();
-
+	// Load texture from buffer
 	auto lTexture = getTGAFile( fileName );
-	pTextMan->privLoadMyTexture( lTexture, pTextureID );
+	privGetInstance()->privLoadMyTexture( lTexture, pTextureID );
 
 	// hash the string textID and store it as the textureID for the manager
 	MD5Output out;
 	MD5Buffer( reinterpret_cast< unsigned char * >(textID), strlen( textID ), out );
 	auto hashID = out.dWord_0 ^ out.dWord_1 ^ out.dWord_2 ^ out.dWord_3;
 
-	// make a new node, set its values
-	auto pNode = new TextureNode;
-	pNode->set( fileName, hashID, textureID, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE );
+	// make a new node, set its values, add to list
+	Add( new TextureNode( fileName, new Texture( hashID, textureID, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE ) ) );
 
-	// add said node to front of active texture list
-	pTextMan->privAddToFront( pNode, pTextMan->active );
 	return true;
 }
 
@@ -61,40 +45,31 @@ bool TextureManager::LoadBufferedTexture( unsigned char * const textBuff, tffInf
 	GLuint textureID;
 	auto pTextureID = &textureID;
 
-	// get instance
-	auto pTextMan = privGetInstance();
-
-	pTextMan->privLoadMyTexture( textBuff, pTextureID );
+	privGetInstance()->privLoadMyTexture( textBuff, pTextureID );
 
 	// hash the string inName and store it as the textureID for the manager
 	MD5Output out;
 	MD5Buffer( reinterpret_cast< unsigned char * >(inHdr.textName), strlen( inHdr.textName ), out );
 	auto hashID = out.dWord_0 ^ out.dWord_1 ^ out.dWord_2 ^ out.dWord_3;
 
-	// make a new node, set its values
-	auto pNode = new TextureNode;
-	pNode->set( inHdr.textName, hashID, textureID, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE );
+	// make a new node, set its values, add to list
+	Add( new TextureNode( inHdr.textName, new Texture( hashID, textureID, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE ) ) );
 
-	// add said node to front of active texture list
-	pTextMan->privAddToFront( pNode, pTextMan->active );
 	return true;
 }
 
-GLuint TextureManager::Find( const GLuint inName ) {
-	// get instance
-	auto pTextMan = privGetInstance();
-
-	auto walker = static_cast< TextureNode * >(pTextMan->active);
+GLuint TextureManager::GetTextureID( const GLuint inName ) {
+	auto walker = static_cast< TextureNode * >(GetObjectList()->getRoot()->getChild());
 
 	// if there is a texture to be asked for, return it
 	if ( inName != NOT_INITIALIZED ) {
 		// find node
 		while ( walker != nullptr ) {
-			if ( walker->name == inName ) {
+			if ( walker->getData()->textureName == inName ) {
 				break;
 			}
 
-			walker = static_cast< TextureNode * >(walker->next);
+			walker = static_cast< TextureNode * >(walker->getSibling());
 		}
 
 		if ( walker == nullptr ) {
@@ -102,39 +77,24 @@ GLuint TextureManager::Find( const GLuint inName ) {
 		}
 	} else {
 		// otherwise, return the dummy texture (first one ever loaded)
-		while ( static_cast< TextureNode * >(walker->next) != nullptr ) {
-			walker = static_cast< TextureNode * >(walker->next);
+		while ( static_cast< TextureNode * >(walker->getSibling()) != nullptr ) {
+			walker = static_cast< TextureNode * >(walker->getSibling());
 		}
 	}
 
 	// return textureID stored in node, used by GPU
-	return walker->textureID;
+	return walker->getData()->textureID;
 }
 
 void TextureManager::DeleteTextures() {
 	// delete textures from GPU
-	auto walker = static_cast< TextureNode * >(privGetInstance()->active);
-	auto tmp = walker;
+	auto walker = static_cast< TextureNode * >(GetObjectList()->getRoot()->getChild());
 	while ( walker != nullptr ) {
-		walker = static_cast< TextureNode * >(walker->next);
-		glDeleteTextures( 1, &tmp->textureID );
-		delete tmp;
-		tmp = walker;
+		glDeleteTextures( 1, &walker->getData()->textureID );
+		walker = static_cast< TextureNode * >(walker->getSibling());
 	}
-}
-
-void TextureManager::privAddToFront( TextureNodeLink *node, TextureNodeLink *&head ) const {
-	assert( node );
-
-	// empty list
-	if ( head == nullptr ) {
-		head = node;
-	} else {
-		// non-empty list, add to front
-		node->next = head;
-		head->prev = node;
-		head = node;
-	}
+	// delete texture tree
+	Cleanup();
 }
 
 void TextureManager::privLoadTexture( char * const inAssetName, GLuint *&textureID ) const {

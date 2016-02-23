@@ -6,10 +6,10 @@ extern GLShaderManager shaderManager;
 CameraModel::CameraModel() : vao( 0 ) { }
 
 void CameraModel::update() {
-	this->createVAO( CameraMan::Find( CAMERA_CULLING ) );
+	this->createVAO( CameraManager::Find( CAMERA_CULLING ) );
 }
 
-void CameraModel::createVAO( CameraObject* const cam ) {
+void CameraModel::createVAO( Camera* const cam ) {
 	struct MyVertex_stride {
 		float x;
 		float y;

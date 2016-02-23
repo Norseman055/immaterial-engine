@@ -16,8 +16,8 @@ void ShutdownRC( void ) {
 	AnimControllerMan::DeleteControllers();
 	AnimationMan::DeleteAnimations();
 	TextureManager::DeleteTextures();
-	ModelMan::Cleanup();
-	CameraMan::DeleteCameras();
+	ModelManager::Cleanup();
+	CameraManager::Cleanup();
 }
 
 // ------------------------------------------------------------------------

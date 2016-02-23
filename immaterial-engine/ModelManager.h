@@ -1,7 +1,7 @@
 #pragma once
 
+#include "ModelNode.h"
 #include "Manager.h"
-#include "Model.h"
 
 struct MyVertex_stride {
 	float x;
@@ -20,7 +20,7 @@ struct MyTriList {
 	unsigned short v3;
 };
 
-class ModelMan : public Manager<Model> {
+class ModelManager : public Manager<Model> {
 public:
 	// loads model from a formatted file
 	static void LoadModel( const char* const );

@@ -45,7 +45,7 @@ void createGraphicsWindow() {
 }
 
 void frameworkStartup() {
-	CameraMan::LoadCameras();
+	CameraManager::LoadCameras();
 	LoadContent();
 
 	SetHumanoidHierarchy();
@@ -67,10 +67,10 @@ void LoadContent() {
 	ArchiveMan::LoadArchive( "humanoid.spu" );
 
 	// Load models
-	ModelMan::LoadModel( "pyramid.cdm" );
-	ModelMan::LoadModel( "sphere.cdm" );
-	ModelMan::LoadModel( "cube.cdm" );
-	ModelMan::LoadModel( "torus.cdm" );
+	ModelManager::LoadModel( "pyramid.cdm" );
+	ModelManager::LoadModel( "sphere.cdm" );
+	ModelManager::LoadModel( "cube.cdm" );
+	ModelManager::LoadModel( "torus.cdm" );
 
 	// Load textures
 	TextureManager::AddTexture( "NULL.tga", NOT_INITIALIZED );
