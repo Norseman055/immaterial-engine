@@ -5,9 +5,6 @@
 #include "File.h"
 #include "GraphicsObjectFileHdr.h"
 
-// GL GLOBALS
-extern GLShaderManager shaderManager;
-
 // DEFINES
 #define USE_PYRAMID_FILE 1	// 1 - uses the data file "pyramid.cdm", 0 - creates and uses the file "pyramid.cdm".
 

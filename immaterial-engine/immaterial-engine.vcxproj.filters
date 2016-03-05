@@ -124,6 +124,9 @@
     <Filter Include="Generics">
       <UniqueIdentifier>{7596ad05-e4eb-4c5b-adfe-e11a890b2706}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{9fbe1e4a-2d10-4c2d-921f-effc1b1024a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libs\ReleaseLibs\File\include\File.h">
@@ -333,6 +336,9 @@
     <ClInclude Include="Camera.h">
       <Filter>Camera\Camera Headers</Filter>
     </ClInclude>
+    <ClInclude Include="ShaderManager.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\libs\ReleaseLibs\File\lib\FileDebug.lib">
@@ -479,6 +485,9 @@
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Camera\Camera Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderManager.cpp">
+      <Filter>Shaders</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -5,9 +5,6 @@
 #include "File.h"
 #include "GraphicsObjectFileHdr.h"
 
-// GL GLOBALS
-extern GLShaderManager shaderManager;
-
 // DEFINES
 #define USE_SPHERE_FILE 1 // 1 - uses the data file "sphere.cdm", 0 - creates and uses the file "sphere.cdm".
 

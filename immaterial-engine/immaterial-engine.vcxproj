@@ -148,6 +148,7 @@
     <ClInclude Include="PyramidObject.h" />
     <ClInclude Include="RenderScene.h" />
     <ClInclude Include="RenderState.h" />
+    <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="ShaderTypes.h" />
     <ClInclude Include="SphereModel.h" />
     <ClInclude Include="SphereObject.h" />
@@ -264,6 +265,7 @@
     <ClCompile Include="PyramidObject.cpp" />
     <ClCompile Include="RenderScene.cpp" />
     <ClCompile Include="RenderState.cpp" />
+    <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="SphereModel.cpp" />
     <ClCompile Include="SphereObject.cpp" />
     <ClCompile Include="TextureManager.cpp" />

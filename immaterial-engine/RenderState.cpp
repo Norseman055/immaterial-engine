@@ -5,9 +5,7 @@
 #include "GraphicsManager.h"
 #include "ModelManager.h"
 #include "CameraManager.h"
-
-// GL GLOBALS
-extern GLShaderManager shaderManager;
+#include "ShaderManager.h"
 
 // ----------------------------------------------------------------------------
 // Cleanup... such as deleting texture objects
@@ -28,7 +26,7 @@ void SetupRC() {
 	glClearColor( 0.7f, 0.7f, 0.7f, 1.0f );
 
 	// Initialize Shaders
-	shaderManager.InitializeStockShaders();
+	ShaderManager::InitializeStockShaders();
 
 	// culling enable
 	glEnable( GL_CULL_FACE );

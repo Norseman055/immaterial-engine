@@ -1,8 +1,6 @@
 #include "CameraModel.h"
 #include "CameraManager.h"
 
-extern GLShaderManager shaderManager;
-
 CameraModel::CameraModel() : vao( 0 ) { }
 
 void CameraModel::update() {

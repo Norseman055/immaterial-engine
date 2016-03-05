@@ -3,10 +3,9 @@
 #include "Model.h"
 #include "GenericObject.h"
 #include "CameraManager.h"
+#include "ShaderManager.h"
 #include "GraphicsManager.h"
 #include "md5.h"
-
-extern GLShaderManager shaderManager;
 
 // constructor
 GenObject::GenObject()
@@ -110,7 +109,7 @@ void GenObject::setRenderState() {
 	switch ( this->Shading ) {
 		case Shader_Texture_PointLights:
 			// Use the stock shader
-			shaderManager.UseStockShader( GLT_SHADER_TEXTURE_POINT_LIGHT_DIFF,
+			ShaderManager::GetGLShaderManager().UseStockShader( GLT_SHADER_TEXTURE_POINT_LIGHT_DIFF,
 										  &ModelView,
 										  &cam->getProjMatrix(),
 										  &this->lightPos,
@@ -123,7 +122,7 @@ void GenObject::setRenderState() {
 			break;
 		case Shader_Texture_NoLights:
 			// modelViewProj matrix, stock shader.
-			shaderManager.UseStockShader( GLT_SHADER_TEXTURE_REPLACE,
+			ShaderManager::GetGLShaderManager().UseStockShader( GLT_SHADER_TEXTURE_REPLACE,
 										  &mvp,
 										  0 );
 
@@ -133,7 +132,7 @@ void GenObject::setRenderState() {
 			break;
 		case Shader_NoTexture_PointLights:
 			// use stock shaders
-			shaderManager.UseStockShader( GLT_SHADER_POINT_LIGHT_DIFF,
+			ShaderManager::GetGLShaderManager().UseStockShader( GLT_SHADER_POINT_LIGHT_DIFF,
 										  &ModelView,
 										  &cam->getProjMatrix(),
 										  &this->lightPos,
@@ -145,7 +144,7 @@ void GenObject::setRenderState() {
 			break;
 		case Shader_NoTexture_NoLights:
 			// use stock shaders
-			shaderManager.UseStockShader( GLT_SHADER_FLAT,
+			ShaderManager::GetGLShaderManager().UseStockShader( GLT_SHADER_FLAT,
 										  &mvp,
 										  &this->lightColor );
 			glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
@@ -153,7 +152,7 @@ void GenObject::setRenderState() {
 			break;
 		default:
 			// modelViewProj matrix, stock shader.
-			shaderManager.UseStockShader( GLT_SHADER_FLAT,
+			ShaderManager::GetGLShaderManager().UseStockShader( GLT_SHADER_FLAT,
 										  &mvp,
 										  &this->lightColor );
 

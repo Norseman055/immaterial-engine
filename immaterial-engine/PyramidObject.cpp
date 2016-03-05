@@ -1,10 +1,10 @@
 #include "DEBUGGING.h"
 #include "PyramidObject.h"
 #include "CameraManager.h"
+#include "ShaderManager.h"
 #include "GraphicsManager.h"
 #include "AnimController.h"
 
-extern GLShaderManager shaderManager;
 extern PyramidModel *myPyramid;
 extern Frame_Bucket *pHead;
 
@@ -148,7 +148,7 @@ void PyramidObject::setRenderState() {
 	switch ( this->Shading ) {
 		case Shader_Texture_PointLights:
 			// Use the stock shader
-			shaderManager.UseStockShader( GLT_SHADER_TEXTURE_POINT_LIGHT_DIFF,
+			ShaderManager::GetGLShaderManager().UseStockShader( GLT_SHADER_TEXTURE_POINT_LIGHT_DIFF,
 										  &this->ModelView,
 										  &cam->getProjMatrix(),
 										  &this->lightPos,
@@ -161,7 +161,7 @@ void PyramidObject::setRenderState() {
 			break;
 		case Shader_Texture_NoLights:
 			// modelViewProj matrix, stock shader.
-			shaderManager.UseStockShader( GLT_SHADER_TEXTURE_REPLACE,
+			ShaderManager::GetGLShaderManager().UseStockShader( GLT_SHADER_TEXTURE_REPLACE,
 										  &mvp,
 										  0 );
 
@@ -171,7 +171,7 @@ void PyramidObject::setRenderState() {
 			break;
 		case Shader_NoTexture_PointLights:
 			// use stock shaders
-			shaderManager.UseStockShader( GLT_SHADER_POINT_LIGHT_DIFF,
+			ShaderManager::GetGLShaderManager().UseStockShader( GLT_SHADER_POINT_LIGHT_DIFF,
 										  &this->ModelView,
 										  &cam->getProjMatrix(),
 										  &this->lightPos,
@@ -183,7 +183,7 @@ void PyramidObject::setRenderState() {
 			break;
 		default:
 			// modelViewProj matrix, stock shader.
-			shaderManager.UseStockShader( GLT_SHADER_FLAT,
+			ShaderManager::GetGLShaderManager().UseStockShader( GLT_SHADER_FLAT,
 										  &mvp,
 										  &this->lightColor );
 

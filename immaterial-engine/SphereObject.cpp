@@ -2,9 +2,8 @@
 #include "SphereModel.h"
 #include "SphereObject.h"
 #include "CameraManager.h"
+#include "ShaderManager.h"
 #include "ModelManager.h"
-
-extern GLShaderManager shaderManager;
 
 // constructor
 SphereObject::SphereObject()
@@ -88,7 +87,7 @@ void SphereObject::setRenderState() {
 	Matrix mvp = this->ModelView * cam->getProjMatrix();
 
 	// set the shader
-	shaderManager.UseStockShader( GLT_SHADER_FLAT,
+	ShaderManager::GetGLShaderManager().UseStockShader( GLT_SHADER_FLAT,
 								  &mvp,
 								  &this->lightColor );
 

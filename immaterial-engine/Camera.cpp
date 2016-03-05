@@ -1,7 +1,6 @@
 #include "Camera.h"
 #include "CameraManager.h"
-
-extern GLShaderManager shaderManager;
+#include "ShaderManager.h"
 
 CullResult Camera::CullTest( const Sphere& sphere ) const {
 	auto result = CULL_INSIDE;
@@ -40,7 +39,7 @@ void Camera::setRenderState() {
 	auto mvp = this->ModelView * CameraManager::GetCurrentCamera()->getProjMatrix();
 
 	// stock shader, wireframe
-	shaderManager.UseStockShader( GLT_SHADER_FLAT,
+	ShaderManager::GetGLShaderManager().UseStockShader( GLT_SHADER_FLAT,
 								  &mvp,
 								  &this->lightColor );
 
