@@ -12,7 +12,6 @@
 // Keep all Globals defined here, extern elsewhere
 // ----------------------------------------------------------------------------
 
-GLShaderManager		shaderManager;
 PyramidModel		*myPyramid;
 
 // ----------------------------------------------------------------------------
