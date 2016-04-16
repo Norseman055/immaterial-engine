@@ -188,104 +188,104 @@ void Quat::getVect( Vect &v0 ) const {
 	_mm_store_ps( reinterpret_cast< float* >(&v0.m), _mm_setr_ps( this->qx, this->qy, this->qz, v0.vw ) );
 };
 
-void Quat::operator = (const Quat &q) {
+void Quat::operator=(const Quat &q) {
 	_mm_store_ps( reinterpret_cast< float* >(&m), q.m );
 };
 
-Quat Quat::operator + (const Quat &q)const {
+Quat Quat::operator+(const Quat &q)const {
 	return Quat( _mm_add_ps( this->m, q.m ) );
 };
 
-Quat Quat::operator + (const float f0)const {
+Quat Quat::operator+(const float f0)const {
 	return Quat( _mm_add_ps( this->m, _mm_set_ps1( f0 ) ) );
 };
 
-void Quat::operator += (const Quat &q) {
+void Quat::operator+=(const Quat &q) {
 	_mm_store_ps( reinterpret_cast< float* >(&m), _mm_add_ps( this->m, q.m ) );;
 };
 
-void Quat::operator += (const float f0) {
+void Quat::operator+=(const float f0) {
 	_mm_store_ps( reinterpret_cast< float* >(&m), _mm_add_ps( this->m, _mm_set_ps1( f0 ) ) );
 };
 
-Quat operator + (const float f0, const Quat &q) {
+Quat operator+(const float f0, const Quat &q) {
 	return Quat( _mm_add_ps( q.m, _mm_set_ps1( f0 ) ) );
 };
 
-Quat Quat::operator - (const Quat &q)const {
+Quat Quat::operator-(const Quat &q)const {
 	return Quat( _mm_sub_ps( this->m, q.m ) );
 };
 
-Quat Quat::operator - (const float f0)const {
+Quat Quat::operator-(const float f0)const {
 	return Quat( _mm_sub_ps( this->m, _mm_set_ps1( f0 ) ) );
 };
 
-void Quat::operator -= (const Quat &q) {
+void Quat::operator-=(const Quat &q) {
 	_mm_store_ps( reinterpret_cast< float* >(&m), _mm_sub_ps( this->m, q.m ) );
 };
 
-void Quat::operator -= (const float f0) {
+void Quat::operator-=(const float f0) {
 	_mm_store_ps( reinterpret_cast< float* >(&m), _mm_sub_ps( this->m, _mm_set_ps1( f0 ) ) );
 };
 
-Quat operator - (const float f0, const Quat &q) {
+Quat operator-(const float f0, const Quat &q) {
 	return Quat( _mm_sub_ps( _mm_set_ps1( f0 ), q.m ) );
 };
 
-Quat Quat::operator * (const Quat &q)const {
+Quat Quat::operator*(const Quat &q)const {
 	Vect vLeft( this->qx, this->qy, this->qz );
 	Vect vRight( q.qx, q.qy, q.qz );
 	return Quat( Vect( vRight.cross( vLeft ) + (q.qw * vLeft) + (this->qw * vRight) ), (this->qw * q.qw) - vLeft.dot( vRight ) );
 };
 
-Quat Quat::operator * (const float f)const {
+Quat Quat::operator*(const float f)const {
 	return Quat( _mm_mul_ps( this->m, _mm_set_ps1( f ) ) );
 };
 
-void Quat::operator *= (const Quat &q) {
+void Quat::operator*=(const Quat &q) {
 	Vect vLeft( this->qx, this->qy, this->qz );
 	Vect vRight( q.qx, q.qy, q.qz );
 	*this = Quat( Vect( vRight.cross( vLeft ) + (q.qw * vLeft) + (this->qw * vRight) ), (this->qw * q.qw) - vLeft.dot( vRight ) );
 };
 
-void Quat::operator *= (const float f) {
+void Quat::operator*=(const float f) {
 	_mm_store_ps( reinterpret_cast< float* >(&m), _mm_mul_ps( this->m, _mm_set_ps1( f ) ) );
 };
 
-void Quat::operator *= (const Matrix &_m) {
+void Quat::operator*=(const Matrix &_m) {
 	this->set( Matrix( *this ) * _m );
 };
 
-Quat operator * (const float f, const Quat &q) {
+Quat operator*(const float f, const Quat &q) {
 	return Quat( _mm_mul_ps( q.m, _mm_set_ps1( f ) ) );
 };
 
-Quat Quat::operator / (const Quat &q)const {
+Quat Quat::operator/(const Quat &q)const {
 	return Quat( _mm_div_ps( this->m, q.m ) );
 };
 
-Quat Quat::operator / (const float f0)const {
+Quat Quat::operator/(const float f0)const {
 	return Quat( _mm_div_ps( this->m, _mm_set_ps1( f0 ) ) );
 };
 
-void Quat::operator /= (const Quat &q) {
+void Quat::operator/=(const Quat &q) {
 	_mm_store_ps( reinterpret_cast< float* >(&m), _mm_div_ps( this->m, q.m ) );
 };
 
-void Quat::operator /= (const float f0) {
+void Quat::operator/=(const float f0) {
 	_mm_store_ps( reinterpret_cast< float* >(&m), _mm_div_ps( this->m, _mm_set_ps1( f0 ) ) );
 };
 
-Quat operator / (const float f0, const Quat &q) {
+Quat operator/(const float f0, const Quat &q) {
 	return Quat( _mm_div_ps( _mm_set_ps1( f0 ), q.m ) );
 };
 
-Quat operator - (const Quat &q) {
-	return Quat( q * -1 );
+Quat Quat::operator-() const {
+	return Quat( *this * -1 );
 };
 
-Quat operator + (const Quat &q) {
-	return Quat( q );
+Quat Quat::operator+() const {
+	return *this;
 };
 
 Quat Quat::multByElement( const Quat &q ) const {

@@ -67,32 +67,32 @@ public:
 	void getVect( Vect &v0 ) const;
 
 	// binary
-	void operator = (const Quat &q);
-	Quat operator + (const Quat &q)const;
-	Quat operator + (const float f0)const;
-	void operator += (const Quat &q);
-	void operator += (const float f0);
-	friend Quat operator + (const float f0, const Quat &t);
-	Quat operator - (const Quat &q)const;
-	Quat operator - (const float f0)const;
-	void operator -= (const Quat &q);
-	void operator -= (const float f0);
-	friend Quat operator - (const float f0, const Quat &q);
-	Quat operator * (const Quat &q)const;
-	Quat operator * (const float f)const;
-	void operator *= (const Quat &q);
-	void operator *= (const float f0);
-	void operator *= (const Matrix &m);
-	friend Quat operator * (const float f0, const Quat &q);
-	Quat operator / (const Quat &q)const;
-	Quat operator / (const float f0)const;
-	void operator /= (const Quat &q);
-	void operator /= (const float f0);
-	friend Quat operator / (const float f0, const Quat &q);
+	void operator=(const Quat &q);
+	Quat operator+(const Quat &q)const;
+	Quat operator+(const float f0)const;
+	void operator+=(const Quat &q);
+	void operator+=(const float f0);
+	friend Quat operator+(const float f0, const Quat &t);
+	Quat operator-(const Quat &q)const;
+	Quat operator-(const float f0)const;
+	void operator-=(const Quat &q);
+	void operator-=(const float f0);
+	friend Quat operator-(const float f0, const Quat &q);
+	Quat operator*(const Quat &q)const;
+	Quat operator*(const float f)const;
+	void operator*=(const Quat &q);
+	void operator*=(const float f0);
+	void operator*=(const Matrix &m);
+	friend Quat operator*(const float f0, const Quat &q);
+	Quat operator/(const Quat &q)const;
+	Quat operator/(const float f0)const;
+	void operator/=(const Quat &q);
+	void operator/=(const float f0);
+	friend Quat operator/(const float f0, const Quat &q);
 
 	// unary
-	friend Quat operator - (const Quat &q);
-	friend Quat operator + (const Quat &q);
+	Quat operator-()const;
+	Quat operator+()const;
 
 	Quat multByElement( const Quat &q ) const;
 	Quat getConj()const;

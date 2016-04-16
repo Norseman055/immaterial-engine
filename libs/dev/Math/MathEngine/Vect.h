@@ -17,18 +17,18 @@ public:
 	Vect( const __m128& inM );
 	~Vect();
 
-	void operator = (const Vect &t);
-	Vect operator + (const Vect &t)const;
-	void operator += (const Vect &t);
-	Vect operator - (const Vect &t)const;
-	void operator -= (const Vect &t);
-	Vect operator * (const Matrix &t)const;
-	void operator *= (const Matrix &t);
-	void operator *= (const float f);
-	Vect operator * (const float f)const;	// vect * float
-	friend Vect operator * (const float f, const Vect &v);	// float * vect
-	friend Vect operator + (const Vect &t);
-	friend Vect operator - (const Vect &t);
+	void operator=(const Vect &t);
+	Vect operator+(const Vect &t)const;
+	void operator+=(const Vect &t);
+	Vect operator-(const Vect &t)const;
+	void operator-=(const Vect &t);
+	Vect operator*(const Matrix &t)const;
+	void operator*=(const Matrix &t);
+	void operator*=(const float f);
+	Vect operator*(const float f)const;	// vect * float
+	friend Vect operator*(const float f, const Vect &v);	// float * vect
+	friend Vect operator+(const Vect &t);
+	friend Vect operator-(const Vect &t);
 
 	float operator[]( const x_enum )const;
 	float& operator[]( const x_enum );

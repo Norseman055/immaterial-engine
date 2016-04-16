@@ -12,36 +12,36 @@ Vect::Vect( const __m128& inM )
 
 Vect::~Vect() { }
 
-void Vect::operator = (const Vect &t) {
+void Vect::operator=(const Vect &t) {
 	this->m = t.m;
 };
 
-Vect Vect::operator + (const Vect &t)const {
+Vect Vect::operator+(const Vect &t)const {
 	return Vect( this->vx + t.vx, this->vy + t.vy, this->vz + t.vz );
 };
 
-void Vect::operator += (const Vect &t) {
+void Vect::operator+=(const Vect &t) {
 	_mm_store_ps( reinterpret_cast< float* >(&this->m), _mm_add_ps( this->m, t.m ) );
 	this->vw = 1.0f;
 };
 
-Vect Vect::operator - (const Vect &t)const {
+Vect Vect::operator-(const Vect &t)const {
 	return Vect( this->vx - t.vx, this->vy - t.vy, this->vz - t.vz );
 };
 
-void Vect::operator -= (const Vect &t) {
+void Vect::operator-=(const Vect &t) {
 	_mm_store_ps( reinterpret_cast< float* >(&this->m), _mm_sub_ps( this->m, t.m ) );
 	this->vw = 1.0f;
 };
 
-Vect Vect::operator * (const Matrix &M)const {
+Vect Vect::operator*(const Matrix &M)const {
 	return Vect( _mm_add_ps(
 		_mm_add_ps( _mm_mul_ps( _mm_set_ps1( this->vx ), M.xm0 ), _mm_mul_ps( _mm_set_ps1( this->vy ), M.xm1 ) ),
 		_mm_add_ps( _mm_mul_ps( _mm_set_ps1( this->vz ), M.xm2 ), _mm_mul_ps( _mm_set_ps1( this->vw ), M.xm3 ) ) )
 		);
 };
 
-void Vect::operator *= (const Matrix &M) {
+void Vect::operator*=(const Matrix &M) {
 	auto tmp = *this;
 	_mm_store_ps( reinterpret_cast< float* >(&this->m), _mm_add_ps(
 		_mm_add_ps( _mm_mul_ps( _mm_set_ps1( this->vx ), M.xm0 ), _mm_mul_ps( _mm_set_ps1( this->vy ), M.xm1 ) ),
@@ -49,24 +49,24 @@ void Vect::operator *= (const Matrix &M) {
 		);
 };
 
-Vect Vect::operator * (const float f)const {
+Vect Vect::operator*(const float f)const {
 	return Vect( this->vx * f, this->vy * f, this->vz * f );
 };
 
-void Vect::operator *= (const float f) {
+void Vect::operator*=(const float f) {
 	_mm_store_ps( reinterpret_cast< float* >(&this->m), _mm_mul_ps( this->m, _mm_set_ps1( f ) ) );
 	this->vw = 1.0f;
 };
 
-Vect operator * (const float f, const Vect &v) {
+Vect operator*(const float f, const Vect &v) {
 	return Vect( v.vx * f, v.vy * f, v.vz * f );
 };
 
-Vect operator + (const Vect &t) {
+Vect operator+(const Vect &t) {
 	return Vect( t.vx, t.vy, t.vz );
 };
 
-Vect operator - (const Vect &t) {
+Vect operator-(const Vect &t) {
 	return Vect( t * -1 );
 };
 
