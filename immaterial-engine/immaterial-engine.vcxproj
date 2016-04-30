@@ -60,7 +60,7 @@
       <EnablePREfast>false</EnablePREfast>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>$(SolutionDir)libs\ReleaseLibs\Glut\lib\freeglutd.lib;$(SolutionDir)libs\ReleaseLibs\Glut\lib\freeglut_staticd.lib;$(SolutionDir)libs\ReleaseLibs\Glut\lib\freeglut.lib;$(SolutionDir)libs\ReleaseLibs\Glut\lib\freeglut_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(SolutionDir)libs\ReleaseLibs\Glut\lib\freeglut_staticd.lib;$(SolutionDir)libs\ReleaseLibs\Glut\lib\freeglut_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>LIBCMT;LIBCMTD;</IgnoreSpecificDefaultLibraries>
       <SubSystem>Windows</SubSystem>
       <AdditionalOptions>/ENTRY:mainCRTStartup %(AdditionalOptions)</AdditionalOptions>
@@ -79,7 +79,7 @@
       <EnablePREfast>false</EnablePREfast>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>$(SolutionDir)libs\ReleaseLibs\Glut\lib\freeglutd.lib;$(SolutionDir)libs\ReleaseLibs\Glut\lib\freeglut_staticd.lib;$(SolutionDir)libs\ReleaseLibs\Glut\lib\freeglut.lib;$(SolutionDir)libs\ReleaseLibs\Glut\lib\freeglut_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(SolutionDir)libs\ReleaseLibs\Glut\lib\freeglut_staticd.lib;$(SolutionDir)libs\ReleaseLibs\Glut\lib\freeglut_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>LIBCMT;LIBCMTD;</IgnoreSpecificDefaultLibraries>
       <SubSystem>Windows</SubSystem>
       <AdditionalOptions>/ENTRY:mainCRTStartup %(AdditionalOptions)</AdditionalOptions>

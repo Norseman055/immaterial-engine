@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Windows.h>
+
 #include <GLTools.h>
 #include <GLBatch.h>
 
