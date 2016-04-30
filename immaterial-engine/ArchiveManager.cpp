@@ -31,8 +31,6 @@ void ArchiveMan::LoadArchive( const char * fileName ) {
 					assert( ferror == FILE_SUCCESS );
 
 					ModelManager::LoadBufferedModel( buffer );
-
-					delete[] buffer;
 					break;
 				}
 			case TEXTURE_TYPE:	{
@@ -46,8 +44,6 @@ void ArchiveMan::LoadArchive( const char * fileName ) {
 					assert( ferror == FILE_SUCCESS );
 
 					TextureManager::LoadBufferedTexture( texBuffer, info );
-
-					delete[] texBuffer;
 					break;
 				}
 			case ANIM_TYPE:	{
@@ -61,8 +57,6 @@ void ArchiveMan::LoadArchive( const char * fileName ) {
 					assert( ferror == FILE_SUCCESS );
 
 					AnimationMan::LoadAnimationBuffer( animBuff, aHdr );
-
-					delete[] animBuff;
 					break;
 				}
 			default:	{

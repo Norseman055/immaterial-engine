@@ -14,13 +14,11 @@ void ModelManager::LoadModel( const char * const inFileName ) {
 	FileError  ferror;
 	gObjFileHdr modelHdr;
 
-	// DELETE ME
 	MyVertex_stride* pVerts;
 	Vertex* bound;
 	MyTriList* tlist;
 	char* modelName;
 
-	// DON'T DELETE ME, NEEDED IN MANAGERS
 	Model* myModel;
 
 	// open file and get header data
@@ -106,23 +104,16 @@ void ModelManager::LoadModel( const char * const inFileName ) {
 	auto hashID = out.dWord_0 ^ out.dWord_1 ^ out.dWord_2 ^ out.dWord_3;
 
 	Add( new ModelNode( modelName, hashID, myModel ) );
-
-	delete[] modelName;
-	delete[] tlist;
-	delete[] bound;
-	delete[] pVerts;
 }
 
 void ModelManager::LoadBufferedModel( unsigned char * const modelBuff ) {
 	assert( modelBuff );
 
-	// DELETE ME
 	MyVertex_stride* pVerts;
 	Vertex* bound;
 	MyTriList* tlist;
 	char* modelName;
 
-	// DON'T DELETE ME, NEEDED IN MANAGERS
 	Model* myModel;
 
 	auto modelHdr = reinterpret_cast< gObjFileHdr * >(modelBuff);
@@ -198,11 +189,6 @@ void ModelManager::LoadBufferedModel( unsigned char * const modelBuff ) {
 	auto hashID = out.dWord_0 ^ out.dWord_1 ^ out.dWord_2 ^ out.dWord_3;
 
 	Add( new ModelNode( modelName, hashID, myModel ) );
-
-	delete[] modelName;
-	delete[] tlist;
-	delete[] bound;
-	delete[] pVerts;
 }
 
 Model* ModelManager::Find( char * const inModelName ) {
