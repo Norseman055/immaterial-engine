@@ -11,5 +11,5 @@ private:
 	static ShaderManager* privGetInstance();
 	ShaderManager();
 
-	GLShaderManager shaderManager;
+	GLShaderManager* shaderManager;
 };

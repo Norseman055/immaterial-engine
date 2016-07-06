@@ -1,11 +1,11 @@
 #include "ShaderManager.h"
 
 GLShaderManager& ShaderManager::GetGLShaderManager() {
-	return privGetInstance()->shaderManager;
+	return *privGetInstance()->shaderManager;
 }
 
 void ShaderManager::InitializeStockShaders() {
-	privGetInstance()->shaderManager.InitializeStockShaders();
+	privGetInstance()->shaderManager->InitializeStockShaders();
 }
 
 ShaderManager* ShaderManager::privGetInstance() {
@@ -14,5 +14,5 @@ ShaderManager* ShaderManager::privGetInstance() {
 }
 
 ShaderManager::ShaderManager() {
-
+	shaderManager = new GLShaderManager();
 }
